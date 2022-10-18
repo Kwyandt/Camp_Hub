@@ -145,4 +145,12 @@ public class Camp {
     public ArrayList<String> getPackingList() {
         return packingList;
     }
+
+    /***
+     * Provides a String representation of the camp
+     * @return String representation of the camp
+     */
+    public String toString() {
+        return "placeholder";
+    }
 }
