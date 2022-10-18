@@ -32,16 +32,6 @@ import java.util.*;
     }
 
     /**
-     * Abstract method for user to access and edit login information
-     */
-    public abstract void editInformation();
-
-    /**
-     * Abstract method for user to submit information for login
-     */
-    public abstract void submitInformation();
-
-    /**
      * Method for user to change login password
      */
     public void changePassword() {
