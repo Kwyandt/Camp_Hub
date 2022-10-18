@@ -22,6 +22,7 @@ public abstract class DataConstants {
 	protected static final String SESSION_START_DATE = "startDate";
 	protected static final String SESSION_END_DATE = "endDate";
 	protected static final String CABIN_ID = "id";
+	protected static final String CABIN_NUMBER = "cabinNumber";
 	protected static final String CABIN_SCHEDULE = "schedule";
 	protected static final String CABIN_COUNSELOR = "counselor";
 	protected static final String SESSION_CAMPERS = "campers";

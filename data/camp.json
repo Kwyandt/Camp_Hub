@@ -4,7 +4,7 @@
         {
             "id":"7d19b2dc-3a71-4c0d-9af9-53ecd6b18179",
             "price":1000,
-            "theme":"Nature",
+            "theme":"Splash Week",
             "cabins":[
                 {
                     "id":"f2871766-29ab-4ce2-ac96-65375f5833ce",
@@ -52,6 +52,7 @@
             "cabins":[
                 {
                     "id":"f069b79c-f99a-4ba8-90d3-682e985d0587",
+                    "cabinNumber":1,
                     "schedule":{
                         "id":"27506ef8-1eb8-45b2-87cf-9c40d19401d3",
                         "activities":{
@@ -63,6 +64,7 @@
                 },
                 {
                     "id":"c7815459-9acc-4167-b3a9-4aa76aa9795c",
+                    "cabinNumber":2,
                     "schedule":{
                         "id":"8ed02d80-164b-46fd-b8ab-c14461007f57",
                         "activities":{
@@ -74,6 +76,7 @@
                 },
                 {
                     "id":"8b767b5d-e154-4cb1-994c-773367a05635",
+                    "cabinNumber":3,
                     "schedule":{
                         "id":"a142a9ba-14cc-4f31-b8db-9f280070a042",
                         "activities":{
@@ -94,6 +97,16 @@
              "What is the staff to camper ratio?":"Our cabins have one counselor and up to eight campers.",
              "What can I expect to pay?":"A typical session costs $1,000, though prices can vary for various reasons.",
              "Do you offer discounts?":"Yes! We offer a 10% discount for returning families."},
+    "securityQuestions":["In what city were you born?",
+                         "What is the name of your favorite pet?",
+                         "What is your mother's maiden name?",
+                         "What high school did you attend?",
+                         "What was the name of your elementary school?",
+                         "What was the make of your first car?",
+                         "What was your favorite food as a child?",
+                         "Where did you meet your spouse?",
+                         "What year was your father (or mother) born?",
+                         "What street did you grow up on?"],
 	"activities": [
         {
             "id":"027a0b9d-e36d-43fd-b93a-71d3de4ab94a",
