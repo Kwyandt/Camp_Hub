@@ -49,4 +49,12 @@ public class Schedule {
     public HashMap<Date, Activity> getActivities(){
         return activities;
     }
+
+    /***
+     * toString for Schedule
+     * @return String representation of Schedule
+     */
+    public String toString(){
+        return "placeholder";
+    }
 }
