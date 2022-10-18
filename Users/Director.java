@@ -51,15 +51,4 @@ public class Director extends User{
         return bio;
     }
 
-    @Override
-    public void editInformation() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void submitInformation() {
-        // TODO Auto-generated method stub
-        
-    }
 }
