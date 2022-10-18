@@ -82,6 +82,14 @@ public class Cabin {
     }
 
     /***
+     * Accessor for id
+     * @return id of cabin
+     */
+    public UUID getId(){
+        return id;
+    }
+
+    /***
      * Accessor method for cabinNumber
      * @return cabinNumber of cabin
      */

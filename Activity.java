@@ -32,6 +32,14 @@ public class Activity{
     }
 
     /***
+     * Accessor for id
+     * @return id of activity
+     */
+    public UUID getId(){
+        return id;
+    }
+
+    /***
      * Accessor for name
      * @return name of the activity
      */

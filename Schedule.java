@@ -43,6 +43,14 @@ public class Schedule {
     }
 
     /***
+     * Accessor for id
+     * @return id of schedule
+     */
+    public UUID getId(){
+        return id;
+    }
+
+    /***
      * Accessor for activities
      * @return the activities and their associated dates in a HashMap
      */
