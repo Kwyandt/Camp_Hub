@@ -34,15 +34,4 @@ import java.util.*;
         return children;
     }
     
-    @Override
-    public void editInformation() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void submitInformation() {
-        // TODO Auto-generated method stub
-        
-    }
  }
