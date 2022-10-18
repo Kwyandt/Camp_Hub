@@ -1,0 +1,124 @@
+[{
+    "id":"1aa8dcbe-d374-46ea-aeca-2ac5549aeb0f",
+    "userType":"DIRECTOR",
+    "email":"jonathanconner@camptallrock.com",
+    "phone":"(304) 474-4938",
+    "password":"ilovecamps",
+    "firstName":"Jonathan",
+    "lastName":"Conner",
+    "birthDate":"04-Sep-1970",
+    "securityQuestions":{"What street did you grow up on?":"Pinetree Dr",
+                         "What is your mother's maiden name?":"Ebersole"},
+    "bio":"Jonathan Conner is a South Carolina native who attended summer camps every year as a child. He attended the University of South Carolina and graduated with a Bachelor of Business Administration. Soon after, he started Camp Tall Rock, a summer camp for all ages of children. He’s always been very passionate about his camp and making sure its attendees have an excellent experience every summer. Jonathan wants to use our camp management software to help mitigate his declining attendance. He believes that if more people discover Camp Tall Rock, more people will come. He also is intrigued by its ability to streamline his signup process and improve control over counselor groups.",
+    "notes":[""]
+},
+{
+	"id":"8a392f8d-6bf0-40d1-bab8-77bd40c4bf27",
+	"email":"sharonfrizzell@gmail.com",
+	"phone":"(864) 961-5191",
+	"password":"ilovemykids",
+	"firstName":"Sharon",
+	"lastName":"Frizzell",
+	"birthDate":"12-Mar-1983",
+	"securityQuestions":{"What high school did you attend?":"Hillcrest",
+		      		 	 "What is your mother's maiden name?":"Flannigan"},
+	"children":[
+        {
+            "id":"1cc30f41-26de-49bd-a6b9-27dcd3bf9318",
+            "firstName":"Caroline",
+            "lastName":"Frizzell",
+            "birthDate":"11-Jun-2011",
+            "meds":["Zertec"],
+            "allergies":["Bees"],
+            "emergencyContacts":{"DOCTOR":{
+                                    "firstName":"Hank",
+                                    "lastName":"Hill",
+                                    "phoneNumber":"(864) 550-0029"
+                                },
+                                "DENTIST":{
+                                    "firstName":"Elizabeth",
+                                    "lastName":"Rosa",
+                                    "phoneNumber":"(864) 304-3978"
+                                },
+                                "GUARDIAN":{
+                                    "firstName":"Barbara",
+                                    "lastName":"Frizzell",
+                                    "phoneNumber":"(864) 771-8831"
+                                }},
+            "dietaryRestrictions":["Vegetarian"],
+            "tShirt":"S"
+        },
+        {
+            "id":"8402c88d-a8c9-4f57-afba-071ad6749ca3",
+            "firstName":"Joseph",
+            "lastName":"Frizzell",
+            "birthDate":"19-Oct-2012",
+            "meds":[],
+            "allergies":["Sunscreen"],
+            "emergencyContacts":{"DOCTOR":{
+                                    "firstName":"Hank",
+                                    "lastName":"Hill",
+                                    "phoneNumber":"(864) 550-0029"
+                                },
+                                "DENTIST":{
+                                    "firstName":"Elizabeth",
+                                    "lastName":"Rosa",
+                                    "phoneNumber":"(864) 304-3978"
+                                },
+                                "GUARDIAN":{
+                                    "firstName":"Barbara",
+                                    "lastName":"Frizzell",
+                                    "phoneNumber":"(864) 771-8831"
+                                }},
+            "dietaryRestrictions":[],
+            "tShirt":"M"
+        },
+        {
+            "id":"3f8913bb-b642-4e08-948c-cb36c07493c5",
+            "firstName":"Kevin",
+            "lastName":"Frizzell",
+            "birthDate":"29-Feb-2008",
+            "meds":["Adderol"],
+            "allergies":["Dogs"],
+            "emergencyContacts":{"DOCTOR":{
+                                    "firstName":"Hank",
+                                    "lastName":"Hill",
+                                    "phoneNumber":"(864) 550-0029"
+                                },
+                                "DENTIST":{
+                                    "firstName":"Elizabeth",
+                                    "lastName":"Rosa",
+                                    "phoneNumber":"(864) 304-3978"
+                                },
+                                "GUARDIAN":{
+                                    "firstName":"Barbara",
+                                    "lastName":"Frizzell",
+                                    "phoneNumber":"(864) 771-8831"
+                                }},
+            "dietaryRestrictions":[],
+            "tShirt":"L"
+        }
+    ],
+	"isReturning":false
+},
+{
+    "id":"d788bcbd-0a8e-406f-b3d3-56703bb1a36a",
+	"email":"brandanthonyjohnson@gmail.com",
+	"phone":"(555) 555-5555",
+	"password":"67@pdpN%#o2y4FEx",
+	"firstName":"Brandanthony",
+	"lastName":"Johnson",
+	"birthDate":"18-Jan-2003",
+	"securityQuestions":{"What was the name of your elementary school?":"Martinez Elementary School",
+		      		 	 "What was the make of your first car?":"1995 White Ford Ranger"},
+	"meds":["Ritalin"],
+	"allergies":["Dogs"],
+	"emergencyContacts":{"DOCTOR":"0",
+						 "DENTIST":"3",
+		      			 "GUARDIAN":"4"},
+	"dietaryRestrictions":[],
+	"tShirt":"M",
+	"bio":"Brandanthony Gerald Johnson is a 19-year-old food science student...",
+	"notes":["Keep an eye on Caroline. She was a real headache."]
+}
+]
