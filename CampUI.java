@@ -44,7 +44,7 @@ public class CampUI {
     public void addCamper(){}
     public void editCamper(){}
 
-    public void viewFAQ(){}
+    public void viewAboutPage(){}
 
 
     //These are accessible only by directors
