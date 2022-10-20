@@ -11,6 +11,7 @@ public abstract class DataConstants {
 	protected static final String CAMP_ACTIVITIES = "activities";
 	protected static final String CAMP_OFFICE_PHONE = "officePhone";
 	protected static final String CAMP_PACKING_LIST = "packingList";
+	protected static final String CAMP_SECURITY_QUESTIONS = "securityQuestions";
 	protected static final String ACTIVITY_ID = "id";
 	protected static final String ACTIVITY_NAME = "name";
 	protected static final String ACTIVITY_DESCRIPTION = "description";
