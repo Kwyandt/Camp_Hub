@@ -15,7 +15,7 @@ import java.util.*;
     protected String firstName;
     protected String lastName;
     protected Date birthDate;
-    protected Map <String, String> securityQuestions;
+    protected HashMap <String, String> securityQuestions;
 
     /**
      * Constructor for the User class to create a new user
@@ -28,7 +28,7 @@ import java.util.*;
      * @param question security question for user login
      */
     public User (String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question){
-
+      
     }
 
     /**
@@ -40,4 +40,35 @@ import java.util.*;
 
     public abstract UserType getUserType();
 
+    public UUID getUuid () {
+      return id;
+    }
+
+    public String getEmail () {
+      return email;
+    }
+
+    public String getPhone () {
+      return phone;
+    }
+
+    public String getPassword () {
+      return password;
+    }
+
+    public String getFirstName() {
+      return firstName;
+    }
+
+    public String getLastName() {
+      return lastName;
+    }
+
+    public Date getBirthDate() {
+      return birthDate;
+    }
+
+    public HashMap<String, String> getSecurityQuestions() {
+      return securityQuestions;
+    }
  }

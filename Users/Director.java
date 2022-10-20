@@ -11,9 +11,38 @@ public class Director extends User{
     private String bio;
     private ArrayList<String> notes;
 
+    /**
+     * Creates a new director 
+     * @param email
+     * @param pass
+     * @param first
+     * @param last
+     * @param phone
+     * @param birthDate
+     * @param question
+     */
     public Director(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question){
         super(email, pass, first, last, phone, birthDate, question);
     }
+
+    /**
+     * Calls a previously existing director
+     * @param email
+     * @param pass
+     * @param first
+     * @param last
+     * @param phone
+     * @param birthDate
+     * @param question
+     * @param bio
+     * @param notes
+     */
+    public Director(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question, String bio, ArrayList<String> notes){
+        super(email, pass, first, last, phone, birthDate, question);
+        //get bio
+        //get notes
+    }
+    
     
     /**
      * Method to add biography to camp website
@@ -59,5 +88,9 @@ public class Director extends User{
     }
     public ArrayList<String> getNotes() {
         return notes;
+    }
+
+    public String toString() {
+        return "director";
     }
 }

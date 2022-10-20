@@ -18,9 +18,14 @@ import java.util.*;
      * @param relationship relationship of contact
      * @param phoneNumber phone number of contact
      */
-    public EmergencyContact (String name, String relationship, String phoneNumber) {
+    public EmergencyContact (String firstName, String lastName, String relationship, String phoneNumber) {
 
     }
+    
+    public EmergencyContact(String firstName, String lastName, String relationship, String phoneNumber, UUID id) {
+      
+    }
+
     public UUID getUuid () {
       return id;
     }
