@@ -21,4 +21,16 @@ import java.util.*;
     public EmergencyContact (String name, String relationship, String phoneNumber) {
 
     }
+    public UUID getUuid () {
+      return id;
+    }
+    public String getFirst () {
+      return firstName;
+    }
+    public String getLast() {
+      return lastName;
+    }
+    public String getPhone(){
+      return phoneNumber;
+    }
  }

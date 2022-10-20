@@ -51,9 +51,13 @@ public class Director extends User{
         return bio;
     }
 
-    @Override
     public UserType getUserType() {
         return UserType.DIRECTOR;
     }
-
+    public String getBio() {
+        return bio;
+    }
+    public ArrayList<String> getNotes() {
+        return notes;
+    }
 }

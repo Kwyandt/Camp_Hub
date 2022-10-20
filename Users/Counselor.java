@@ -65,11 +65,33 @@ import java.util.*;
         return bio;
     }
 
-    @Override
+    /**
+     * Method to return type of user
+     * @return counselor, type of user in this class
+     */
     public UserType getUserType() {
         return UserType.COUNSELOR;
     }
 
-
-    
+    public ArrayList<String> getMeds() {
+        return meds;
+    }
+    public ArrayList<String> getAllergies() {
+        return allergies;
+    }
+    public HashMap<Relationship, EmergencyContact> getEmergenctContacts () {
+        return  emergencyContacts;
+    }
+    public ArrayList<String> getDietaryRestrictions() {
+        return dietaryRestrictions;
+    }
+    public String getTShirt () {
+        return tShirt;
+    }
+    public String getBio() {
+        return bio;
+    }
+    public ArrayList<String> getNotes() {
+        return notes;
+    }
  }

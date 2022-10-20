@@ -37,5 +37,13 @@ import java.util.*;
     public UserType getUserType() {
         return UserType.PARENT;
     }
-    
+    public ArrayList<Camper> getChildren () {
+        return children;
+    }
+    public double getDiscount (){
+        return discount;
+    }
+    public boolean getIsReturning () {
+        return isReturning;
+    }
  }
