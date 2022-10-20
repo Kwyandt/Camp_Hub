@@ -33,5 +33,9 @@ import java.util.*;
     public ArrayList<Camper> createCamper (Camper camper) {
         return children;
     }
+
+    public UserType getUserType() {
+        return UserType.PARENT;
+    }
     
  }
