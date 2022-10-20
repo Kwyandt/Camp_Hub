@@ -13,7 +13,7 @@ import java.util.*;
     private Date birthDate;
     private ArrayList<String> meds;
     private ArrayList<String> allergies;
-    private HashMap <Relationship, EmergencyContact> emergencyContacts;
+    private Map<Relationship, EmergencyContact> emergencyContacts;
     private ArrayList<String> dietaryRestrictions;
     private String tShirt;
 
@@ -21,14 +21,38 @@ import java.util.*;
      * Constructor for camper class, creates new camper 
      * @param firstName name of camper
      * @param lastName last name of camper
-     * @param birthdate birthday of camper
-     * @param emergencyContact emergeny contact of camper
-     * @param doctorContact doctor of camper
-     * @param dentistContact dentist of camper
+     * @param birthDate birthday of camper
+     * @param emergencyContacts emergeny contacts of camper
      * @param tShirt tshirt size of camper
      */
-    public Camper (String firstName, String lastName, Date birthdate, String [] emergencyContact, String[] doctorContact, String[] dentistContact, String tShirt) {
+    public Camper (String firstName, String lastName, Date birthDate, Map<Relationship, EmergencyContact> emergencyContacts, String tShirt) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.birthDate = birthDate;
+      this.emergencyContacts = emergencyContacts;
+      this.tShirt = tShirt;
+    }
 
+    /**
+     * Constructor for camper class, loads in current camper
+     * @param firstName first name of camper
+     * @param lastName last name of camper
+     * @param birthDate birth date of camper
+     * @param meds list of meds camper takes
+     * @param allergies list of allergies for camper
+     * @param emergencyContacts list of contacts for camper
+     * @param dietaryRestrictions list of camper's dietary restrictions
+     * @param tShirt tShirt size
+     */
+    public Camper(String firstName, String lastName, Date birthDate, ArrayList<String> meds, ArrayList<String> allergies, Map<Relationship, EmergencyContact> emergencyContacts, ArrayList<String> dietaryRestrictions, String tShirt) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.birthDate = birthDate;
+      this.meds = meds;
+      this.allergies = allergies;
+      this.emergencyContacts = emergencyContacts;
+      this.dietaryRestrictions = dietaryRestrictions;
+      this.tShirt = tShirt;
     }
 
     /**
@@ -75,7 +99,7 @@ import java.util.*;
     public ArrayList<String> getAllergy() {
       return allergies;
     }
-    public HashMap<Relationship, EmergencyContact> getEmergencyContact() {
+    public Map<Relationship, EmergencyContact> getEmergencyContact() {
       return emergencyContacts;
     }
     public ArrayList<String> getDietaryRestrictions () {

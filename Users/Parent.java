@@ -25,6 +25,12 @@ import java.util.*;
         super(email, pass, first, last, phone, birthDate, question);
     }
 
+    public Parent(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question, ArrayList<Camper> children, boolean isReturning) {
+        super(email, pass, first, last, phone, birthDate, question);
+        this.children = children;
+        this.isReturning = isReturning;
+    }
+
     /**
      * Method for parent to create camper
      * @param camper the camper being initialized by parent

@@ -115,9 +115,21 @@
 		      		 	 "What was the make of your first car?":"1995 White Ford Ranger"},
 	"meds":["Ritalin"],
 	"allergies":["Dogs"],
-	"emergencyContacts":{"DOCTOR":"0",
-						 "DENTIST":"3",
-		      			 "GUARDIAN":"4"},
+	"emergencyContacts":{"DOCTOR":{
+                            "firstName":"Hank",
+                            "lastName":"Hill",
+                            "phoneNumber":"(864) 550-0029"
+                        },
+                        "DENTIST":{
+                            "firstName":"William",
+                            "lastName":"Greene",
+                            "phoneNumber":"(325) 294-6829"
+                        },
+                        "GUARDIAN":{
+                            "firstName":"Gerald",
+                            "lastName":"Johnson",
+                            "phoneNumber":"(325) 754-2938"
+                        }},
 	"dietaryRestrictions":[],
 	"tShirt":"M",
 	"bio":"Brandthony Gerald Johnson is a 19-year-old food science student who enjoys running, social card games and golf. He is exciting and considerate, But can also be very lazy and a bit unintelligent. He loves the outdoors, and tries to spend as much time as he can playing games, going for walks, etc, outside. Not well versed in tech, and can handle an iPhone or website with the approximate aptitude of an above average toddler.",

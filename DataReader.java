@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,7 @@ public class DataReader extends DataConstants {
                         break;
                     default:
                         type = null;
+                        continue;
                 }
                 String email = (String)userJSON.get(USER_EMAIL);
                 String phone = (String)userJSON.get(USER_PHONE);
@@ -53,13 +55,61 @@ public class DataReader extends DataConstants {
                 Date birthDate = new SimpleDateFormat("dd-MMM-yyyy").parse((String)userJSON.get(USER_BIRTH_DATE));
                 Map<String, String> securityQuestions = new HashMap<String, String>();
                 JSONObject questionsJSON = (JSONObject)userJSON.get(USER_SECURITY_QUESTIONS);
+                securityQuestions.putAll(questionsJSON); 
+                if (type == UserType.DIRECTOR) {
+                    String bio = (String)userJSON.get(DIRECTOR_BIO);
+                    ArrayList<String> notes = JSONArrToArrayList(userJSON.get(DIRECTOR_NOTES));
+                    users.add(new Director(email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                                           bio, notes));
+                } else if (type == UserType.PARENT) {
+                    ArrayList<Camper> children = new ArrayList<Camper>();
+                    JSONArray campersJSON = (JSONArray)userJSON.get(PARENT_CHILDREN);
+                    for (int c = 0; c < campersJSON.size(); c++) {
+                        JSONObject camperJSON = (JSONObject)campersJSON.get(i);
+                        UUID camperId = UUID.fromString((String)camperJSON.get(CAMPER_ID));
+                        String camperFirstName = (String)camperJSON.get(CAMPER_FIRST_NAME);
+                        String camperLastName = (String)camperJSON.get(CAMPER_LAST_NAME);
+                        Date camperBirthDate = new SimpleDateFormat("dd-MMM-yyyy").parse((String)userJSON.get(CAMPER_BIRTH_DATE));
+                        ArrayList<String> camperMeds = JSONArrToArrayList(camperJSON.get(CAMPER_MEDS));
+                        ArrayList<String> camperAllergies = JSONArrToArrayList(camperJSON.get(CAMPER_ALLERGIES));
+                        Map<Relationship, EmergencyContact> camperEmergencyContacts = new HashMap<Relationship, EmergencyContact>();
+                        JSONObject camperContactsJSON = (JSONObject)camperJSON.get(CAMPER_EMERGENCY_CONTACTS);
+                        camperEmergencyContacts.putAll(camperContactsJSON);
+                        ArrayList<String> camperDietaryRestrictions = JSONArrToArrayList(camperJSON.get(CAMPER_DIETARY_RESTRICTIONS));
+                        String camperTShirt = (String)camperJSON.get(CAMPER_T_SHIRT);
+                        children.add(new Camper(camperFirstName, camperLastName, camperBirthDate, camperMeds, camperAllergies, camperEmergencyContacts, camperDietaryRestrictions, camperTShirt));
+                    }
+                    boolean isReturning = (boolean)userJSON.get(PARENT_IS_RETURNING);
+                    users.add(new Parent(email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                                         children, isReturning));
+                } else if (type == UserType.COUNSELOR) {
+                    ArrayList<String> meds = JSONArrToArrayList(userJSON.get(COUNSELOR_MEDS));
+                    ArrayList<String> allergies = JSONArrToArrayList(userJSON.get(COUNSELOR_ALLERGIES));
+                    Map<Relationship, EmergencyContact> emergencyContacts = new HashMap<Relationship, EmergencyContact>();
+                    JSONObject contactsJSON = (JSONObject)userJSON.get(COUNSELOR_EMERGENCY_CONTACTS);
+                    emergencyContacts.putAll(contactsJSON);
+                    ArrayList<String> dietaryRestrictions = JSONArrToArrayList(userJSON.get(COUNSELOR_DIETARY_RESTRICTIONS));
+                    String tShirt = (String)userJSON.get(COUNSELOR_T_SHIRT);
+                    String bio = (String)userJSON.get(COUNSELOR_BIO);
+                    ArrayList<String> notes = JSONArrToArrayList(userJSON.get(COUNSELOR_NOTES));
+                    users.add(new Counselor(email, password, firstName, lastName, phone, birthDate, securityQuestions, 
+                                            meds, allergies, emergencyContacts, dietaryRestrictions, tShirt, bio, notes));
+                } else {
+                    continue;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return users; 
+    }
+
+    public static void main(String[] args) {
+        ArrayList<User> users = DataReader.getAllUsers();
+        Director director = (Director)users.get(0);
+        Parent parent = (Parent)users.get(1);
+        Counselor counselor = (Counselor)users.get(2);
+        System.out.println(counselor);
     }
 
     /**
@@ -68,6 +118,11 @@ public class DataReader extends DataConstants {
      */
     public static Camp getCamp() {
         return null;
+    }
+
+    private static ArrayList<String> JSONArrToArrayList(Object JSONArr) {
+        JSONArray objectsJSON = (JSONArray)JSONArr;
+        return new ArrayList<>(Arrays.asList(Arrays.copyOf(objectsJSON.toArray(), objectsJSON.size(), String[].class)));
     }
 
 }
