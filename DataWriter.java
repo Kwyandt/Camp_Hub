@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import java.util.Date;
 
 import Users.*;
 
@@ -43,9 +44,45 @@ public class DataWriter extends DataConstants{
                 cabinDetails.put(CABIN_ID, cab.getId().toString());
                 cabinDetails.put(CABIN_NUMBER, cab.getCabinNumber());
                 // TODO: schedule
+                JSONObject scheduleDetails = new JSONObject();
+                Schedule sch = cab.getSchedule();
+                for(Date d: sch.getActivities().keySet()) {
+                    scheduleDetails.put(d, sch.getActivities().get(d).getId());
+                }
+                cabinDetails.put(CABIN_SCHEDULE, scheduleDetails);
+                //TODO: Write counselor JSON method and use below
                 cabinDetails.put(CABIN_COUNSELOR, cab.getCounselor());
+                JSONArray camperArray = new JSONArray();
+                //TODO: Write camper JSON method and use below
+                for(Camper cam: cab.getCampers()) {
+                    
+                }
             }
         }
         return campDetails;
+    }
+
+    public JSONObject getCamperJSON(Camper camper) {
+        JSONObject camperDetails = new JSONObject();
+        camperDetails.put(CAMPER_ID, camper.getUuid());
+        camperDetails.put(CAMPER_FIRST_NAME, camper.getFirst());
+        camperDetails.put(CAMPER_LAST_NAME, camper.getLast());
+        camperDetails.put(CAMPER_BIRTH_DATE, camper.getBirth());
+        JSONArray medsArray = new JSONArray();
+        for(String med: camper.getMeds()) {
+            medsArray.add(med);
+        }
+        camperDetails.put(CAMPER_MEDS, medsArray);
+        JSONArray allergyArray = new JSONArray();
+        for(String allergy: camper.getAllergy()) {
+            allergyArray.add(allergy);
+        }
+        camperDetails.put(CAMPER_ALLERGIES, allergyArray);
+        JSONArray contactArray = new JSONArray();
+        for(Relationship relation : camper.getEmergencyContact().keySet()) {
+            JSONObject contactDetails = new JSONObject();
+            //contactDetails.put(EMERGENCY_CONTACT_ID ,camper.getEmergencyContact().get(relation).get)
+        }
+        return camperDetails;
     }
 }
