@@ -54,4 +54,34 @@ import java.util.*;
     public void addDietaryResriction (String dietaryRestriction) {
 
     }
+
+    //setters later
+    //getters for all variables
+    public UUID getUuid () {
+      return id;
+    }
+    public String getFirst () {
+      return firstName;
+    }
+    public String getLast()  {
+      return lastName;
+    }
+    public Date getBirth() {
+      return birthDate;
+    }
+    public ArrayList<String> getMeds () {
+      return meds;
+    }
+    public ArrayList<String> getAllergy() {
+      return allergies;
+    }
+    public HashMap<Relationship, EmergencyContact> getEmergencyContact() {
+      return emergencyContacts;
+    }
+    public ArrayList<String> getDietaryRestrictions () {
+      return dietaryRestrictions;
+    }
+    public String getTShirt () {
+      return tShirt;
+    }
  }
