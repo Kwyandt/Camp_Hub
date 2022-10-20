@@ -2,14 +2,11 @@
 	"name": "Camp Tall Rock",
 	"sessions": [
         {
-            "id":"7d19b2dc-3a71-4c0d-9af9-53ecd6b18179",
             "price":1000,
             "theme":"Splash Week",
             "cabins":[
                 {
-                    "id":"f2871766-29ab-4ce2-ac96-65375f5833ce",
                     "schedule":{
-                        "id":"643f10aa-6e6e-4f2d-973c-d3088ffa10f8",
                         "activities":{
 
                         }
@@ -18,9 +15,7 @@
                     "campers":[""]
                 },
                 {
-                    "id":"c8824dea-1238-46a1-a839-d53450dae6ef",
                     "schedule":{
-                        "id":"66a6de3c-5441-492b-8f25-073ec74733d8",
                         "activities":{
                             
                         }
@@ -29,9 +24,7 @@
                     "campers":[""]
                 },
                 {
-                    "id":"2ba64dad-8221-4d66-8c60-4248099e6544",
                     "schedule": {
-                        "id":"3647c97f-733a-4de2-8d4f-76377116ba26",
                         "activities":{
                             
                         }
@@ -46,15 +39,12 @@
             "endDate":"24-Jun-2023"
         },
         {
-            "id":"0cb0f10d-a9a9-4107-aa58-1afdeddf823f",
             "price":1050,
             "theme":"Nature",
             "cabins":[
                 {
-                    "id":"f069b79c-f99a-4ba8-90d3-682e985d0587",
                     "cabinNumber":1,
                     "schedule":{
-                        "id":"27506ef8-1eb8-45b2-87cf-9c40d19401d3",
                         "activities":{
                             
                         }
@@ -63,10 +53,8 @@
                     "campers":[""]
                 },
                 {
-                    "id":"c7815459-9acc-4167-b3a9-4aa76aa9795c",
                     "cabinNumber":2,
                     "schedule":{
-                        "id":"8ed02d80-164b-46fd-b8ab-c14461007f57",
                         "activities":{
                             
                         }
@@ -75,10 +63,8 @@
                     "campers":[""]
                 },
                 {
-                    "id":"8b767b5d-e154-4cb1-994c-773367a05635",
                     "cabinNumber":3,
                     "schedule":{
-                        "id":"a142a9ba-14cc-4f31-b8db-9f280070a042",
                         "activities":{
                             
                         }
