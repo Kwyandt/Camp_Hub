@@ -3,8 +3,8 @@ import java.util.Date;
 
 public class SessionList {
     
-    private ArrayList<String> Session;
-    private SessionList SessionList;
+    private ArrayList<Session> sessions;
+    private SessionList sessionList;
 
     
     /** 
@@ -20,7 +20,7 @@ public class SessionList {
      * Creates an instance of the class.
      * @return SessionList
      */
-    public SessionList getInstance() {
+    public static SessionList getInstance() {
         return null;
     }
 
@@ -53,6 +53,10 @@ public class SessionList {
 
     public void saveSessions() {
 
+    }
+
+    public ArrayList<Session> getAllSessions() {
+        return sessions;
     }
 
 }
