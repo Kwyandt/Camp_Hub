@@ -38,4 +38,6 @@ import java.util.*;
 
     }
 
+    public abstract UserType getUserType();
+
  }

@@ -65,6 +65,11 @@ import java.util.*;
         return bio;
     }
 
+    @Override
+    public UserType getUserType() {
+        return UserType.COUNSELOR;
+    }
+
 
     
  }
