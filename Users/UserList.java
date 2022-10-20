@@ -23,7 +23,7 @@ public class UserList {
      * Get singleton instance
      * @return UserList
      */
-    public UserList getInstance() {
+    public static UserList getInstance() {
         return null;
     }
 
