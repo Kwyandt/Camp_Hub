@@ -14,6 +14,7 @@
 },
 {
 	"id":"8a392f8d-6bf0-40d1-bab8-77bd40c4bf27",
+    "userType":"PARENT",
 	"email":"sharonfrizzell@gmail.com",
 	"phone":"(864) 961-5191",
 	"password":"ilovemykids",
@@ -103,6 +104,7 @@
 },
 {
     "id":"d788bcbd-0a8e-406f-b3d3-56703bb1a36a",
+    "userType":"COUNSELOR",
 	"email":"brandthonyjohnson@gmail.com",
 	"phone":"(325) 234-9567",
 	"password":"67@pdpN%#o2y4FEx",

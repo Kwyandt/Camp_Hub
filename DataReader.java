@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import Users.*;
 
+import java.io.FileReader;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 /**
  * @author Nathan Bickel
  * Class that reads in data from JSON files
@@ -12,7 +17,9 @@ public class DataReader extends DataConstants {
      * @return ArrayList containing each user
      */
     public static ArrayList<User> getAllUsers() {
-        return null;
+        ArrayList<User> users = new ArrayList<User>();
+        
+        return users; 
     }
 
     /**

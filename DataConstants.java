@@ -3,6 +3,8 @@
  * @author Nathan Bickel
  */
 public abstract class DataConstants {
+	protected static final String CAMP_FILE_PATH = "./data/camp.json";
+	protected static final String USERS_FILE_PATH = "./data/users.json";
 	protected static final String CAMP_NAME = "name";
 	protected static final String CAMP_SESSIONS = "sessions";
 	protected static final String CAMP_FAQS = "faqs";
@@ -29,6 +31,7 @@ public abstract class DataConstants {
 	protected static final String SCHEDULE_ID = "id";
 	protected static final String SCHEDULE_ACTIVITIES = "activities";
 	protected static final String USER_ID = "id";
+	protected static final String USER_TYPE = "userType";
 	protected static final String USER_EMAIL = "email";
 	protected static final String USER_PHONE = "phone";
 	protected static final String USER_PASSWORD = "password";
