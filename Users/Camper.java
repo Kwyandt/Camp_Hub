@@ -61,7 +61,7 @@ import java.util.*;
      * @param med the medicine being added
      */
     public void addMed(String med) {
-
+      this.meds.add(med);
     }
 
     /**
@@ -69,7 +69,7 @@ import java.util.*;
      * @param allergy allergy of camper
      */
     public void addAllergy(String allergy) {
-
+      this.allergies.add(allergy);
     }
 
     /**
@@ -77,7 +77,7 @@ import java.util.*;
      * @param dietaryRestriction restriction of camper
      */
     public void addDietaryResriction (String dietaryRestriction) {
-
+      this.dietaryRestrictions.add(dietaryRestriction);
     }
 
     //setters later

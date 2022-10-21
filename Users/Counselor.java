@@ -50,25 +50,23 @@ import java.util.*;
      */
     public void addBio(String bio) {
         //does this need to return a string or do we need to have an array to modify here?
+        this.bio = bio;
     }
 
     /**
      * Method to add note to directors and counselors for personal view
      * @param note
      */
-    public ArrayList <String> addNote (String note) {
-        //notes.add(note);
-        //should this be void or return the array?
-        return notes;
+    public void addNote (String note) {
+        this.notes.add(note);
     }
 
     /**
      * Method to remove note from notes array at specified index
      * @param index index of array where note is store
      */
-    public ArrayList <String> removeNote(int index) {
-        //should this be a void class or return the modified array?
-        return notes;
+    public void removeNote(int index) {
+        this.notes.remove(index);
     }
 
     /**
@@ -76,8 +74,11 @@ import java.util.*;
      * @return concantenated string of notes, include numbered list?
      */
     public String viewNotes() {
-        //bio is only placeholder right now
-        return bio;
+        String toReturn = "";
+        for(String note : notes) {
+            toReturn = toReturn + "\n" + note.toString();
+        }
+        return toReturn;
     }
 
     /**
@@ -88,6 +89,7 @@ import java.util.*;
         return UserType.COUNSELOR;
     }
 
+    // For these do we want to return the list or print out the list?
     public ArrayList<String> getMeds() {
         return meds;
     }

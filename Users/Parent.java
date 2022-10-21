@@ -39,20 +39,28 @@ import java.util.*;
      * @return returns the updated arraylist of campers
      */
     public ArrayList<Camper> createCamper (Camper camper) {
-        return children;
+        this.children.add(camper);
+        return this.children;
     }
 
     public UserType getUserType() {
         return UserType.PARENT;
     }
+    
+    //print or return list?
     public ArrayList<Camper> getChildren () {
+        //if print
+        for(Camper camper : children) {
+            System.out.println(camper.toString());
+        }
         return children;
     }
+
     public double getDiscount (){
-        return discount;
+        return this.discount;
     }
     public boolean getIsReturning () {
-        return isReturning;
+        return this.isReturning;
     }
 
     public String toString() {

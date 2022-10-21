@@ -1,4 +1,5 @@
 package Users;
+import java.nio.file.FileStore;
 import java.util.*;
 
 /**
@@ -22,7 +23,12 @@ import java.util.*;
 
     }
     
+    //How to grab relationship?
     public EmergencyContact(String firstName, String lastName, String relationship, String phoneNumber, UUID id) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.phoneNumber = phoneNumber;
+      this.id = id;
       
     }
 
