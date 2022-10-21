@@ -25,9 +25,14 @@ public class Session {
      * @param priorityDeadline priority registration deadline
      * @param regularDeadline regular registration deadline
      * @param startDate start date of session
+     * @param endDate end date of session
      */
-    public Session(String theme, Date priorityDeadline, Date regularDeadline, Date startDate) {
-
+    public Session(String theme, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
+        this.theme = theme;
+        this.priorityDeadline = priorityDeadline;
+        this.regularDeadline = regularDeadline;
+        this.startDate = startDate;
+        this.endDate = endDate;    
     }
 
 
@@ -43,7 +48,14 @@ public class Session {
      * @param endDate end date of session
      */
     public Session(UUID id, double price, String theme, ArrayList<Cabin> cabins, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
-
+        this.id = id;
+        this.price = price;
+        this.theme = theme;
+        this.cabins = cabins;
+        this.priorityDeadline = priorityDeadline;
+        this.regularDeadline = regularDeadline;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     /***

@@ -27,7 +27,7 @@ public class DataReader extends DataConstants {
         try {
             FileReader reader = new FileReader(USERS_FILE_PATH);
             JSONParser parser = new JSONParser();
-            JSONArray usersJSON = (JSONArray)new JSONParser().parse(reader);
+            JSONArray usersJSON = (JSONArray)parser.parse(reader);
             for (int i = 0; i < usersJSON.size(); i++) {
                 JSONObject userJSON = (JSONObject)usersJSON.get(i);
                 UUID id = UUID.fromString((String)userJSON.get(USER_ID));
@@ -104,19 +104,21 @@ public class DataReader extends DataConstants {
         return users; 
     }
 
-    public static void main(String[] args) {
-        ArrayList<User> users = DataReader.getAllUsers();
-        Director director = (Director)users.get(0);
-        Parent parent = (Parent)users.get(1);
-        Counselor counselor = (Counselor)users.get(2);
-        System.out.println(parent);
-    }
-
     /**
      * Reads in camp data and returns camp object
      * @return Camp object with associated data
      */
     public static Camp getCamp() {
+        try {
+            FileReader reader = new FileReader(CAMP_FILE_PATH);
+            JSONParser parser = new JSONParser();
+            JSONObject campJSON = (JSONObject)parser.parse(reader);
+            String name = (String)campJSON.get(CAMP_NAME);
+            SessionList sessions = SessionList.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         return null;
     }
 

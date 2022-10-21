@@ -38,7 +38,16 @@ public class SessionList {
      * @param end
      */
     public void addSession(String theme, Date priorityDeadline, Date regularDeadline, Date start, Date end) {
-        Session session = new Session(theme, priorityDeadline, regularDeadline, start);
+        Session session = new Session(theme, priorityDeadline, regularDeadline, start, end);
+        sessions.add(session);
+    }
+
+    /**
+     * Adds an existing session object to the SessionList.
+     * Most useful for loading in existing sessions.
+     * @param session Session to add to list
+     */
+    public void addSession(Session session) {
         sessions.add(session);
     }
 
