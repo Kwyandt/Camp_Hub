@@ -23,7 +23,7 @@ public class SessionList {
     public static SessionList getInstance() {
         if(sessionList == null) {
             sessionList = new SessionList();
-            return null;
+            return sessionList;
         }
         return sessionList;
     }
