@@ -45,15 +45,13 @@ public class DataWriter extends DataConstants {
                 JSONObject cabinDetails = new JSONObject();
                 cabinDetails.put(CABIN_ID, cab.getId().toString());
                 cabinDetails.put(CABIN_NUMBER, cab.getCabinNumber());
-                // TODO: schedule
                 JSONObject scheduleDetails = new JSONObject();
                 Schedule sch = cab.getSchedule();
                 for(Date d: sch.getActivities().keySet()) {
                     scheduleDetails.put(d, sch.getActivities().get(d).getId());
                 }
                 cabinDetails.put(CABIN_SCHEDULE, scheduleDetails);
-                //TODO: Write counselor JSON method and use below
-                cabinDetails.put(CABIN_COUNSELOR, cab.getCounselor());
+                cabinDetails.put(CABIN_COUNSELOR, getCounselorJSON(cab.getCounselor()));
                 JSONArray camperArray = new JSONArray();
                 //TODO: Write camper JSON method and use below
                 for(Camper cam: cab.getCampers()) {
@@ -122,7 +120,43 @@ public class DataWriter extends DataConstants {
 
     private static JSONObject getCounselorJSON(Counselor counselor) {
         JSONObject counselorDetails = getUserJSON(counselor);
-
+        JSONArray medsArray = new JSONArray();
+        for(String med: counselor.getMeds()) {
+            medsArray.add(med);
+        }
+        counselorDetails.put(COUNSELOR_MEDS, medsArray);
+        JSONArray allergyArray = new JSONArray();
+        for(String allergy: counselor.getAllergies()) {
+            allergyArray.add(allergy);
+        }
+        counselorDetails.put(COUNSELOR_ALLERGIES, allergyArray);
+        JSONArray contactArray = new JSONArray();
+        //HashMap<Relationship, EmergencyContact> contacts = camper.getEmergencyContact();
+        for(Relationship relation : counselor.getEmergenctContacts().keySet()) {
+            JSONObject contactDetails = new JSONObject();
+            EmergencyContact ec = counselor.getEmergenctContacts().get(relation);
+            contactDetails.put(EMERGENCY_CONTACT_ID, ec.getUuid());
+            contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
+            contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
+            contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());
+            JSONObject contactRelationDetails = new JSONObject();
+            // organizes contact with its relation
+            contactRelationDetails.put(relation, contactDetails);
+            contactArray.add(contactRelationDetails);
+        }
+        counselorDetails.put(COUNSELOR_EMERGENCY_CONTACTS, contactArray);
+        JSONArray dietArray = new JSONArray();
+        for(String restriction: counselor.getDietaryRestrictions()) {
+            dietArray.add(restriction);
+        }
+        counselorDetails.put(COUNSELOR_DIETARY_RESTRICTIONS, dietArray);
+        counselorDetails.put(COUNSELOR_T_SHIRT, counselor.getTShirt());
+        counselorDetails.put(COUNSELOR_BIO, counselor.getBio());
+        JSONArray notesArray = new JSONArray();
+        for(String n: counselor.getNotes()) {
+            notesArray.add(n);
+        }
+        counselorDetails.put(COUNSELOR_NOTES, notesArray);
         return counselorDetails;
     }
 
