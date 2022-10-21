@@ -59,17 +59,17 @@ public class DataReader extends DataConstants {
                 if (type == UserType.DIRECTOR) {
                     String bio = (String)userJSON.get(DIRECTOR_BIO);
                     ArrayList<String> notes = JSONArrToArrayList(userJSON.get(DIRECTOR_NOTES));
-                    users.add(new Director(email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                    users.add(new Director(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
                                            bio, notes));
                 } else if (type == UserType.PARENT) {
                     ArrayList<Camper> children = new ArrayList<Camper>();
                     JSONArray campersJSON = (JSONArray)userJSON.get(PARENT_CHILDREN);
                     for (int c = 0; c < campersJSON.size(); c++) {
-                        JSONObject camperJSON = (JSONObject)campersJSON.get(i);
+                        JSONObject camperJSON = (JSONObject)campersJSON.get(c);
                         UUID camperId = UUID.fromString((String)camperJSON.get(CAMPER_ID));
                         String camperFirstName = (String)camperJSON.get(CAMPER_FIRST_NAME);
                         String camperLastName = (String)camperJSON.get(CAMPER_LAST_NAME);
-                        Date camperBirthDate = new SimpleDateFormat("dd-MMM-yyyy").parse((String)userJSON.get(CAMPER_BIRTH_DATE));
+                        Date camperBirthDate = new SimpleDateFormat("dd-MMM-yyyy").parse((String)camperJSON.get(CAMPER_BIRTH_DATE));
                         ArrayList<String> camperMeds = JSONArrToArrayList(camperJSON.get(CAMPER_MEDS));
                         ArrayList<String> camperAllergies = JSONArrToArrayList(camperJSON.get(CAMPER_ALLERGIES));
                         Map<Relationship, EmergencyContact> camperEmergencyContacts = new HashMap<Relationship, EmergencyContact>();
@@ -77,10 +77,10 @@ public class DataReader extends DataConstants {
                         camperEmergencyContacts.putAll(camperContactsJSON);
                         ArrayList<String> camperDietaryRestrictions = JSONArrToArrayList(camperJSON.get(CAMPER_DIETARY_RESTRICTIONS));
                         String camperTShirt = (String)camperJSON.get(CAMPER_T_SHIRT);
-                        children.add(new Camper(camperFirstName, camperLastName, camperBirthDate, camperMeds, camperAllergies, camperEmergencyContacts, camperDietaryRestrictions, camperTShirt));
+                        children.add(new Camper(camperId, camperFirstName, camperLastName, camperBirthDate, camperMeds, camperAllergies, camperEmergencyContacts, camperDietaryRestrictions, camperTShirt));
                     }
                     boolean isReturning = (boolean)userJSON.get(PARENT_IS_RETURNING);
-                    users.add(new Parent(email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                    users.add(new Parent(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
                                          children, isReturning));
                 } else if (type == UserType.COUNSELOR) {
                     ArrayList<String> meds = JSONArrToArrayList(userJSON.get(COUNSELOR_MEDS));
@@ -92,7 +92,7 @@ public class DataReader extends DataConstants {
                     String tShirt = (String)userJSON.get(COUNSELOR_T_SHIRT);
                     String bio = (String)userJSON.get(COUNSELOR_BIO);
                     ArrayList<String> notes = JSONArrToArrayList(userJSON.get(COUNSELOR_NOTES));
-                    users.add(new Counselor(email, password, firstName, lastName, phone, birthDate, securityQuestions, 
+                    users.add(new Counselor(id, email, phone, password, firstName, lastName, birthDate, securityQuestions, 
                                             meds, allergies, emergencyContacts, dietaryRestrictions, tShirt, bio, notes));
                 } else {
                     continue;
@@ -109,7 +109,7 @@ public class DataReader extends DataConstants {
         Director director = (Director)users.get(0);
         Parent parent = (Parent)users.get(1);
         Counselor counselor = (Counselor)users.get(2);
-        System.out.println(counselor);
+        System.out.println(parent);
     }
 
     /**

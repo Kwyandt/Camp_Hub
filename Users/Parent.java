@@ -25,8 +25,10 @@ import java.util.*;
         super(email, pass, first, last, phone, birthDate, question);
     }
 
-    public Parent(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question, ArrayList<Camper> children, boolean isReturning) {
+    public Parent(UUID id, String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question, ArrayList<Camper> children, boolean isReturning) {
         super(email, pass, first, last, phone, birthDate, question);
+        this.id = id;
+        this.type = UserType.PARENT;
         this.children = children;
         this.isReturning = isReturning;
     }
@@ -51,5 +53,9 @@ import java.util.*;
     }
     public boolean getIsReturning () {
         return isReturning;
+    }
+
+    public String toString() {
+        return this.id.toString() + "\n" + this.type + "\n" + this.email + "\n" + this.phone + "\n" + this.password + "\n" + this.firstName + "\n" + this.lastName + "\n" + this.birthDate.toString() + "\n" + this.securityQuestions.toString() + "\n" + this.children.toString() + "\n" + this.isReturning;
     }
  }
