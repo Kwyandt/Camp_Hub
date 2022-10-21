@@ -110,10 +110,10 @@ public class DataWriter extends DataConstants {
         userDetails.put(USER_LAST_NAME, user.getLastName());
         userDetails.put(USER_BIRTH_DATE, user.getBirthDate());
         JSONArray secQArray = new JSONArray();
-        HashMap<String, String> secQs = user.getSecurityQuestions();
-        for(String q: secQs.keySet()) {
+        //HashMap<String, String> secQs = user.getSecurityQuestions();
+        for(String q: user.getSecurityQuestions().keySet()) {
             JSONObject secQDetails = new JSONObject();
-            secQDetails.put(q, secQs.get(q));
+            secQDetails.put(q, user.getSecurityQuestions().get(q));
             secQArray.add(secQDetails);
         }
         userDetails.put(USER_SECURITY_QUESTIONS, secQArray);

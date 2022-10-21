@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /***
  * @author Jackson
@@ -6,7 +7,7 @@ import java.util.ArrayList;
 public class Camp {
     private String name;
     private SessionList sessions;
-    private ArrayList<String> faqs;
+    private HashMap<String,String> faqs;
     private ArrayList<String> securityQuestions;
     private ArrayList<Activity> activities;
     private String officePhone;
@@ -30,7 +31,7 @@ public class Camp {
      * @param officePhone phone number for the camp
      * @param packingList items campers should pack
      */
-    public Camp(String name, SessionList sessions, ArrayList<String> faqs, ArrayList<String> securityQuestions, ArrayList<Activity> activities, String officePhone, ArrayList<String> packingList) {
+    public Camp(String name, SessionList sessions, HashMap<String, String> faqs, ArrayList<String> securityQuestions, ArrayList<Activity> activities, String officePhone, ArrayList<String> packingList) {
 
     }
 
@@ -68,9 +69,10 @@ public class Camp {
 
     /**
      * Adds FAQ to faqs
-     * @param faq faq to be added
+     * @param question question to be added
+     * @param answer answer to question
      */
-    public void addFAQ(String faq) {
+    public void addFAQ(String question, String answer) {
 
     }
 
@@ -110,7 +112,7 @@ public class Camp {
      * Accessor method for faqs
      * @return faqs about the camp
      */
-    public ArrayList<String> getFAQs() {
+    public HashMap<String, String> getFAQs() {
         return faqs;
     }
 
