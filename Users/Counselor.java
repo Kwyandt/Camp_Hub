@@ -9,7 +9,7 @@ import java.util.*;
  public class Counselor extends User {
     private ArrayList<String> meds;
     private ArrayList<String> allergies;
-    private HashMap<Relationship, EmergencyContact> emergencyContacts;
+    private Map<Relationship, EmergencyContact> emergencyContacts;
     private ArrayList<String> dietaryRestrictions;
     private String tShirt;
     private String bio;
@@ -18,15 +18,30 @@ import java.util.*;
     /**
      * Constructor for creating instance of counselor
      * @param email email of counselor
-     * @param pass password for counselor login
-     * @param first first name of counselor
-     * @param last last name of counselor
+     * @param password password for counselor login
+     * @param firstName first name of counselor
+     * @param lastName last name of counselor
      * @param phone phone number of counselor
      * @param birthDate counselor birthday
      * @param question security question for login
      */
-    public Counselor (String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question) {
-        super(email, pass, first, last, phone, birthDate, question);
+    public Counselor (String email, String password, String firstName, String lastName, String phone, Date birthDate, Map<String, String> question) {
+        super(email, password, firstName, lastName, phone, birthDate, question);
+    }
+
+    public Counselor(UUID id, String email, String phone, String password, String firstName, String lastName, Date birthDate, Map<String, String> securityQuestions,
+                     ArrayList<String> meds, ArrayList<String> allergies, Map<Relationship, EmergencyContact> emergencyContacts, ArrayList<String> dietaryRestrictions, String tShirt, String bio, ArrayList<String> notes) {
+        super(email, password, firstName, lastName, phone, birthDate, securityQuestions);
+        this.id = id;
+        this.type = UserType.COUNSELOR;
+        this.meds = meds;
+        this.allergies = allergies;
+        this.emergencyContacts = emergencyContacts;
+        this.dietaryRestrictions = dietaryRestrictions;
+        this.tShirt = tShirt;
+        this.bio = bio;
+        this.notes = notes;
+
     }
 
      /**
@@ -79,8 +94,8 @@ import java.util.*;
     public ArrayList<String> getAllergies() {
         return allergies;
     }
-    public HashMap<Relationship, EmergencyContact> getEmergenctContacts () {
-        return  emergencyContacts;
+    public Map<Relationship, EmergencyContact> getEmergenctContacts () {
+        return emergencyContacts;
     }
     public ArrayList<String> getDietaryRestrictions() {
         return dietaryRestrictions;

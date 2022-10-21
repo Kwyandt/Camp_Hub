@@ -9,26 +9,33 @@ import java.util.*;
 
  public abstract class User {
     protected UUID id;
+    protected UserType type;
     protected String email;
     protected String phone;
     protected String password;
     protected String firstName;
     protected String lastName;
     protected Date birthDate;
-    protected HashMap <String, String> securityQuestions;
+    protected Map<String, String> securityQuestions;
 
     /**
      * Constructor for the User class to create a new user
      * @param email email address of the user
-     * @param pass password for login to the web console, specific for each user
-     * @param first first name of user
-     * @param last last name of user
+     * @param password password for login to the web console, specific for each user
+     * @param firstName first name of user
+     * @param lastName last name of user
      * @param phone phone number of user
      * @param birthDate birthday of user
-     * @param question security question for user login
+     * @param securityQuestions security question for user login
      */
-    public User (String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question){
-      
+    public User(String email, String password, String firstName, String lastName, String phone, Date birthDate, Map<String, String> securityQuestions){
+      this.email = email;
+      this.password = password;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.phone = phone;
+      this.birthDate = birthDate;
+      this.securityQuestions = securityQuestions;
     }
 
     /**
@@ -68,7 +75,7 @@ import java.util.*;
       return birthDate;
     }
 
-    public HashMap<String, String> getSecurityQuestions() {
+    public Map<String, String> getSecurityQuestions() {
       return securityQuestions;
     }
  }

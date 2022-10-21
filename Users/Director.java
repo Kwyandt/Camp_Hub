@@ -21,12 +21,13 @@ public class Director extends User{
      * @param birthDate
      * @param question
      */
-    public Director(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question){
+    public Director(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question) {
         super(email, pass, first, last, phone, birthDate, question);
     }
 
     /**
      * Calls a previously existing director
+     * @param id
      * @param email
      * @param pass
      * @param first
@@ -37,8 +38,9 @@ public class Director extends User{
      * @param bio
      * @param notes
      */
-    public Director(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question, String bio, ArrayList<String> notes){
+    public Director(UUID id, String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question, String bio, ArrayList<String> notes) {
         super(email, pass, first, last, phone, birthDate, question);
+        //get id
         //get bio
         //get notes
     }
