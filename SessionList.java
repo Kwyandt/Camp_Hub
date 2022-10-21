@@ -4,15 +4,15 @@ import java.util.Date;
 public class SessionList {
     
     private ArrayList<Session> sessions;
-    private SessionList sessionList;
+    private static SessionList sessionList;
 
     
     /** 
      * Private constructor for singleton.
      * @return SessionList
      */
-    private SessionList SessionList() {
-        return null;
+    private SessionList() {
+        sessions = new ArrayList<Session>();
     }
 
     
@@ -21,7 +21,11 @@ public class SessionList {
      * @return SessionList
      */
     public static SessionList getInstance() {
-        return null;
+        if(sessionList == null) {
+            sessionList = new SessionList();
+            return null;
+        }
+        return sessionList;
     }
 
     
@@ -34,7 +38,8 @@ public class SessionList {
      * @param end
      */
     public void addSession(String theme, Date priorityDeadline, Date regularDeadline, Date start, Date end) {
-
+        Session session = new Session(theme, priorityDeadline, regularDeadline, start);
+        sessions.add(session);
     }
 
     
