@@ -84,28 +84,41 @@ import java.util.*;
     public UUID getUuid () {
       return id;
     }
+
     public String getFirst () {
       return firstName;
     }
-    public String getLast()  {
+
+    public String getLast() {
       return lastName;
     }
+
     public Date getBirth() {
       return birthDate;
     }
+
     public ArrayList<String> getMeds () {
       return meds;
     }
+
     public ArrayList<String> getAllergy() {
       return allergies;
     }
+
     public Map<Relationship, EmergencyContact> getEmergencyContact() {
       return emergencyContacts;
     }
-    public ArrayList<String> getDietaryRestrictions () {
+
+    public ArrayList<String> getDietaryRestrictions() {
       return dietaryRestrictions;
     }
-    public String getTShirt () {
+
+    public String getTShirt() {
       return tShirt;
     }
+
+    public String toString() {
+      return this.id + "\n" + this.firstName + "\n" + this.lastName + "\n" + this.birthDate.toString() + "\n" + this.meds.toString() + "\n" + this.allergies.toString() + "\n" + this.emergencyContacts.toString() + "\n" + this.dietaryRestrictions.toString() + "\n" + this.tShirt;
+    }
+
  }
