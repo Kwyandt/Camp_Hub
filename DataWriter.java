@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.Date;
+import java.util.HashMap;
 
 import Users.*;
 
 /***
  * @author Jackson
  */
-public class DataWriter extends DataConstants{
+@SuppressWarnings("unchecked")
+public class DataWriter extends DataConstants {
     
     /***
      * Stores all users in users.json
@@ -55,14 +57,76 @@ public class DataWriter extends DataConstants{
                 JSONArray camperArray = new JSONArray();
                 //TODO: Write camper JSON method and use below
                 for(Camper cam: cab.getCampers()) {
-                    
+                    camperArray.add(getCamperJSON(cam));
                 }
+                cabinArray.add(cabinDetails);
             }
+            sessionDetails.put(SESSION_CABINS, cabinArray);
+            sessionDetails.put(SESSION_PRIORITY_DEADLINE, s.getPriorityDeadline());
+            sessionDetails.put(SESSION_REGULAR_DEADLINE, s.getRegularDeadline());
+            sessionDetails.put(SESSION_START_DATE, s.getStartDate());
+            sessionDetails.put(SESSION_END_DATE, s.getEndDate());
+            sessionArray.add(sessionDetails);
         }
+        campDetails.put(CAMP_SESSIONS, sessionArray);
+        JSONArray faqArray = new JSONArray();
+        for(String q: camp.getFAQs().keySet()) {
+            JSONObject faqDetails = new JSONObject();
+            faqDetails.put(q, camp.getFAQs().get(q));
+            faqArray.add(faqDetails);
+        }
+        campDetails.put(CAMP_FAQS, faqArray);
+        JSONArray secQArray = new JSONArray();
+        for(String q: camp.getSecurityQuestions()) {
+            secQArray.add(q);
+        }
+        campDetails.put(CAMP_SECURITY_QUESTIONS, secQArray);
+        JSONArray activityArray = new JSONArray();
+        for(Activity a: camp.getActivities()) {
+            JSONObject activityDetails = new JSONObject();
+            activityDetails.put(ACTIVITY_ID, a.getId());
+            activityDetails.put(ACTIVITY_NAME, a.getName());
+            activityDetails.put(ACTIVITY_DESCRIPTION, a.getDescription());
+            activityDetails.put(ACTIVITY_LOCATION, a.getLocation());
+            activityArray.add(activityDetails);
+        }
+        campDetails.put(CAMP_ACTIVITIES, activityArray);
+        campDetails.put(CAMP_OFFICE_PHONE, camp.getOfficePhone());
+        JSONArray packingArray = new JSONArray();
+        for(String p: camp.getPackingList()) {
+            packingArray.add(p);
+        }
+        campDetails.put(CAMP_PACKING_LIST, packingArray);
         return campDetails;
     }
 
-    public JSONObject getCamperJSON(Camper camper) {
+    private static JSONObject getUserJSON(User user) {
+        JSONObject userDetails = new JSONObject();
+        userDetails.put(USER_ID, user.getUuid());
+        userDetails.put(USER_EMAIL, user.getEmail());
+        userDetails.put(USER_PHONE, user.getPhone());
+        userDetails.put(USER_PASSWORD, user.getPassword());
+        userDetails.put(USER_FIRST_NAME, user.getFirstName());
+        userDetails.put(USER_LAST_NAME, user.getLastName());
+        userDetails.put(USER_BIRTH_DATE, user.getBirthDate());
+        JSONArray secQArray = new JSONArray();
+        HashMap<String, String> secQs = user.getSecurityQuestions();
+        for(String q: secQs.keySet()) {
+            JSONObject secQDetails = new JSONObject();
+            secQDetails.put(q, secQs.get(q));
+            secQArray.add(secQDetails);
+        }
+        userDetails.put(USER_SECURITY_QUESTIONS, secQArray);
+        return userDetails;
+    }
+
+    private static JSONObject getCounselorJSON(Counselor counselor) {
+        JSONObject counselorDetails = getUserJSON(counselor);
+
+        return counselorDetails;
+    }
+
+    private static JSONObject getCamperJSON(Camper camper) {
         JSONObject camperDetails = new JSONObject();
         camperDetails.put(CAMPER_ID, camper.getUuid());
         camperDetails.put(CAMPER_FIRST_NAME, camper.getFirst());
@@ -79,10 +143,26 @@ public class DataWriter extends DataConstants{
         }
         camperDetails.put(CAMPER_ALLERGIES, allergyArray);
         JSONArray contactArray = new JSONArray();
+        //HashMap<Relationship, EmergencyContact> contacts = camper.getEmergencyContact();
         for(Relationship relation : camper.getEmergencyContact().keySet()) {
             JSONObject contactDetails = new JSONObject();
-            //contactDetails.put(EMERGENCY_CONTACT_ID ,camper.getEmergencyContact().get(relation).get)
+            EmergencyContact ec = camper.getEmergencyContact().get(relation);
+            contactDetails.put(EMERGENCY_CONTACT_ID, ec.getUuid());
+            contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
+            contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
+            contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());
+            JSONObject contactRelationDetails = new JSONObject();
+            // organizes contact with its relation
+            contactRelationDetails.put(relation, contactDetails);
+            contactArray.add(contactRelationDetails);
         }
+        camperDetails.put(CAMPER_EMERGENCY_CONTACTS, contactArray);
+        JSONArray dietArray = new JSONArray();
+        for(String restriction: camper.getDietaryRestrictions()) {
+            dietArray.add(restriction);
+        }
+        camperDetails.put(CAMPER_DIETARY_RESTRICTIONS, dietArray);
+        camperDetails.put(CAMPER_T_SHIRT, camper.getTShirt());
         return camperDetails;
     }
 }
