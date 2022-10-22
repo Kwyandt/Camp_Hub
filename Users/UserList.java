@@ -7,15 +7,15 @@ import java.util.Map;
 public class UserList {
     
     private ArrayList<User> users;
-    private UserList userList;
+    private static UserList userList;
 
     
     /** 
      * Private constructor for singleton
      * @return UserList
      */
-    private UserList UserList() {
-        return null;
+    private UserList() {
+        users = new ArrayList<User>();
     }
 
     
@@ -24,7 +24,10 @@ public class UserList {
      * @return UserList
      */
     public static UserList getInstance() {
-        return null;
+        if(userList == null) {
+            userList = new UserList();
+        }
+        return userList;
     }
 
     
@@ -58,6 +61,10 @@ public class UserList {
 
     public void saveUsers() {
 
+    }
+
+    public ArrayList<User> getAllUsers() {
+        return users;
     }
 
 }
