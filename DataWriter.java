@@ -53,10 +53,10 @@ public class DataWriter extends DataConstants {
                 cabinDetails.put(CABIN_SCHEDULE, scheduleDetails);
                 cabinDetails.put(CABIN_COUNSELOR, getCounselorJSON(cab.getCounselor()));
                 JSONArray camperArray = new JSONArray();
-                //TODO: Write camper JSON method and use below
                 for(Camper cam: cab.getCampers()) {
                     camperArray.add(getCamperJSON(cam));
                 }
+                cabinDetails.put(CABIN_CAMPERS, camperArray);
                 cabinArray.add(cabinDetails);
             }
             sessionDetails.put(SESSION_CABINS, cabinArray);
@@ -116,6 +116,29 @@ public class DataWriter extends DataConstants {
         }
         userDetails.put(USER_SECURITY_QUESTIONS, secQArray);
         return userDetails;
+    }
+
+    private static JSONObject getDirectorJSON(Director director) {
+        JSONObject directorDetails = getUserJSON(director);
+        directorDetails.put(DIRECTOR_BIO, director.getBio());
+        JSONArray noteArray = new JSONArray();
+        for(String n: director.getNotes()) {
+            noteArray.add(n);
+        }
+        directorDetails.put(DIRECTOR_NOTES, noteArray);
+        return directorDetails;
+    }
+
+    private static JSONObject getParentJSON(Parent parent) {
+        JSONObject parentDetails = getUserJSON(parent);
+        JSONArray camperArray = new JSONArray();
+        for(Camper c: parent.getChildren()) {
+            camperArray.add(getCamperJSON(c));
+        }
+        parentDetails.put(PARENT_CHILDREN, camperArray);
+        parentDetails.put(PARENT_DISCOUNT, parent.getDiscount());
+        parentDetails.put(PARENT_IS_RETURNING, parent.getIsReturning());
+        return parentDetails;
     }
 
     private static JSONObject getCounselorJSON(Counselor counselor) {
