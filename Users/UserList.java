@@ -45,6 +45,13 @@ public class UserList {
 
     }
 
+    /***
+     * Adds an already created user
+     * @param user pre-existing user to be added
+     */
+    public void addUser(User user) {
+        users.add(user);
+    }
     
     /** 
      * Returns the user given an email.
