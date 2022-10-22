@@ -59,7 +59,7 @@ public class DataReader extends DataConstants {
                 if (type == UserType.DIRECTOR) {
                     String bio = (String)userJSON.get(DIRECTOR_BIO);
                     ArrayList<String> notes = JSONArrToArrayList(userJSON.get(DIRECTOR_NOTES));
-                    users.add(new Director(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                    users.addUser(new Director(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
                                            bio, notes));
                 } else if (type == UserType.PARENT) {
                     ArrayList<Camper> children = new ArrayList<Camper>();
@@ -80,7 +80,7 @@ public class DataReader extends DataConstants {
                         children.add(new Camper(camperId, camperFirstName, camperLastName, camperBirthDate, camperMeds, camperAllergies, camperEmergencyContacts, camperDietaryRestrictions, camperTShirt));
                     }
                     boolean isReturning = (boolean)userJSON.get(PARENT_IS_RETURNING);
-                    users.add(new Parent(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                    users.addUser(new Parent(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
                                          children, isReturning));
                 } else if (type == UserType.COUNSELOR) {
                     ArrayList<String> meds = JSONArrToArrayList(userJSON.get(COUNSELOR_MEDS));
@@ -89,7 +89,7 @@ public class DataReader extends DataConstants {
                     JSONObject contactsJSON = (JSONObject)userJSON.get(COUNSELOR_EMERGENCY_CONTACTS);
                     for (Object key : contactsJSON.keySet()) {
                         String relationshipString = (String)key;
-                        Relationship relationship;
+                        Relationship relationship = null;
                         switch (relationshipString) {
                             case "DOCTOR":
                                 relationship = Relationship.DOCTOR;
@@ -111,7 +111,7 @@ public class DataReader extends DataConstants {
                     String tShirt = (String)userJSON.get(COUNSELOR_T_SHIRT);
                     String bio = (String)userJSON.get(COUNSELOR_BIO);
                     ArrayList<String> notes = JSONArrToArrayList(userJSON.get(COUNSELOR_NOTES));
-                    users.add(new Counselor(id, email, phone, password, firstName, lastName, birthDate, securityQuestions, 
+                    users.addUser(new Counselor(id, email, phone, password, firstName, lastName, birthDate, securityQuestions, 
                                             meds, allergies, emergencyContacts, dietaryRestrictions, tShirt, bio, notes));
                 } else {
                     continue;
@@ -145,7 +145,7 @@ public class DataReader extends DataConstants {
                     JSONObject cabinJSON = (JSONObject)cabinsJSON.get(c);
                     double cabinNumber = (double)cabinJSON.get(CABIN_NUMBER);
                     Schedule schedule = new Schedule();
-                    
+
                 }
 
             }
