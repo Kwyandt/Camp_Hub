@@ -8,33 +8,22 @@ import java.util.*;
  */
 
  public class EmergencyContact {
-    private UUID id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
     /**
      * Constructor for emergency contact class to create new contact
-     * @param name name of contact
-     * @param relationship relationship of contact
+     * @param firstName first name of contact
+     * @param lastName last name of contact
      * @param phoneNumber phone number of contact
      */
-    public EmergencyContact (String firstName, String lastName, String relationship, String phoneNumber) {
-
-    }
-    
-    //How to grab relationship?
-    public EmergencyContact(String firstName, String lastName, String relationship, String phoneNumber, UUID id) {
+    public EmergencyContact (String firstName, String lastName, String phoneNumber) {
       this.firstName = firstName;
       this.lastName = lastName;
       this.phoneNumber = phoneNumber;
-      this.id = id;
-      
     }
-
-    public UUID getUuid () {
-      return id;
-    }
+    
     public String getFirst () {
       return firstName;
     }

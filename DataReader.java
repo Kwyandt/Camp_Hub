@@ -22,8 +22,8 @@ public class DataReader extends DataConstants {
      * Reads in user data and populates list of users
      * @return ArrayList containing each user
      */
-    public static ArrayList<User> getAllUsers() {
-        ArrayList<User> users = new ArrayList<User>();
+    public static UserList getAllUsers() {
+        UserList users = UserList.getInstance();
         try {
             FileReader reader = new FileReader(USERS_FILE_PATH);
             JSONParser parser = new JSONParser();
@@ -87,7 +87,26 @@ public class DataReader extends DataConstants {
                     ArrayList<String> allergies = JSONArrToArrayList(userJSON.get(COUNSELOR_ALLERGIES));
                     Map<Relationship, EmergencyContact> emergencyContacts = new HashMap<Relationship, EmergencyContact>();
                     JSONObject contactsJSON = (JSONObject)userJSON.get(COUNSELOR_EMERGENCY_CONTACTS);
-                    emergencyContacts.putAll(contactsJSON);
+                    for (Object key : contactsJSON.keySet()) {
+                        String relationshipString = (String)key;
+                        Relationship relationship;
+                        switch (relationshipString) {
+                            case "DOCTOR":
+                                relationship = Relationship.DOCTOR;
+                                break;
+                            case "DENTIST":
+                                relationship = Relationship.DENTIST;
+                                break;
+                            case "GUARDIAN":
+                                relationship = Relationship.GUARDIAN;
+                                break;
+                        }
+                        JSONObject contactJSON = (JSONObject)contactsJSON.get(relationshipString);
+                        String ECfirstName = (String)contactJSON.get(EMERGENCY_CONTACT_FIRST_NAME);
+                        String EClastName = (String)contactJSON.get(EMERGENCY_CONTACT_LAST_NAME);
+                        String ECphoneNumber = (String)contactJSON.get(EMERGENCY_CONTACT_PHONE_NUMBER);
+                        emergencyContacts.put(relationship, new EmergencyContact(ECfirstName, EClastName, ECphoneNumber));
+                    }
                     ArrayList<String> dietaryRestrictions = JSONArrToArrayList(userJSON.get(COUNSELOR_DIETARY_RESTRICTIONS));
                     String tShirt = (String)userJSON.get(COUNSELOR_T_SHIRT);
                     String bio = (String)userJSON.get(COUNSELOR_BIO);
@@ -113,8 +132,23 @@ public class DataReader extends DataConstants {
             FileReader reader = new FileReader(CAMP_FILE_PATH);
             JSONParser parser = new JSONParser();
             JSONObject campJSON = (JSONObject)parser.parse(reader);
+            UserList userList = UserList.getInstance();
             String name = (String)campJSON.get(CAMP_NAME);
             SessionList sessions = SessionList.getInstance();
+            JSONArray sessionsJSON = (JSONArray)campJSON.get(CAMP_SESSIONS);
+            for (int s = 0; s < sessionsJSON.size(); s++) {
+                JSONObject sessionJSON = (JSONObject)sessionsJSON.get(s);
+                double price = (double)sessionJSON.get(SESSION_PRICE);
+                ArrayList<Cabin> cabins = new ArrayList<Cabin>();
+                JSONArray cabinsJSON = (JSONArray)sessionJSON.get(SESSION_CABINS);
+                for (int c = 0; c < cabinsJSON.size(); c++) {
+                    JSONObject cabinJSON = (JSONObject)cabinsJSON.get(c);
+                    double cabinNumber = (double)cabinJSON.get(CABIN_NUMBER);
+                    Schedule schedule = new Schedule();
+                    
+                }
+
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
