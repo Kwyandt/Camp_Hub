@@ -1,13 +1,10 @@
 import java.util.ArrayList;
-import java.util.UUID;
-
 import Users.*;
 
 /***
  * @author Jackson
  */
 public class Cabin {
-    private UUID id;
     private int cabinNumber;
     private Schedule schedule;
     private Counselor counselor;
@@ -24,13 +21,12 @@ public class Cabin {
 
     /***
      * Loads a previously created cabin
-     * @param id UUID of cabin
      * @param cabinNumber number of cabin
      * @param schedule schedule for the cabin
      * @param counselor counselor of the cabin
      * @param campers campers in the cabin
      */
-    public Cabin(UUID id, int cabinNumber, Schedule schedule, Counselor counselor, Camper[] campers){
+    public Cabin(int cabinNumber, Schedule schedule, Counselor counselor, Camper[] campers){
 
     }
 
@@ -79,14 +75,6 @@ public class Cabin {
      */
     public void viewSchedule(){
 
-    }
-
-    /***
-     * Accessor for id
-     * @return id of cabin
-     */
-    public UUID getId(){
-        return id;
     }
 
     /***

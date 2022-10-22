@@ -1,13 +1,11 @@
 import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
 
 /***
  * @author Jackson
  */
 public class Schedule {
-    private UUID id;
     private HashMap<Date, Activity> activities;
 
     /***
@@ -19,10 +17,9 @@ public class Schedule {
 
     /***
      * Constructor to recreate pre-existing schedule
-     * @param id UUID of schedule
      * @param activities HashMap of dates and activities
      */
-    public Schedule(UUID id, HashMap<Date, Activity> activities){
+    public Schedule(HashMap<Date, Activity> activities){
 
     }
 
@@ -40,14 +37,6 @@ public class Schedule {
      */
     public void getEventsOfDay(DayOfWeek day){
 
-    }
-
-    /***
-     * Accessor for id
-     * @return id of schedule
-     */
-    public UUID getId(){
-        return id;
     }
 
     /***

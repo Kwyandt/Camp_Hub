@@ -20,6 +20,19 @@ public class DataWriter extends DataConstants {
      * @return if users were successfully saved
      */
     public static boolean saveAllUsers(ArrayList<User> users) {
+        JSONArray userArray = new JSONArray();
+        for(User u: users) {
+            switch(u.getUserType()) {
+                case DIRECTOR:
+                    userArray.add(getDirectorJSON((Director)u));
+                    break;
+                case PARENT:
+                    userArray.add(getParentJSON((Parent)u));
+                    break;
+                case COUNSELOR:
+                    userArray.add(getCounselorJSON((Counselor)u));
+            }
+        }
         return true;
     }
 
@@ -43,7 +56,6 @@ public class DataWriter extends DataConstants {
             JSONArray cabinArray = new JSONArray();
             for(Cabin cab: s.getCabins()) {
                 JSONObject cabinDetails = new JSONObject();
-                cabinDetails.put(CABIN_ID, cab.getId().toString());
                 cabinDetails.put(CABIN_NUMBER, cab.getCabinNumber());
                 JSONObject scheduleDetails = new JSONObject();
                 Schedule sch = cab.getSchedule();

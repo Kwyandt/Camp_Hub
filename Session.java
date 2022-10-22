@@ -1,6 +1,5 @@
 import java.util.Date;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import Users.*;
 
@@ -10,7 +9,6 @@ import Users.*;
 
 public class Session {
 
-    private UUID id;
     private double price;
     private String theme;
     private ArrayList<Cabin> cabins;
@@ -38,7 +36,6 @@ public class Session {
 
     /***
      * Constructor to load a pre-existing session
-     * @param id id of session
      * @param price price of session
      * @param theme theme of session
      * @param cabins cabins specific to session
@@ -47,8 +44,7 @@ public class Session {
      * @param startDate start date of session
      * @param endDate end date of session
      */
-    public Session(UUID id, double price, String theme, ArrayList<Cabin> cabins, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
-        this.id = id;
+    public Session(double price, String theme, ArrayList<Cabin> cabins, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
         this.price = price;
         this.theme = theme;
         this.cabins = cabins;
@@ -79,14 +75,6 @@ public class Session {
      */
     public void addCamper(Camper camper) {
 
-    }
-
-    /***
-     * Accessor method for id
-     * @return id of the session
-     */
-    public UUID getId() {
-        return id;
     }
 
     /***
