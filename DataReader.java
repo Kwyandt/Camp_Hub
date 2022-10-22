@@ -74,7 +74,26 @@ public class DataReader extends DataConstants {
                         ArrayList<String> camperAllergies = JSONArrToArrayList(camperJSON.get(CAMPER_ALLERGIES));
                         Map<Relationship, EmergencyContact> camperEmergencyContacts = new HashMap<Relationship, EmergencyContact>();
                         JSONObject camperContactsJSON = (JSONObject)camperJSON.get(CAMPER_EMERGENCY_CONTACTS);
-                        camperEmergencyContacts.putAll(camperContactsJSON);
+                        for (Object key : camperContactsJSON.keySet()) {
+                            String relationshipString = (String)key;
+                            Relationship relationship = null;
+                            switch (relationshipString) {
+                                case "DOCTOR":
+                                    relationship = Relationship.DOCTOR;
+                                    break;
+                                case "DENTIST":
+                                    relationship = Relationship.DENTIST;
+                                    break;
+                                case "GUARDIAN":
+                                    relationship = Relationship.GUARDIAN;
+                                    break;
+                            }
+                            JSONObject contactJSON = (JSONObject)camperContactsJSON.get(relationshipString);
+                            String ECfirstName = (String)contactJSON.get(EMERGENCY_CONTACT_FIRST_NAME);
+                            String EClastName = (String)contactJSON.get(EMERGENCY_CONTACT_LAST_NAME);
+                            String ECphoneNumber = (String)contactJSON.get(EMERGENCY_CONTACT_PHONE_NUMBER);
+                            camperEmergencyContacts.put(relationship, new EmergencyContact(ECfirstName, EClastName, ECphoneNumber));
+                        }
                         ArrayList<String> camperDietaryRestrictions = JSONArrToArrayList(camperJSON.get(CAMPER_DIETARY_RESTRICTIONS));
                         String camperTShirt = (String)camperJSON.get(CAMPER_T_SHIRT);
                         children.add(new Camper(camperId, camperFirstName, camperLastName, camperBirthDate, camperMeds, camperAllergies, camperEmergencyContacts, camperDietaryRestrictions, camperTShirt));
@@ -134,6 +153,11 @@ public class DataReader extends DataConstants {
             JSONObject campJSON = (JSONObject)parser.parse(reader);
             UserList userList = UserList.getInstance();
             String name = (String)campJSON.get(CAMP_NAME);
+            ArrayList<Activity> activities = new ArrayList<Activity>();
+            JSONArray activitiesJSON = (JSONArray)campJSON.get(CAMP_ACTIVITIES);
+            for (int a = 0; a < activitiesJSON.size(); a++) {
+                JSONObject activity = (JSONObject)activitiesJSON.get(a);
+            }
             SessionList sessions = SessionList.getInstance();
             JSONArray sessionsJSON = (JSONArray)campJSON.get(CAMP_SESSIONS);
             for (int s = 0; s < sessionsJSON.size(); s++) {
@@ -145,7 +169,10 @@ public class DataReader extends DataConstants {
                     JSONObject cabinJSON = (JSONObject)cabinsJSON.get(c);
                     double cabinNumber = (double)cabinJSON.get(CABIN_NUMBER);
                     Schedule schedule = new Schedule();
+                    JSONObject scheduleJSON = (JSONObject)cabinJSON.get(CABIN_SCHEDULE);
+                    for (Object key : scheduleJSON.keySet()) {
 
+                    }
                 }
 
             }

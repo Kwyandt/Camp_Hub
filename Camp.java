@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 /***
  * @author Jackson
@@ -49,6 +50,15 @@ public class Camp {
      */
     public void removeActivity(int index) {
 
+    }
+
+    public Activity getActivitiyByUUID(UUID id) {
+        for (Activity activity : activities) {
+            if (activity.getId().equals(id)) {
+                return activity;
+            }
+        }
+        return null;
     }
 
     /***
