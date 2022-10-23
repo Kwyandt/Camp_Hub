@@ -1,51 +1,33 @@
 package Users;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 public class UserList {
     
     private ArrayList<User> users;
     private static UserList userList;
-
     
     /** 
      * Private constructor for singleton
-     * @return UserList
      */
     private UserList() {
         users = new ArrayList<User>();
     }
-
     
     /** 
      * Get singleton instance
      * @return UserList
      */
     public static UserList getInstance() {
-        if(userList == null) {
+        if (userList == null) {
             userList = new UserList();
         }
         return userList;
     }
 
-    
-    /** 
-     * Adds a user with the given information.
-     * @param email
-     * @param phone
-     * @param password
-     * @param firstName
-     * @param lastName
-     * @param birthdate
-     * @param securityQuestion
-     */
-    public void addUser(String email, String phone, String password, String firstName, String lastName, Date birthdate, Map<String, String> securityQuestion) {
-
-    }
-
-    /***
+    /**
      * Adds an already created user
      * @param user pre-existing user to be added
      */
@@ -62,14 +44,67 @@ public class UserList {
         return null;
     }
 
-    public void editUser() {
-
+    /**
+     * Returns the user given their UUID.
+     * If no such camper is found, returns null.
+     * @param id UUID of user
+     * @return Appropriate user (or null)
+     */
+    public User getUserByUUID(UUID id) {
+        for (User user : users) {
+            if (user.getUuid().equals(id)) {
+                return user;
+            }
+        }
+        return null;
     }
 
-    public void saveUsers() {
-
+    /**
+     * Returns the users matching the requested type.
+     * @param type UserType to match (Director, Counsellor, or Parent)
+     * @return ArrayList of Users matching type (empty if none)
+     */
+    public ArrayList<User> getUsersOfType(UserType type) {
+        ArrayList<User> usersOfType = new ArrayList<User>();
+        for (User user : users) {
+            if (user.getType() == type) {
+                usersOfType.add(user);
+            }
+        }
+        return usersOfType;
     }
 
+    /**
+     * Return the camper with the given id
+     * @param id UUID of camper
+     * @return Camper with id
+     */
+    public Camper getCamperByUUID(UUID id) {
+        for (User parent : getUsersOfType(UserType.PARENT))
+            for (Camper camper : ((Parent)parent).getChildren())
+                if (camper.getUuid().equals(id))
+                    return camper;
+        return null;
+    }
+
+    /**
+     * Replace the user with the given ID in the last with the
+     * parameter user
+     * @param user User to replace user in list
+     * @throws NoSuchElementException
+     */
+    public void editUser(User user) throws NoSuchElementException {
+        for (int i = 0; i < users.size(); i++)
+            if (user.getUuid().equals(users.get(i).getUuid()))
+                users.set(i, user);
+        // We didn't find the user, so throw exception
+        throw new NoSuchElementException();
+    }
+
+    /**
+     * Return list of all users
+     * @return ArrayList of Users
+     */
     public ArrayList<User> getAllUsers() {
         return users;
     }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /***
@@ -8,7 +9,7 @@ import java.util.UUID;
 public class Camp {
     private String name;
     private SessionList sessions;
-    private HashMap<String,String> faqs;
+    private Map<String,String> faqs;
     private ArrayList<String> securityQuestions;
     private ArrayList<Activity> activities;
     private String officePhone;
@@ -32,7 +33,7 @@ public class Camp {
      * @param officePhone phone number for the camp
      * @param packingList items campers should pack
      */
-    public Camp(String name, SessionList sessions, HashMap<String, String> faqs, ArrayList<String> securityQuestions, ArrayList<Activity> activities, String officePhone, ArrayList<String> packingList) {
+    public Camp(String name, SessionList sessions, Map<String, String> faqs, ArrayList<String> securityQuestions, ArrayList<Activity> activities, String officePhone, ArrayList<String> packingList) {
 
     }
 
@@ -122,7 +123,7 @@ public class Camp {
      * Accessor method for faqs
      * @return faqs about the camp
      */
-    public HashMap<String, String> getFAQs() {
+    public Map<String, String> getFAQs() {
         return faqs;
     }
 

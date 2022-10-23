@@ -47,19 +47,23 @@ import java.util.*;
 
     public abstract UserType getUserType();
 
-    public UUID getUuid () {
+    public UUID getUuid() {
       return id;
     }
 
-    public String getEmail () {
+    public UserType getType() {
+      return this.type;
+    }
+
+    public String getEmail() {
       return email;
     }
 
-    public String getPhone () {
+    public String getPhone() {
       return phone;
     }
 
-    public String getPassword () {
+    public String getPassword() {
       return password;
     }
 

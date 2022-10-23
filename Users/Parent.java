@@ -47,12 +47,7 @@ import java.util.*;
         return UserType.PARENT;
     }
     
-    //print or return list?
     public ArrayList<Camper> getChildren () {
-        //if print
-        for(Camper camper : children) {
-            System.out.println(camper.toString());
-        }
         return children;
     }
 

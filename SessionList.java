@@ -1,21 +1,19 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 public class SessionList {
     
     private ArrayList<Session> sessions;
     private static SessionList sessionList;
 
-    
     /** 
      * Private constructor for singleton.
-     * @return SessionList
      */
     private SessionList() {
         sessions = new ArrayList<Session>();
     }
 
-    
     /** 
      * Creates an instance of the class.
      * @return SessionList
@@ -28,7 +26,6 @@ public class SessionList {
         return sessionList;
     }
 
-    
     /** 
      * Adds a session with the given parameters.
      * @param theme
@@ -51,24 +48,37 @@ public class SessionList {
         sessions.add(session);
     }
 
-    
     /** 
      * Gets the session based on start.
      * @param start
      * @return Session
      */
     public Session getSession(Date start) {
+        for (Session session : sessions)
+            if (session.getStartDate().equals(start))
+                return session;
         return null;
     }
 
-    public void editSession() {
-
+    /**
+     * Replaces the session in the list with the same start date
+     * with the session being passed in. 
+     * @throws NoSuchElementException if there is no session in the list
+     * with a matching date as session
+     * @param session Replaces session in list with the same start date.
+     */
+    public void editSession(Session session) throws NoSuchElementException {
+        for (int i = 0; i < sessions.size(); i++)
+            if (session.getStartDate().equals(sessions.get(i).getStartDate()))
+                sessions.set(i, session);
+        // We didn't find the session, so throw an exception
+        throw new NoSuchElementException();
     }
 
-    public void saveSessions() {
-
-    }
-
+    /**
+     * Return all sessions
+     * @return ArrayList of sessions
+     */
     public ArrayList<Session> getAllSessions() {
         return sessions;
     }
