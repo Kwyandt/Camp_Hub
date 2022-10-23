@@ -170,7 +170,6 @@ public class DataWriter extends DataConstants {
         for(Relationship relation : counselor.getEmergenctContacts().keySet()) {
             JSONObject contactDetails = new JSONObject();
             EmergencyContact ec = counselor.getEmergenctContacts().get(relation);
-            contactDetails.put(EMERGENCY_CONTACT_ID, ec.getUuid());
             contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
             contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
             contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());
@@ -216,7 +215,6 @@ public class DataWriter extends DataConstants {
         for(Relationship relation : camper.getEmergencyContact().keySet()) {
             JSONObject contactDetails = new JSONObject();
             EmergencyContact ec = camper.getEmergencyContact().get(relation);
-            contactDetails.put(EMERGENCY_CONTACT_ID, ec.getUuid());
             contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
             contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
             contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());

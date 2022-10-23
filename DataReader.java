@@ -52,7 +52,7 @@ public class DataReader extends DataConstants {
                 String password = (String)userJSON.get(USER_PASSWORD);
                 String firstName = (String)userJSON.get(USER_FIRST_NAME);
                 String lastName = (String)userJSON.get(USER_LAST_NAME);
-                Date birthDate = new SimpleDateFormat("dd-MMM-yyyy").parse((String)userJSON.get(USER_BIRTH_DATE));
+                Date birthDate = fromFormattedDate(userJSON.get(USER_BIRTH_DATE));
                 Map<String, String> securityQuestions = new HashMap<String, String>();
                 JSONObject questionsJSON = (JSONObject)userJSON.get(USER_SECURITY_QUESTIONS);
                 securityQuestions.putAll(questionsJSON); 
@@ -69,7 +69,7 @@ public class DataReader extends DataConstants {
                         UUID camperId = UUID.fromString((String)camperJSON.get(CAMPER_ID));
                         String camperFirstName = (String)camperJSON.get(CAMPER_FIRST_NAME);
                         String camperLastName = (String)camperJSON.get(CAMPER_LAST_NAME);
-                        Date camperBirthDate = new SimpleDateFormat("dd-MMM-yyyy").parse((String)camperJSON.get(CAMPER_BIRTH_DATE));
+                        Date camperBirthDate = fromFormattedDate(camperJSON.get(CAMPER_BIRTH_DATE));
                         ArrayList<String> camperMeds = JSONArrToArrayList(camperJSON.get(CAMPER_MEDS));
                         ArrayList<String> camperAllergies = JSONArrToArrayList(camperJSON.get(CAMPER_ALLERGIES));
                         Map<Relationship, EmergencyContact> camperEmergencyContacts = new HashMap<Relationship, EmergencyContact>();
@@ -156,26 +156,60 @@ public class DataReader extends DataConstants {
             ArrayList<Activity> activities = new ArrayList<Activity>();
             JSONArray activitiesJSON = (JSONArray)campJSON.get(CAMP_ACTIVITIES);
             for (int a = 0; a < activitiesJSON.size(); a++) {
-                JSONObject activity = (JSONObject)activitiesJSON.get(a);
+                JSONObject activityJSON = (JSONObject)activitiesJSON.get(a);
+                String activityId = (String)activityJSON.get(ACTIVITY_ID);
+                String activityName = (String)activityJSON.get(ACTIVITY_NAME);
+                String activityDescription = (String)activityJSON.get(ACTIVITY_DESCRIPTION);
+                String activityLocation = (String)activityJSON.get(ACTIVITY_LOCATION);
+                activities.add(new Activity(activityId, activityName, activityDescription, activityLocation));
             }
             SessionList sessions = SessionList.getInstance();
             JSONArray sessionsJSON = (JSONArray)campJSON.get(CAMP_SESSIONS);
             for (int s = 0; s < sessionsJSON.size(); s++) {
                 JSONObject sessionJSON = (JSONObject)sessionsJSON.get(s);
                 double price = (double)sessionJSON.get(SESSION_PRICE);
+                String theme = (String)sessionJSON.get(SESSION_THEME);
                 ArrayList<Cabin> cabins = new ArrayList<Cabin>();
                 JSONArray cabinsJSON = (JSONArray)sessionJSON.get(SESSION_CABINS);
                 for (int c = 0; c < cabinsJSON.size(); c++) {
                     JSONObject cabinJSON = (JSONObject)cabinsJSON.get(c);
-                    double cabinNumber = (double)cabinJSON.get(CABIN_NUMBER);
+                    int cabinNumber = (int)cabinJSON.get(CABIN_NUMBER);
                     Schedule schedule = new Schedule();
                     JSONObject scheduleJSON = (JSONObject)cabinJSON.get(CABIN_SCHEDULE);
                     for (Object key : scheduleJSON.keySet()) {
-
+                        Date scheduleDate = fromFormattedDateTime(key);
+                        UUID activityID = UUID.fromString((String)scheduleJSON.get(key));
+                        Activity scheduleActivity = null;
+                        for (Activity a : activities) {
+                            if (a.getId().equals(activityID)) {
+                                scheduleActivity = a;
+                                break;
+                            }
+                        }
+                        schedule.addEvent(scheduleActivity, scheduleDate);
                     }
+                    Counselor counselor = (Counselor)userList.getUserByUUID(UUID.fromString((String)cabinJSON.get(CABIN_COUNSELOR)));
+                    Camper[] campers = new Camper[8];
+                    JSONArray campersJSON = (JSONArray)cabinJSON.get(CABIN_CAMPERS);
+                    for (int i = 0; i < campersJSON.size(); i++) {
+                        campers[i] = userList.getCamperByUUID(UUID.fromString((String)campersJSON.get(i)));
+                    }
+                    cabins.add(new Cabin(cabinNumber, schedule, counselor, campers));
                 }
-
+                Date priorityDeadline = fromFormattedDate(sessionJSON.get(SESSION_PRIORITY_DEADLINE));
+                Date regularDeadline = fromFormattedDate(sessionJSON.get(SESSION_REGULAR_DEADLINE));
+                Date startDate = fromFormattedDate(sessionJSON.get(SESSION_START_DATE));
+                Date endDate = fromFormattedDate(sessionJSON.get(SESSION_END_DATE));
+                sessions.addSession(new Session(price, theme, cabins, priorityDeadline, regularDeadline, startDate, endDate));
             }
+            Map<String, String> faqs = new HashMap<String, String>();
+            JSONObject faqsJSON = (JSONObject)campJSON.get(CAMP_FAQS);
+            for (Object faq : faqsJSON.keySet())
+                faqs.put((String)faq, (String)faqsJSON.get(faq));
+            ArrayList<String> securityQuestions = JSONArrToArrayList(campJSON.get(CAMP_SECURITY_QUESTIONS));
+            String officePhone = (String)campJSON.get(CAMP_OFFICE_PHONE);
+            ArrayList<String> packingList = JSONArrToArrayList(campJSON.get(CAMP_PACKING_LIST));
+            return new Camp(name, sessions, faqs, securityQuestions, activities, officePhone, packingList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -186,6 +220,22 @@ public class DataReader extends DataConstants {
     private static ArrayList<String> JSONArrToArrayList(Object JSONArr) {
         JSONArray objectsJSON = (JSONArray)JSONArr;
         return new ArrayList<>(Arrays.asList(Arrays.copyOf(objectsJSON.toArray(), objectsJSON.size(), String[].class)));
+    }
+
+    private static Date fromFormattedDate(Object dateString) {
+        try {
+            return new SimpleDateFormat("dd-MMM-yyyy").parse((String)dateString);
+        } catch (Exception e) {
+            return null;
+        } 
+    }
+
+    private static Date fromFormattedDateTime(Object dateString) {
+        try {
+            return new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss:aa").parse((String)dateString);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

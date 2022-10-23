@@ -58,10 +58,13 @@ public class SessionList {
      * @return Session
      */
     public Session getSession(Date start) {
+        for (Session session : sessions)
+            if (session.getStartDate().equals(start))
+                return session;
         return null;
     }
 
-    public void editSession() {
+    public void editSession(Date start) {
 
     }
 

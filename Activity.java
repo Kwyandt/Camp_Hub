@@ -17,7 +17,9 @@ public class Activity{
      * @param location site of activity
      */
     public Activity(String name, String description, String location){
-
+        this.name = name;
+        this.description = description;
+        this.location = location;
     }
 
     /***
@@ -28,7 +30,10 @@ public class Activity{
      * @param location site of activity
      */
     public Activity(String id, String name, String description, String location){
-
+        this.id = UUID.fromString(id);
+        this.name = name;
+        this.description = description;
+        this.location = location;
     }
 
     /***
