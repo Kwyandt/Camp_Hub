@@ -7,13 +7,24 @@ public class CampManager{
     private UserList users;
 
     public CampManager(){
-
+        camp = DataReader.getCamp();
+        users = UserList.getInstance();
     }
 
     public void createUser(UserType type, String email, String phone, String pass, 
                         String first, String last, Date birth, 
                         Map<String, String> securityQuestion){
-        
+        switch(type){
+            case PARENT:
+                users.addUser(new Parent(email, pass, first, last, phone, birth, securityQuestion));
+            break;
+            case DIRECTOR:
+                users.addUser(new Director(email, pass, first, last, phone, birth, securityQuestion));
+            break;
+            case COUNSELOR:
+                users.addUser(new Counselor(email, pass, first, last, phone, birth, securityQuestion));
+            break;
+        }
     }
 
     /**
