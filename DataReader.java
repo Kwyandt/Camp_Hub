@@ -175,10 +175,11 @@ public class DataReader extends DataConstants {
                     JSONObject cabinJSON = (JSONObject)cabinsJSON.get(c);
                     int cabinNumber = ((Number)cabinJSON.get(CABIN_NUMBER)).intValue();
                     Schedule schedule = new Schedule();
-                    JSONObject scheduleJSON = (JSONObject)((JSONObject)cabinJSON.get(CABIN_SCHEDULE)).get(SCHEDULE_ACTIVITIES);
-                    for (Object key : scheduleJSON.keySet()) {
+                    JSONObject scheduleJSON = (JSONObject)cabinJSON.get(CABIN_SCHEDULE);
+                    JSONObject scheduleActivitiesJSON = (JSONObject)scheduleJSON.get(SCHEDULE_ACTIVITIES);
+                    for (Object key : scheduleActivitiesJSON.keySet()) {
                         Date scheduleDate = fromFormattedDateTime(key);
-                        UUID activityID = UUID.fromString((String)scheduleJSON.get(key));
+                        UUID activityID = UUID.fromString((String)scheduleActivitiesJSON.get(key));
                         Activity scheduleActivity = null;
                         for (Activity a : activities) {
                             if (a.getId().equals(activityID)) {
@@ -236,18 +237,19 @@ public class DataReader extends DataConstants {
 
     private static Date fromFormattedDateTime(Object dateString) {
         try {
-            return new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss:aa").parse((String)dateString);
+            return new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a").parse((String)dateString);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     public static void main(String[] args) {
-        Camp camp = getCamp();
-        //Map<Date, Activity> act = SessionList.getInstance().getSession(fromFormattedDate("18-Jun-2023"))
-                                        //.getCabin(1).getSchedule().getActivities();
-        //System.out.println(act.toString());
-        System.out.println(camp);
+        getCamp();
+        Map<Date, Activity> act = SessionList.getInstance().getSession(fromFormattedDate("18-Jun-2023"))
+                                        .getCabin(1).getSchedule().getActivities();
+        System.out.println(act.toString());
+        
     }
 
 }
