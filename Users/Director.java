@@ -43,9 +43,6 @@ public class Director extends User{
         this.id = id;
         this.bio = bio;
         this.notes = notes;
-        //get id
-        //get bio
-        //get notes
     }
     
     

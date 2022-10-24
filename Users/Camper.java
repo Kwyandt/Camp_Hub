@@ -80,7 +80,6 @@ import java.util.*;
       this.dietaryRestrictions.add(dietaryRestriction);
     }
 
-    //setters later
     //getters for all variables
     public UUID getUuid () {
       return id;
