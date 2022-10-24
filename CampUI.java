@@ -13,16 +13,25 @@ public class CampUI {
         "Please select:\n0. Quit\n1. Login\n2. Create Account\n",
         // The parent user menu (1)
         "Please select:\n0. Sign out\n1. Register for camp!\n2. View registrations\n"+
-        "3. Manage children\n4. Contact/FAQ\n5. Manage account",
+        "3. Manage children\n4. Contact/FAQ\n5. Manage account\n",
         // The counselor user menu (2)
         "Please select:\n0. Sign out\n1. Register for camp!\n2. View registrations\n"+
-        "3. Manage Notes\n4. Manage Bio\n5. Manage account",
+        "3. Manage Notes\n4. Manage Bio\n5. Manage account\n",
         // The director user menu (3)
         "Please select:\n0. Sign out\n1. Manage camp sessions\n2. Manage camp activities\n"+
-        "3. Manage camp FAQ\n4. Manage bio\n5. Manage account",
-
-
-
+        "3. Manage camp FAQ\n4. Manage bio\n5. Manage account\n",
+        // The manage campers menu (4)
+        "Please select:\n0. Go back\n1. Add camper\n2. Edit camper information\n",
+        // The register camper menu (after you select a session to register for) (5)
+        "Please select a camper to register:\n0. Go back\n1. Add camper",
+        // The manage account menu (6)
+        "Please select:\n1. Update email\n3. Update password\n3. Update phone number\n4. Update security question\n",
+        // The manage bio menu (7)
+        "Please select:\n0. Go back\n1. Update bio\n",
+        // The manage notes menu (8)
+        "Please select:\n0. Go back\n1. Add note\n2. Remove note\n",
+        // The manage discounts menu (9)
+        "Please select:\n0. Go back\n1. Set discount\n"
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
@@ -48,6 +57,9 @@ public class CampUI {
         campManager = new CampManager();
         scan = new Scanner(System.in);
     }
+
+
+
 
     /**
      * TODO: 
@@ -188,7 +200,23 @@ public class CampUI {
 
 
     //The following are only accessible to the parent users
-    public void manageCampers(){}
+    public void manageCampers(){
+        final int MENU = 4;
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Viewing Campers:");
+            System.out.println(menus[MENU]);
+            selection = promptInt(0,2);
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: addCamper(); break;
+                case 2: editCamper(); break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
+    }
     public void addCamper(){}
     public void editCamper(){}
 
@@ -226,8 +254,12 @@ public class CampUI {
     public void manageBio(){}
 
     //This method is accessible to counselors and parents
-    public void registerForCamp(){}
-    public void viewRegistrations(){}
+    public void registerForCamp(){
+        //TODO: Needs to perform different operations based on user type
+    }
+    public void viewRegistrations(){
+
+    }
 
     //These methods are accessible to any logged in user
     public void manageAccount(){}
