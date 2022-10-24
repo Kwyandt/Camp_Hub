@@ -29,7 +29,7 @@
             "firstName":"Caroline",
             "lastName":"Frizzell",
             "birthDate":"11-Jun-2011",
-            "meds":["Zertec"],
+            "meds":["Zyrtec"],
             "allergies":["Bees"],
             "emergencyContacts":{"DOCTOR":{
                                     "firstName":"Hank",
@@ -79,7 +79,7 @@
             "firstName":"Kevin",
             "lastName":"Frizzell",
             "birthDate":"29-Feb-2008",
-            "meds":["Adderol"],
+            "meds":["Adderall"],
             "allergies":["Dogs"],
             "emergencyContacts":{"DOCTOR":{
                                     "firstName":"Hank",
@@ -134,5 +134,71 @@
 	"tShirt":"M",
 	"bio":"Brandthony Gerald Johnson is a 19-year-old food science student who enjoys running, social card games and golf. He is exciting and considerate, But can also be very lazy and a bit unintelligent. He loves the outdoors, and tries to spend as much time as he can playing games, going for walks, etc, outside. Not well versed in tech, and can handle an iPhone or website with the approximate aptitude of an above average toddler.",
 	"notes":["Keep an eye on Caroline. She was a real headache."]
+},
+{
+    "id":"6b4ceb70-2ec9-4a39-83df-9c2feb7fe185",
+    "userType":"COUNSELOR",
+    "email":"allymiller@gmail.com",
+    "phone":"(804) 287-9146",
+    "password":"lamp5hade21",
+    "firstName":"Ally",
+    "lastName":"Miller",
+    "birthDate":"15-Oct-2004",
+    "securityQuestions":{"What was the make of your first car?":"Nissan Altima 2015",
+                         "What year was your father (or mother) born?":"1974"},
+    "meds":["Claritin", "Benadryl"],
+    "allergies":["Dust", "Poison Ivy", "Horses"],
+    "emergencyContacts":{"DOCTOR":{
+                            "firstName":"Ed",
+                            "lastName":"Bernard",
+                            "phoneNumber":"(804) 991-6739"
+                        },
+                        "DENTIST":{
+                            "firstName":"James",
+                            "lastName":"Krasinki",
+                            "phoneNumber":"(804) 918-1589"
+                        },
+                        "GUARDIAN":{
+                            "firstName":"Dale",
+                            "lastName":"Miller",
+                            "phoneNumber":"(865) 328-7345"
+                        }},
+    "dietaryRestrictions":["Kosher"],
+    "tShirt":"S",
+    "bio":"Ally is an 18-year-old high school student from Virginia. She works at Kroger as a cashier.",
+    "notes":[]
+},
+{
+    "id":"25274f8a-34fd-419c-b241-f704e81700da",
+    "userType":"COUNSELOR",
+    "email":"amandamiller@gmail.com",
+    "phone":"(804) 627-1573",
+    "password":"3FqZ4ULGaehR#m%p",
+    "firstName":"Amanda",
+    "lastName":"Miller",
+    "birthDate":"15-Oct-2004",
+    "securityQuestions":{"What was your favorite food as a child?":"Macaroni and Cheese",
+                         "What year was your father (or mother) born?":"1974"},
+    "meds":[],
+    "allergies":["Dust"],
+    "emergencyContacts":{"DOCTOR":{
+                            "firstName":"Ed",
+                            "lastName":"Bernard",
+                            "phoneNumber":"(804) 991-6739"
+                        },
+                        "DENTIST":{
+                            "firstName":"James",
+                            "lastName":"Krasinki",
+                            "phoneNumber":"(804) 918-1589"
+                        },
+                        "GUARDIAN":{
+                            "firstName":"Dale",
+                            "lastName":"Miller",
+                            "phoneNumber":"(865) 328-7345"
+                        }},
+    "dietaryRestrictions":["Kosher","Vegetarian"],
+    "tShirt":"M",
+    "bio":"Amanda is an 18-year-old high school student from Virginia. She works at Camp Tall Rock with her twin sister Ally.",
+    "notes":[]
 }
 ]

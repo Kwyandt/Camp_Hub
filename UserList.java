@@ -1,8 +1,11 @@
-package Users;
-
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import Users.Camper;
+import Users.Parent;
+import Users.User;
+import Users.UserType;
 
 public class UserList {
     
@@ -13,7 +16,7 @@ public class UserList {
      * Private constructor for singleton
      */
     private UserList() {
-        users = new ArrayList<User>();
+        users = DataReader.getAllUsers();
     }
     
     /** 
@@ -107,6 +110,14 @@ public class UserList {
      */
     public ArrayList<User> getAllUsers() {
         return users;
+    }
+
+    /**
+     * Save users to JSON files
+     * @return True if saving was successful and false otherwise
+     */
+    public boolean saveAllUsers() {
+        return DataWriter.saveAllUsers(users);
     }
 
 }

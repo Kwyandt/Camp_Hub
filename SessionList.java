@@ -83,4 +83,12 @@ public class SessionList {
         return sessions;
     }
 
+    /**
+     * Return String representation of SessionList
+     * @return String representing SessionList
+     */
+    public String toString() {
+        return sessions.toString();
+    }
+
 }

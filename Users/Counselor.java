@@ -111,4 +111,8 @@ import java.util.*;
     public ArrayList<String> getNotes() {
         return notes;
     }
+
+    public String toString() {
+        return "Counselor: " + super.toString() + "\n\t" + meds.toString() + "\n\t" + allergies.toString() + "\n\t" + emergencyContacts.toString() + "\n\t" + dietaryRestrictions.toString() + "\n\t" + tShirt + "\n\t" + bio + "\n\t" + notes.toString();
+    }
  }

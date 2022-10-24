@@ -4,7 +4,7 @@ import java.util.UUID;
  * @author Jackson Ginn
  */
 
-public class Activity{
+public class Activity {
     private UUID id;
     private String name;
     private String description;
@@ -16,7 +16,7 @@ public class Activity{
      * @param description activity description
      * @param location site of activity
      */
-    public Activity(String name, String description, String location){
+    public Activity(String name, String description, String location) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -29,7 +29,7 @@ public class Activity{
      * @param description activity description
      * @param location site of activity
      */
-    public Activity(String id, String name, String description, String location){
+    public Activity(String id, String name, String description, String location) {
         this.id = UUID.fromString(id);
         this.name = name;
         this.description = description;
@@ -40,7 +40,7 @@ public class Activity{
      * Accessor for id
      * @return id of activity
      */
-    public UUID getId(){
+    public UUID getId() {
         return id;
     }
 
@@ -48,7 +48,7 @@ public class Activity{
      * Accessor for name
      * @return name of the activity
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -56,7 +56,7 @@ public class Activity{
      * Accessor for description
      * @return description of the activity
      */
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 
@@ -64,7 +64,7 @@ public class Activity{
      * Accessor for location
      * @return location of the activity
      */
-    public String getLocation(){
+    public String getLocation() {
         return location;
     }
 
@@ -72,7 +72,7 @@ public class Activity{
      * Mutator for name
      * @param name new name value
      */
-    public void setName(String name){
+    public void setName(String name) {
 
     }
 
@@ -80,7 +80,7 @@ public class Activity{
      * Mutator for description
      * @param description new description value
      */
-    public void setDescription(String description){
+    public void setDescription(String description) {
 
     }
 
@@ -88,7 +88,7 @@ public class Activity{
      * Mutator for location
      * @param location new location value
      */
-    public void setLocation(String location){
+    public void setLocation(String location) {
 
     }
 
@@ -96,7 +96,7 @@ public class Activity{
      * toString for Activity
      * @return String representation of Activity
      */
-    public String toString(){
-        return "placeholder";
+    public String toString() {
+        return "Activity with id " + this.id + ", name " + this.name + ", description " + this.description + ", location " + this.location + ".";
     }
 }

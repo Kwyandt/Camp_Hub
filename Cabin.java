@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import Users.*;
 
 /***
@@ -15,8 +16,9 @@ public class Cabin {
      * @param schedule schedule for the cabin
      * @param counselor counselor of the cabin
      */
-    public Cabin(Schedule schedule, Counselor counselor){
-        
+    public Cabin(Schedule schedule, Counselor counselor) {
+        this.schedule = schedule;
+        this.counselor = counselor;
     }
 
     /***
@@ -27,7 +29,10 @@ public class Cabin {
      * @param campers campers in the cabin
      */
     public Cabin(int cabinNumber, Schedule schedule, Counselor counselor, Camper[] campers){
-
+        this.cabinNumber = cabinNumber;
+        this.schedule = schedule;
+        this.counselor = counselor;
+        this.campers = campers;
     }
 
     /***
@@ -114,7 +119,7 @@ public class Cabin {
      * @return String representation of Cabin
      */
     public String toString(){
-        return "placeholder";
+        return "Cabin:\n\t" + this.cabinNumber + "\n\t" + this.schedule + "\n\t" + this.counselor + "\n\t" + Arrays.toString(this.campers);
     }
 }
 

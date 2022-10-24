@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 
 import Users.*;
@@ -101,6 +102,20 @@ public class Session {
         return cabins;
     }
 
+    /**
+     * Accessor for cabin of a specific number
+     * @param number Number of desired Cabin
+     * @return Cabin with desired number (if it exists)
+     * @throws NoSuchElementException If cabin is not found
+     */
+    public Cabin getCabin(int number) throws NoSuchElementException {
+        for (Cabin cabin : cabins)
+            if (cabin.getCabinNumber() == number)
+                return cabin;
+        // We didn't find the cabin
+        throw new NoSuchElementException();
+    }
+
     /***
      * Accessor method for priorityDeadline
      * @return priorityDeadline of the session
@@ -186,6 +201,6 @@ public class Session {
      * @return String representation of session
      */
     public String toString() {
-        return "placeholder";
+        return "Session:\n\t" + this.price + "\n\t" + this.theme + "\n\t" + this.cabins.toString() + "\n\t" + this.priorityDeadline + "\n\t" + this.regularDeadline + "\n\t" + this.startDate + "\n\t" + this.endDate;
     }
 }

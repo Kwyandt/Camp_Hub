@@ -33,4 +33,8 @@ import java.util.*;
     public String getPhone(){
       return phoneNumber;
     }
+
+    public String toString() {
+      return firstName + " " + lastName + " - " + phoneNumber;
+    }
  }

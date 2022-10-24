@@ -30,7 +30,7 @@ public class Schedule {
      * @param date time the activity takes place
      */
     public void addEvent(Activity activity, Date date) {
-
+        activities.put(date, activity);
     }
 
     /**
@@ -53,6 +53,6 @@ public class Schedule {
      * @return String representation of Schedule
      */
     public String toString() {
-        return "placeholder";
+        return "Activities: " + this.activities.toString();
     }
 }

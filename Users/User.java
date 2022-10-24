@@ -82,4 +82,8 @@ import java.util.*;
     public Map<String, String> getSecurityQuestions() {
       return securityQuestions;
     }
+
+    public String toString() {
+      return this.firstName + " " + this.lastName + "\n\t" + this.id + "\n\t" + this.email + "\n\t" + this.phone + "\n\t" + this.birthDate + "\n\t" + this.securityQuestions;
+    }
  }

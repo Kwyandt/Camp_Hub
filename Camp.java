@@ -9,7 +9,7 @@ import java.util.UUID;
 public class Camp {
     private String name;
     private SessionList sessions;
-    private Map<String,String> faqs;
+    private Map<String, String> faqs;
     private ArrayList<String> securityQuestions;
     private ArrayList<Activity> activities;
     private String officePhone;
@@ -21,7 +21,13 @@ public class Camp {
      * @param officePhone phone number for the camp
      */
     public Camp(String name, String officePhone) {
-
+        this.name = name;
+        this.sessions = SessionList.getInstance();
+        this.faqs = new HashMap<String, String>();
+        this.securityQuestions = new ArrayList<String>();
+        this.activities = new ArrayList<Activity>();
+        this.officePhone = officePhone;
+        this.packingList = new ArrayList<String>();
     }
 
     /***
@@ -34,7 +40,13 @@ public class Camp {
      * @param packingList items campers should pack
      */
     public Camp(String name, SessionList sessions, Map<String, String> faqs, ArrayList<String> securityQuestions, ArrayList<Activity> activities, String officePhone, ArrayList<String> packingList) {
-
+        this.name = name;
+        this.sessions = sessions;
+        this.faqs = faqs;
+        this.securityQuestions = securityQuestions;
+        this.activities = activities;
+        this.officePhone = officePhone;
+        this.packingList = packingList;
     }
 
     /***
@@ -164,6 +176,6 @@ public class Camp {
      * @return String representation of the camp
      */
     public String toString() {
-        return "placeholder";
+        return this.name + "\n" + this.sessions + "\n" + this.faqs + "\n" + this.securityQuestions + "\n" + this.activities + "\n" + this.officePhone + "\n" + this.packingList;
     }
 }

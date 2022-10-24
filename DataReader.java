@@ -22,8 +22,8 @@ public class DataReader extends DataConstants {
      * Reads in user data and populates list of users
      * @return ArrayList containing each user
      */
-    public static UserList getAllUsers() {
-        UserList users = UserList.getInstance();
+    public static ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<User>();
         try {
             FileReader reader = new FileReader(USERS_FILE_PATH);
             JSONParser parser = new JSONParser();
@@ -59,7 +59,7 @@ public class DataReader extends DataConstants {
                 if (type == UserType.DIRECTOR) {
                     String bio = (String)userJSON.get(DIRECTOR_BIO);
                     ArrayList<String> notes = JSONArrToArrayList(userJSON.get(DIRECTOR_NOTES));
-                    users.addUser(new Director(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                    users.add(new Director(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
                                            bio, notes));
                 } else if (type == UserType.PARENT) {
                     ArrayList<Camper> children = new ArrayList<Camper>();
@@ -99,7 +99,7 @@ public class DataReader extends DataConstants {
                         children.add(new Camper(camperId, camperFirstName, camperLastName, camperBirthDate, camperMeds, camperAllergies, camperEmergencyContacts, camperDietaryRestrictions, camperTShirt));
                     }
                     boolean isReturning = (boolean)userJSON.get(PARENT_IS_RETURNING);
-                    users.addUser(new Parent(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
+                    users.add(new Parent(id, email, password, firstName, lastName, phone, birthDate, securityQuestions,
                                          children, isReturning));
                 } else if (type == UserType.COUNSELOR) {
                     ArrayList<String> meds = JSONArrToArrayList(userJSON.get(COUNSELOR_MEDS));
@@ -130,7 +130,7 @@ public class DataReader extends DataConstants {
                     String tShirt = (String)userJSON.get(COUNSELOR_T_SHIRT);
                     String bio = (String)userJSON.get(COUNSELOR_BIO);
                     ArrayList<String> notes = JSONArrToArrayList(userJSON.get(COUNSELOR_NOTES));
-                    users.addUser(new Counselor(id, email, phone, password, firstName, lastName, birthDate, securityQuestions, 
+                    users.add(new Counselor(id, email, phone, password, firstName, lastName, birthDate, securityQuestions, 
                                             meds, allergies, emergencyContacts, dietaryRestrictions, tShirt, bio, notes));
                 } else {
                     continue;
@@ -173,9 +173,9 @@ public class DataReader extends DataConstants {
                 JSONArray cabinsJSON = (JSONArray)sessionJSON.get(SESSION_CABINS);
                 for (int c = 0; c < cabinsJSON.size(); c++) {
                     JSONObject cabinJSON = (JSONObject)cabinsJSON.get(c);
-                    int cabinNumber = (int)cabinJSON.get(CABIN_NUMBER);
+                    int cabinNumber = ((Number)cabinJSON.get(CABIN_NUMBER)).intValue();
                     Schedule schedule = new Schedule();
-                    JSONObject scheduleJSON = (JSONObject)cabinJSON.get(CABIN_SCHEDULE);
+                    JSONObject scheduleJSON = (JSONObject)((JSONObject)cabinJSON.get(CABIN_SCHEDULE)).get(SCHEDULE_ACTIVITIES);
                     for (Object key : scheduleJSON.keySet()) {
                         Date scheduleDate = fromFormattedDateTime(key);
                         UUID activityID = UUID.fromString((String)scheduleJSON.get(key));
@@ -188,7 +188,11 @@ public class DataReader extends DataConstants {
                         }
                         schedule.addEvent(scheduleActivity, scheduleDate);
                     }
-                    Counselor counselor = (Counselor)userList.getUserByUUID(UUID.fromString((String)cabinJSON.get(CABIN_COUNSELOR)));
+                    Counselor counselor;
+                    if ((String)cabinJSON.get(CABIN_COUNSELOR) == null)
+                        counselor = null;
+                    else
+                        counselor = (Counselor)userList.getUserByUUID(UUID.fromString((String)cabinJSON.get(CABIN_COUNSELOR)));
                     Camper[] campers = new Camper[8];
                     JSONArray campersJSON = (JSONArray)cabinJSON.get(CABIN_CAMPERS);
                     for (int i = 0; i < campersJSON.size(); i++) {
@@ -236,6 +240,14 @@ public class DataReader extends DataConstants {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static void main(String[] args) {
+        Camp camp = getCamp();
+        //Map<Date, Activity> act = SessionList.getInstance().getSession(fromFormattedDate("18-Jun-2023"))
+                                        //.getCabin(1).getSchedule().getActivities();
+        //System.out.println(act.toString());
+        System.out.println(camp);
     }
 
 }
