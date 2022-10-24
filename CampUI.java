@@ -9,7 +9,20 @@ public class CampUI {
     // A list of all of the 'menus', which are just text prompts (as strings)
     // ex: the first entry is what you see on the initial startup screen
     private final String[] menus = {
-        "Please select:\n0. Quit\n1. Login\n2. Create Account\n"
+        // The start menu (0)
+        "Please select:\n0. Quit\n1. Login\n2. Create Account\n",
+        // The parent user menu (1)
+        "Please select:\n0. Sign out\n1. Register for camp!\n2. View registrations\n"+
+        "3. Manage children\n4. Contact/FAQ\n5. Manage account",
+        // The counselor user menu (2)
+        "Please select:\n0. Sign out\n1. Register for camp!\n2. View registrations\n"+
+        "3. Manage Notes\n4. Manage Bio\n5. Manage account",
+        // The director user menu (3)
+        "Please select:\n0. Sign out\n1. Manage camp sessions\n2. Manage camp activities\n"+
+        "3. Manage camp FAQ\n4. Manage bio\n5. Manage account",
+
+
+
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
@@ -45,21 +58,20 @@ public class CampUI {
      * CampManager to actually perform the desired action.
      */
     public void start(){
+        final int MENU = 0;
         int selection = 0;
         do{
             clearScreen();
             System.out.println("Welcome to [Camp]'s Portal!");
-            System.out.println(menus[0]);
+            System.out.println(menus[MENU]);
             selection = promptInt(0,2);
 
             switch(selection){
                 case 0: exit(); break;
                 case 1: loginUser(); break;
                 case 2: createUser(); break;
-                default:
-                    System.out.println("Something went wrong!");
+                default: System.out.println("Something went wrong!");
             }
-
         }while(selection!=0);
     }
 
@@ -68,7 +80,9 @@ public class CampUI {
         clearScreen();
         System.out.println("Goodbye!");
     }
-
+    public void logoutUser(){
+        //Tell campManager to log the user out, return to start
+    }
 
 
     /**
@@ -88,7 +102,7 @@ public class CampUI {
 
         //TODO: run checks to see if the given data is valid, make the user, etc.
         System.out.println("You completed the form! Press enter to continue...");
-        scan.nextLine();
+        prompt(true);
     }
     public void loginUser(){
         final int FORM = 1;
@@ -103,17 +117,73 @@ public class CampUI {
 
         //TODO: Ensure the user is a valid user, make campManager log them in
         System.out.println("You completed the form! Press enter to continue...");
-        scan.nextLine();
+        prompt(true);
     }
 
+
+
     public void parentMenu(){
-        
+        final int MENU = 1;
+
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Hello, [User]! (Parent)");
+            System.out.println(menus[MENU]);
+            selection = promptInt(0,5);
+
+            switch(selection){
+                case 0: logoutUser(); break;
+                case 1: registerForCamp(); break;
+                case 2: viewRegistrations(); break;
+                case 3: manageCampers(); break;
+                case 4: manageBio(); break;
+                case 5: manageAccount(); break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
     public void directorMenu(){
-        
+        final int MENU = 3;
+
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Hello, [User]! (Director)");
+            System.out.println(menus[MENU]);
+            selection = promptInt(0,5);
+
+            switch(selection){
+                case 0: logoutUser(); break;
+                case 1: manageSessions(); break;
+                case 2: manageActivities(); break;
+                case 3: manageFAQ(); break;
+                case 4: manageBio(); break;
+                case 5: manageAccount(); break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
     public void counselorMenu(){
-        
+        final int MENU = 2;
+
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Hello, [User]! (Director)");
+            System.out.println(menus[MENU]);
+            selection = promptInt(0,5);
+
+            switch(selection){
+                case 0: logoutUser(); break;
+                case 1: registerForCamp(); break;
+                case 2: viewRegistrations(); break;
+                case 3: manageNotes(); break;
+                case 4: manageBio(); break;
+                case 5: manageAccount(); break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
 
 
@@ -122,7 +192,21 @@ public class CampUI {
     public void addCamper(){}
     public void editCamper(){}
 
-    public void viewAboutPage(){}
+    public void viewAboutPage(){
+        clearScreen();
+        System.out.println("Camp Information:");
+
+        System.out.println("[Name]\n\nFAQ:");
+        System.out.println("[LIST FAQs]\n");
+
+        System.out.println("Suggested Packing List:");
+        System.out.println("[PACKING LIST]\n");
+
+        System.out.println("Office Phone: "+"[OFFICE PHONE]\n");
+
+        System.out.println("Press enter to return...");
+        prompt(true);
+    }
 
 
     //These are accessible only by directors
@@ -146,7 +230,7 @@ public class CampUI {
     public void viewRegistrations(){}
 
     //These methods are accessible to any logged in user
-    public void manageUserInfo(){}
+    public void manageAccount(){}
 
 
     /**
@@ -154,7 +238,17 @@ public class CampUI {
      * @return The String that the user inputted
      */
     private String prompt(){
-        System.out.print("> ");
+        return prompt(false);
+    }
+
+    /**
+     * Prompts the user for input, and returns the input string directly.
+     * Optional toggle to hide the '>' print for some screens
+     * @param hide A boolean
+     * @return The String that the user inputted
+     */
+    private String prompt(boolean hide){
+        if(!hide) System.out.print("> ");
         return scan.nextLine();
     }
 
@@ -187,7 +281,7 @@ public class CampUI {
     }
 
     /**
-     * This should clear the console screen according to this post:
+     * This clears the console screen according to this post:
      * https://stackoverflow.com/questions/2979383/how-to-clear-the-console
      */
     private void clearScreen(){
