@@ -1,12 +1,10 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.Date;
-import java.util.HashMap;
 
 import Users.*;
 
@@ -73,6 +71,7 @@ public class DataWriter extends DataConstants {
         SessionList sessionList = SessionList.getInstance();
         for(Session s: sessionList.getAllSessions()) {
             JSONObject sessionDetails = new JSONObject();
+            sessionDetails.put(SESSION_PRICE, s.getPrice());
             sessionDetails.put(SESSION_THEME, s.getTheme());
             JSONArray cabinArray = new JSONArray();
             for(Cabin cab: s.getCabins()) {
@@ -83,14 +82,16 @@ public class DataWriter extends DataConstants {
                 for(Date d: sch.getActivities().keySet()) {
                     scheduleDetails.put(toFormattedDateTime(d), sch.getActivities().get(d).getId().toString());
                 }
-                cabinDetails.put(CABIN_SCHEDULE, scheduleDetails);
-                cabinDetails.put(CABIN_COUNSELOR, getCounselorJSON(cab.getCounselor()));
+                JSONObject activities = new JSONObject();
+                activities.put(SCHEDULE_ACTIVITIES, scheduleDetails);
+                cabinDetails.put(CABIN_SCHEDULE, activities);
+                cabinDetails.put(CABIN_COUNSELOR, cab.getCounselor().getUuid().toString());
                 JSONArray camperArray = new JSONArray();
                 for(Camper cam: cab.getCampers()) {
                     if(cam == null) {
                         continue;
                     }
-                    camperArray.add(getCamperJSON(cam));
+                    camperArray.add(cam.getUuid().toString());
                 }
                 cabinDetails.put(CABIN_CAMPERS, camperArray);
                 cabinArray.add(cabinDetails);
@@ -103,13 +104,11 @@ public class DataWriter extends DataConstants {
             sessionArray.add(sessionDetails);
         }
         campDetails.put(CAMP_SESSIONS, sessionArray);
-        JSONArray faqArray = new JSONArray();
+        JSONObject faqObject = new JSONObject();
         for(String q: camp.getFAQs().keySet()) {
-            JSONObject faqDetails = new JSONObject();
-            faqDetails.put(q, camp.getFAQs().get(q));
-            faqArray.add(faqDetails);
+            faqObject.put(q, camp.getFAQs().get(q));
         }
-        campDetails.put(CAMP_FAQS, faqArray);
+        campDetails.put(CAMP_FAQS, faqObject);
         JSONArray secQArray = new JSONArray();
         for(String q: camp.getSecurityQuestions()) {
             secQArray.add(q);
@@ -144,14 +143,12 @@ public class DataWriter extends DataConstants {
         userDetails.put(USER_FIRST_NAME, user.getFirstName());
         userDetails.put(USER_LAST_NAME, user.getLastName());
         userDetails.put(USER_BIRTH_DATE, toFormattedDate(user.getBirthDate()));
-        JSONArray secQArray = new JSONArray();
+        JSONObject secQs = new JSONObject();
         //HashMap<String, String> secQs = user.getSecurityQuestions();
         for(String q: user.getSecurityQuestions().keySet()) {
-            JSONObject secQDetails = new JSONObject();
-            secQDetails.put(q, user.getSecurityQuestions().get(q));
-            secQArray.add(secQDetails);
+            secQs.put(q, user.getSecurityQuestions().get(q));
         }
-        userDetails.put(USER_SECURITY_QUESTIONS, secQArray);
+        userDetails.put(USER_SECURITY_QUESTIONS, secQs);
         return userDetails;
     }
 
@@ -173,7 +170,6 @@ public class DataWriter extends DataConstants {
             camperArray.add(getCamperJSON(c));
         }
         parentDetails.put(PARENT_CHILDREN, camperArray);
-        parentDetails.put(PARENT_DISCOUNT, parent.getDiscount());
         parentDetails.put(PARENT_IS_RETURNING, parent.getIsReturning());
         return parentDetails;
     }
@@ -190,7 +186,8 @@ public class DataWriter extends DataConstants {
             allergyArray.add(allergy);
         }
         counselorDetails.put(COUNSELOR_ALLERGIES, allergyArray);
-        JSONArray contactArray = new JSONArray();
+        //TODO: change this to JSONObject
+        JSONObject contactObject = new JSONObject();
         //HashMap<Relationship, EmergencyContact> contacts = camper.getEmergencyContact();
         for(Relationship relation : counselor.getEmergenctContacts().keySet()) {
             JSONObject contactDetails = new JSONObject();
@@ -198,12 +195,10 @@ public class DataWriter extends DataConstants {
             contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
             contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
             contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());
-            JSONObject contactRelationDetails = new JSONObject();
             // organizes contact with its relation
-            contactRelationDetails.put(relation, contactDetails);
-            contactArray.add(contactRelationDetails);
+            contactObject.put(relation, contactDetails);
         }
-        counselorDetails.put(COUNSELOR_EMERGENCY_CONTACTS, contactArray);
+        counselorDetails.put(COUNSELOR_EMERGENCY_CONTACTS, contactObject);
         JSONArray dietArray = new JSONArray();
         for(String restriction: counselor.getDietaryRestrictions()) {
             dietArray.add(restriction);
@@ -235,7 +230,7 @@ public class DataWriter extends DataConstants {
             allergyArray.add(allergy);
         }
         camperDetails.put(CAMPER_ALLERGIES, allergyArray);
-        JSONArray contactArray = new JSONArray();
+        JSONObject contactObject = new JSONObject();
         //HashMap<Relationship, EmergencyContact> contacts = camper.getEmergencyContact();
         for(Relationship relation : camper.getEmergencyContact().keySet()) {
             JSONObject contactDetails = new JSONObject();
@@ -243,12 +238,10 @@ public class DataWriter extends DataConstants {
             contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
             contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
             contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());
-            JSONObject contactRelationDetails = new JSONObject();
             // organizes contact with its relation
-            contactRelationDetails.put(relation, contactDetails);
-            contactArray.add(contactRelationDetails);
+            contactObject.put(relation, contactDetails);
         }
-        camperDetails.put(CAMPER_EMERGENCY_CONTACTS, contactArray);
+        camperDetails.put(CAMPER_EMERGENCY_CONTACTS, contactObject);
         JSONArray dietArray = new JSONArray();
         for(String restriction: camper.getDietaryRestrictions()) {
             dietArray.add(restriction);
@@ -258,38 +251,9 @@ public class DataWriter extends DataConstants {
         return camperDetails;
     }
 
-    private static Relationship strToUserType(String str) {
-        if(str.equals("GUARDIAN")) {
-            return Relationship.GUARDIAN;
-        }
-        else if(str.equals("DENTIST")) {
-            return Relationship.DENTIST;
-        }
-        else {
-            return Relationship.DOCTOR;
-        }
-    }
-
-    private static Date fromFormattedDate(Object dateString) {
-        try {
-            return new SimpleDateFormat("dd-MMM-yyyy").parse((String)dateString);
-        } catch (Exception e) {
-            return null;
-        } 
-    }
-
     private static String toFormattedDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         return sdf.format(date);
-    }
-
-    private static Date fromFormattedDateTime(Object dateString) {
-        try {
-            return new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a").parse((String)dateString);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private static String toFormattedDateTime(Date date) {
