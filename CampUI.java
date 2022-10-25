@@ -113,9 +113,14 @@ public class CampUI {
         }
 
         //TODO: run checks to see if the given data is valid, make the user, etc.
-        System.out.println("You completed the form! Press enter to continue...");
+        System.out.println("You completed the form!");
         prompt(true);
     }
+    /**
+     * Sends the user through the login form.
+     * If successful, they will be sent to their user page.
+     * If unsuccessful, they will be taken back to the start
+     */
     public void loginUser(){
         final int FORM = 1;
 
@@ -127,9 +132,25 @@ public class CampUI {
         System.out.println(forms[FORM][1]);
         String pass = prompt();
 
-        //TODO: Ensure the user is a valid user, make campManager log them in
-        System.out.println("You completed the form! Press enter to continue...");
-        prompt(true);
+        boolean success = campManager.loginUser(email, pass);
+
+        if(success){
+            switch(campManager.getUser().getUserType()){
+                case DIRECTOR:
+                    directorMenu(); 
+                break;
+                case PARENT:
+                    parentMenu();
+                break;
+                case COUNSELOR:
+                    counselorMenu();
+                break;
+            }
+        }
+        else{
+            System.out.println("Login was unsuccessful. Verify information and try again, or create an account.");
+            prompt(true);
+        }
     }
 
 
@@ -155,6 +176,7 @@ public class CampUI {
             }
         }while(selection!=0);
     }
+
     public void directorMenu(){
         final int MENU = 3;
 
@@ -176,6 +198,7 @@ public class CampUI {
             }
         }while(selection!=0);
     }
+    
     public void counselorMenu(){
         final int MENU = 2;
 
@@ -217,7 +240,10 @@ public class CampUI {
             }
         }while(selection!=0);
     }
-    public void addCamper(){}
+    public void addCamper(){
+        System.out.println("This is the Add Camper form. I don't do anything yet");
+        prompt(true);
+    }
     public void editCamper(){}
 
     public void viewAboutPage(){
@@ -280,7 +306,10 @@ public class CampUI {
      * @return The String that the user inputted
      */
     private String prompt(boolean hide){
-        if(!hide) System.out.print("> ");
+        if(!hide) 
+            System.out.print("> ");
+        else
+            System.out.println("Press enter to continue...");
         return scan.nextLine();
     }
 

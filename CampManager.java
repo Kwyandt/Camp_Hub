@@ -35,9 +35,40 @@ public class CampManager{
      * @return boolean Whether the login was successful
      */
     public boolean loginUser(String email, String pass){
+        User user = users.getUser(email);
+        if(user.getPassword().equals(pass)){
+            this.currentUser = user;
+            return true;
+        }
         return false;
     }
+
+    public void logoutUser(){
+        if (currentUser==null)
+            return;
+        else {
+            
+        }
+    }
+
+    /**
+     * Verifies that the current user actually has the ability to perfom the action.
+     * Each utility method in the manager will first check using this method that the currentUser's type is correct.
+     * Some abilities have multiple allowed user types, so this should help that a little bit.
+     * @param userTypes A String representing the allowed users. 'c' means counselors, 'p' parents, and 'd' directors
+     * @return True if the currentUser's type matches one of the characters in the userType string
+     */
     private boolean checkPermissions(String userTypes){
+        switch(currentUser.getType()){
+            case COUNSELOR:
+                return userTypes.contains("c");
+            case DIRECTOR:
+                return userTypes.contains("d");
+            case PARENT:
+                return userTypes.contains("p");
+            default: 
+                System.out.println("SOMETHING WENT HORRIBLY WRONG!");
+        }
         return false;
     }
     
