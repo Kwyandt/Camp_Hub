@@ -1,5 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,7 +35,15 @@ public class DataWriter extends DataConstants {
                     userArray.add(getCounselorJSON((Counselor)u));
             }
         }
-        System.out.println(userArray.toJSONString());
+        //System.out.println(userArray.toJSONString());
+        try(FileWriter file = new FileWriter("usersDemo.json")) {
+            file.write(userArray.toJSONString());
+            file.flush();
+        }
+        catch (IOException e) {
+            System.out.println("The users did not properly save");
+            return false;
+        }
         return true;
     }
 
@@ -43,6 +53,16 @@ public class DataWriter extends DataConstants {
      * @return if camp was successfully saved
      */
     public static boolean saveCamp(Camp camp) {
+        JSONObject campDetails = getCampJSON(camp);
+        //System.out.println(campDetails);
+        try(FileWriter file = new FileWriter("campDemo.json")) {
+            file.write(campDetails.toJSONString());
+            file.flush();
+        }
+        catch (IOException e) {
+            System.out.println("The camp did not properly save");
+            return false;
+        }
         return true;
     }
 
@@ -61,22 +81,25 @@ public class DataWriter extends DataConstants {
                 JSONObject scheduleDetails = new JSONObject();
                 Schedule sch = cab.getSchedule();
                 for(Date d: sch.getActivities().keySet()) {
-                    scheduleDetails.put(d, sch.getActivities().get(d).getId());
+                    scheduleDetails.put(toFormattedDateTime(d), sch.getActivities().get(d).getId().toString());
                 }
                 cabinDetails.put(CABIN_SCHEDULE, scheduleDetails);
                 cabinDetails.put(CABIN_COUNSELOR, getCounselorJSON(cab.getCounselor()));
                 JSONArray camperArray = new JSONArray();
                 for(Camper cam: cab.getCampers()) {
+                    if(cam == null) {
+                        continue;
+                    }
                     camperArray.add(getCamperJSON(cam));
                 }
                 cabinDetails.put(CABIN_CAMPERS, camperArray);
                 cabinArray.add(cabinDetails);
             }
             sessionDetails.put(SESSION_CABINS, cabinArray);
-            sessionDetails.put(SESSION_PRIORITY_DEADLINE, s.getPriorityDeadline());
-            sessionDetails.put(SESSION_REGULAR_DEADLINE, s.getRegularDeadline());
-            sessionDetails.put(SESSION_START_DATE, s.getStartDate());
-            sessionDetails.put(SESSION_END_DATE, s.getEndDate());
+            sessionDetails.put(SESSION_PRIORITY_DEADLINE, toFormattedDate(s.getPriorityDeadline()));
+            sessionDetails.put(SESSION_REGULAR_DEADLINE, toFormattedDate(s.getRegularDeadline()));
+            sessionDetails.put(SESSION_START_DATE, toFormattedDate(s.getStartDate()));
+            sessionDetails.put(SESSION_END_DATE, toFormattedDate(s.getEndDate()));
             sessionArray.add(sessionDetails);
         }
         campDetails.put(CAMP_SESSIONS, sessionArray);
@@ -95,7 +118,7 @@ public class DataWriter extends DataConstants {
         JSONArray activityArray = new JSONArray();
         for(Activity a: camp.getActivities()) {
             JSONObject activityDetails = new JSONObject();
-            activityDetails.put(ACTIVITY_ID, a.getId());
+            activityDetails.put(ACTIVITY_ID, a.getId().toString());
             activityDetails.put(ACTIVITY_NAME, a.getName());
             activityDetails.put(ACTIVITY_DESCRIPTION, a.getDescription());
             activityDetails.put(ACTIVITY_LOCATION, a.getLocation());
@@ -113,13 +136,14 @@ public class DataWriter extends DataConstants {
 
     private static JSONObject getUserJSON(User user) {
         JSONObject userDetails = new JSONObject();
-        userDetails.put(USER_ID, user.getUuid());
+        userDetails.put(USER_ID, user.getUuid().toString());
+        userDetails.put(USER_TYPE, user.getUserType().toString());
         userDetails.put(USER_EMAIL, user.getEmail());
         userDetails.put(USER_PHONE, user.getPhone());
         userDetails.put(USER_PASSWORD, user.getPassword());
         userDetails.put(USER_FIRST_NAME, user.getFirstName());
         userDetails.put(USER_LAST_NAME, user.getLastName());
-        userDetails.put(USER_BIRTH_DATE, user.getBirthDate());
+        userDetails.put(USER_BIRTH_DATE, toFormattedDate(user.getBirthDate()));
         JSONArray secQArray = new JSONArray();
         //HashMap<String, String> secQs = user.getSecurityQuestions();
         for(String q: user.getSecurityQuestions().keySet()) {
@@ -197,10 +221,10 @@ public class DataWriter extends DataConstants {
 
     private static JSONObject getCamperJSON(Camper camper) {
         JSONObject camperDetails = new JSONObject();
-        camperDetails.put(CAMPER_ID, camper.getUuid());
+        camperDetails.put(CAMPER_ID, camper.getUuid().toString());
         camperDetails.put(CAMPER_FIRST_NAME, camper.getFirst());
         camperDetails.put(CAMPER_LAST_NAME, camper.getLast());
-        camperDetails.put(CAMPER_BIRTH_DATE, camper.getBirth());
+        camperDetails.put(CAMPER_BIRTH_DATE, toFormattedDate(camper.getBirth()));
         JSONArray medsArray = new JSONArray();
         for(String med: camper.getMeds()) {
             medsArray.add(med);
@@ -244,5 +268,32 @@ public class DataWriter extends DataConstants {
         else {
             return Relationship.DOCTOR;
         }
+    }
+
+    private static Date fromFormattedDate(Object dateString) {
+        try {
+            return new SimpleDateFormat("dd-MMM-yyyy").parse((String)dateString);
+        } catch (Exception e) {
+            return null;
+        } 
+    }
+
+    private static String toFormattedDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        return sdf.format(date);
+    }
+
+    private static Date fromFormattedDateTime(Object dateString) {
+        try {
+            return new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a").parse((String)dateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static String toFormattedDateTime(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
+        return sdf.format(date);
     }
 }
