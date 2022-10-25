@@ -62,6 +62,11 @@ public class SessionList {
         throw new NoSuchElementException();
     }
 
+    /**
+     * Removes a session starting with date
+     * @param start Start date of session to remove
+     * @throws NoSuchElementException If session wasn't found
+     */
     public void removeSession(Date start) throws NoSuchElementException {
         for (int i = 0; i < sessions.size(); i++) {
             if (sessions.get(i).getStartDate().equals(start)) {
