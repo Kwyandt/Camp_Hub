@@ -47,7 +47,7 @@ public class CampManager{
         if (currentUser==null)
             return;
         else {
-            
+
         }
     }
 
@@ -59,7 +59,7 @@ public class CampManager{
      * @return True if the currentUser's type matches one of the characters in the userType string
      */
     private boolean checkPermissions(String userTypes){
-        switch(currentUser.getType()){
+        switch(currentUser.getUserType()){
             case COUNSELOR:
                 return userTypes.contains("c");
             case DIRECTOR:
