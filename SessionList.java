@@ -51,13 +51,26 @@ public class SessionList {
     /** 
      * Gets the session based on start.
      * @param start
+     * @throws NoSuchElementException If session is not found
      * @return Session
      */
-    public Session getSession(Date start) {
+    public Session getSession(Date start) throws NoSuchElementException {
         for (Session session : sessions)
             if (session.getStartDate().equals(start))
                 return session;
-        return null;
+        // We didn't find it, so throw exception
+        throw new NoSuchElementException();
+    }
+
+    public void removeSession(Date start) throws NoSuchElementException {
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessions.get(i).getStartDate().equals(start)) {
+                sessions.remove(i);
+                return;
+            }
+        }
+        // We didn't find it, so throw exception
+        throw new NoSuchElementException();
     }
 
     /**
