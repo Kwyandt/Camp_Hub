@@ -17,8 +17,7 @@ import java.util.*;
     protected String lastName;
     protected Date birthDate;
     protected Map<String, String> securityQuestions;
-    public Scanner scanner;
-
+  
     /**
      * Constructor for the User class to create a new user
      * @param email email address of the user
@@ -42,37 +41,13 @@ import java.util.*;
     /**
      * Method for user to change login password
      */
-    public void changePassword() {
+    public boolean changePassword(String oldPass, String newPass) {
       //prompt for old password
-      System.out.println("Please enter your old password: ");
-      String input = scanner.nextLine();
-      if(input.equalsIgnoreCase(password))
-        setNewPass();
-      else
-        System.out.println("The password you have entered is incorrect. ");
-
-    //should take back to menu/provide choice to change again
-    //should this ask security question?
-    }
-
-    //ask for new password
-    public void setNewPass () {
-      System.out.println("Please enter your new password: ");
-      String newPassword = scanner.nextLine();
-      System.out.println("Please re-enter the new password: ");
-      String newPassword2 = scanner.nextLine();
-      //set new password
-      boolean match = false;
-      while(!match){
-        if(newPassword.equals(newPassword2)){
-          password = newPassword;
-          match = true;
-        }
-        else {
-          System.out.println("This does not match the new password. Please re-enter the new password: ");
-          newPassword2 = scanner.nextLine();
-        }
+      if(oldPass.equalsIgnoreCase(password)){
+        this.password = newPass;
+        return true;
       }
+      return false;
     }
 
     public abstract UserType getUserType();
