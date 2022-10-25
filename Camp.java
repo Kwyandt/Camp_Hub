@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Date;
 
 /***
  * @author Jackson
@@ -54,7 +55,7 @@ public class Camp {
      * @param activity activity to be added
      */
     public void addActivity(Activity activity) {
-
+        this.activities.add(activity);
     }
 
     /***
@@ -62,7 +63,7 @@ public class Camp {
      * @param index index of activity to be removed
      */
     public void removeActivity(int index) {
-
+        this.activities.remove(index);
     }
 
     public Activity getActivitiyByUUID(UUID id) {
@@ -79,15 +80,15 @@ public class Camp {
      * @param session session to be added
      */
     public void addSession(Session session) {
-
+        this.sessions.addSession(session);
     }
 
     /***
      * Removes session at the index
      * @param index index of session to be removed
      */
-    public void removeSession(int index) {
-
+    public void removeSession(Date date) {
+        this.sessions.removeSession(date);
     }
 
     /**
@@ -96,15 +97,15 @@ public class Camp {
      * @param answer answer to question
      */
     public void addFAQ(String question, String answer) {
-
+        this.faqs.put(question, answer);
     }
 
     /***
      * Removes FAQ at index
      * @param index index of FAQ to be removed
      */
-    public void removeFAQ(int index) {
-
+    public void removeFAQ(String question) {
+        this.faqs.remove(question);
     }
 
     /***
@@ -112,7 +113,7 @@ public class Camp {
      * @param packingItem packingItem to be added
      */
     public void addPackingItem(String packingItem) {
-
+        this.packingList.add(packingItem);
     }
 
     /***
@@ -120,7 +121,7 @@ public class Camp {
      * @param index index of packingItem to be removed
      */
     public void removePackingItem(int index) {
-
+        this.packingList.remove(index);
     }
 
     /***
