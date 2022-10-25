@@ -52,6 +52,8 @@ public class CampManager{
         }
     }
 
+
+    //I DONT THINK THIS IS NEEDED ANYMORE, SINCE THE UI FLOW TECHINCALLY HANDLES THIS
     /**
      * Verifies that the current user actually has the ability to perfom the action.
      * Each utility method in the manager will first check using this method that the currentUser's type is correct.
@@ -103,7 +105,7 @@ public class CampManager{
 
     //counselor specific
     public void registerCounselor(Counselor counselor, Session session){}
-    public void deregisterCounselor(Counselor counselor, Session session){}
+    public void unregisterCounselor(Counselor counselor, Session session){}
     public void addNote(String note){}
     public void removeNote(int index){}
     
