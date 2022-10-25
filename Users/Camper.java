@@ -80,6 +80,16 @@ import java.util.*;
       this.dietaryRestrictions.add(dietaryRestriction);
     }
 
+    //add for emergency contacts
+    public void addContact (Relationship type, EmergencyContact name) {
+      this.emergencyContacts.put(type, name);
+    }
+
+    //remove emergency contacts
+    public void removeContact (Relationship type) {
+      this.emergencyContacts.remove(type);
+    }
+
     //getters for all variables
     public UUID getUuid () {
       return id;
