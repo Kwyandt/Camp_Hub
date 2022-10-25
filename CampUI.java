@@ -141,17 +141,6 @@ public class CampUI {
         boolean success = campManager.loginUser(email, pass);
 
         if(success){
-            /* switch(campManager.getUser().getUserType()){
-                case DIRECTOR:
-                    directorMenu(); 
-                break;
-                case PARENT:
-                    parentMenu();
-                break;
-                case COUNSELOR:
-                    counselorMenu();
-                break;
-            } */
             userMenu();
         }
         else{
@@ -218,7 +207,7 @@ public class CampUI {
         int selection = 0;
         do{
             clearScreen();
-            System.out.println("Viewing Campers:");
+            System.out.println("Viewing Campers:\n");
             System.out.println(menus[MENU]);
             selection = promptInt(0,2);
 
@@ -236,7 +225,12 @@ public class CampUI {
         System.out.println("This is the Add Camper form. I don't do anything yet");
         prompt(true);
     }
-    public void editCamper(){}
+    
+    public void editCamper(){
+        clearScreen();
+        System.out.println("This is the edit camper menu. I don't do anything yet");
+        prompt(true);
+    }
 
     public void viewAboutPage(){
         clearScreen();
@@ -251,27 +245,73 @@ public class CampUI {
 
 
     //These are accessible only by directors
-    public void manageSessions(){}
-    public void addSession(){}
-    public void editSession(){}
+    public void manageSessions(){
+        clearScreen();
+        System.out.println("This is the manage sessions menu. I don't do anything yet");
+        prompt(true);
+    }
+    
+    public void addSession(){
+        clearScreen();
+        System.out.println("This is the add session form. I don't do anything yet");
+        prompt(true);
+    }
+    
+    public void editSession(){
+        clearScreen();
+        System.out.println("This is the session edit menu. I don't do anything yet");
+        prompt(true);
+    }
 
-    public void manageActivities(){}
-    public void manageFAQ(){}
-    public void manageDiscounts(){}
-    public void manageCabins(){}
+    public void manageActivities(){
+        clearScreen();
+        System.out.println("This is the manage activities menu. I don't do anything yet");
+        prompt(true);
+    }
+
+    public void manageFAQ(){
+        clearScreen();
+        System.out.println("This is the manage FAQ menu. I don't do anything yet");
+        prompt(true);
+    }
+    
+    public void manageDiscounts(){
+        clearScreen();
+        System.out.println("This is the manage discounts menu. I don't do anything yet");
+        prompt(true);
+    }
+
+    public void manageCabins(){
+        clearScreen();
+        System.out.println("This is the manage cabins menu. I don't do anything yet");
+        prompt(true);
+    }
 
     //These are accessible only by counselors
-    public void manageNotes(){}
+    public void manageNotes(){
+        clearScreen();
+        System.out.println("This is the manage notes menu. I don't do anything yet");
+        prompt(true);
+    }
 
     //This method is accessible to counselors and directors
-    public void manageBio(){}
+    public void manageBio(){
+        clearScreen();
+        System.out.println("This is the manage bio menu. I don't do anything yet");
+        prompt(true);
+    }
 
     //This method is accessible to counselors and parents
     public void registerForCamp(){
         //TODO: Needs to perform different operations based on user type
+        clearScreen();
+        System.out.println("This is the sign up for camp menu. I don't do anything yet");
+        prompt(true);
     }
     public void viewRegistrations(){
-
+        clearScreen();
+        System.out.println("This is the view current registrations menu. I don't do anything yet");
+        prompt(true);
     }
 
     //These methods are accessible to any logged in user
