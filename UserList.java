@@ -75,7 +75,7 @@ public class UserList {
     public ArrayList<User> getUsersOfType(UserType type) {
         ArrayList<User> usersOfType = new ArrayList<User>();
         for (User user : users) {
-            if (user.getType() == type) {
+            if (user.getUserType() == type) {
                 usersOfType.add(user);
             }
         }
