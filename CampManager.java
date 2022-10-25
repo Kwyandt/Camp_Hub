@@ -36,7 +36,7 @@ public class CampManager{
      */
     public boolean loginUser(String email, String pass){
         User user = users.getUser(email);
-        if(user.getPassword().equals(pass)){
+        if(user!=null && user.getPassword().equals(pass)){
             this.currentUser = user;
             return true;
         }
@@ -47,7 +47,8 @@ public class CampManager{
         if (currentUser==null)
             return;
         else {
-
+            // Insert save user info here?
+            currentUser=null;
         }
     }
 
