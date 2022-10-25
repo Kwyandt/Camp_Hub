@@ -56,10 +56,6 @@ import java.util.*;
       return id;
     }
 
-    public UserType getType() {
-      return this.type;
-    }
-
     public String getEmail() {
       return email;
     }
