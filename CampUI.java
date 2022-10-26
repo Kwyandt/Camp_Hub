@@ -1,4 +1,7 @@
 import java.util.*;
+
+import Users.User;
+
 import java.io.IOException;
 
 
@@ -35,7 +38,7 @@ public class CampUI {
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
-    private final String[][] forms ={
+    private final String[][] forms = {
         {   // The prompts for createUser()
             "Please enter user type:\n1. Parent\n2. Director\n3. Counselor\n",
             "Please enter email",
@@ -58,16 +61,9 @@ public class CampUI {
         scan = new Scanner(System.in);
     }
 
-
-
-
     /**
-     * TODO: 
-     * This method is intended to be the "main" scope of the program
-     * It will prompt for input, and then direct the program flow to the
-     * proper sub routine (like the createUser form, for example).
-     * Then once all the necessary info is given, the UI requests the 
-     * CampManager to actually perform the desired action.
+     * This is the first screen the user sees, where they are given
+     * the option to sign in or create an account.
      */
     public void start(){
         final int MENU = 0;
@@ -87,13 +83,22 @@ public class CampUI {
         }while(selection!=0);
     }
 
+    /**
+     * Does whatever processes are necessary to quit the program gracefully
+     * (run whatever call will save the data to json, quit program)
+     */
     public void exit(){
         // Run save commands here
         clearScreen();
         System.out.println("Goodbye!");
     }
+
+    /**
+     * Currently just requests the campManager to log the user out.
+     * Might have to add some sort of save command?
+     */
     public void logoutUser(){
-        //Tell campManager to log the user out, return to start
+        campManager.logoutUser();
     }
 
 
@@ -113,9 +118,15 @@ public class CampUI {
         }
 
         //TODO: run checks to see if the given data is valid, make the user, etc.
-        System.out.println("You completed the form! Press enter to continue...");
+        System.out.println("You completed the form!");
         prompt(true);
     }
+
+    /**
+     * Sends the user through the login form.
+     * If successful, they will be sent to their user page.
+     * If unsuccessful, they will be taken back to the start
+     */
     public void loginUser(){
         final int FORM = 1;
 
@@ -127,73 +138,64 @@ public class CampUI {
         System.out.println(forms[FORM][1]);
         String pass = prompt();
 
-        //TODO: Ensure the user is a valid user, make campManager log them in
-        System.out.println("You completed the form! Press enter to continue...");
-        prompt(true);
+        boolean success = campManager.loginUser(email, pass);
+
+        if(success){
+            userMenu();
+        }
+        else{
+            System.out.println("Login was unsuccessful. Verify information and try again, or create an account.");
+            prompt(true);
+        }
     }
 
-
-
-    public void parentMenu(){
-        final int MENU = 1;
-
+    /**
+     * This handles the main screen the user sees when they log in for ALL user types
+     */
+    public void userMenu(){
+        User user = campManager.getUser();
         int selection = 0;
         do{
             clearScreen();
-            System.out.println("Hello, [User]! (Parent)");
-            System.out.println(menus[MENU]);
-            selection = promptInt(0,5);
-
-            switch(selection){
-                case 0: logoutUser(); break;
-                case 1: registerForCamp(); break;
-                case 2: viewRegistrations(); break;
-                case 3: manageCampers(); break;
-                case 4: manageBio(); break;
-                case 5: manageAccount(); break;
-                default: System.out.println("Something went wrong!");
-            }
-        }while(selection!=0);
-    }
-    public void directorMenu(){
-        final int MENU = 3;
-
-        int selection = 0;
-        do{
-            clearScreen();
-            System.out.println("Hello, [User]! (Director)");
-            System.out.println(menus[MENU]);
-            selection = promptInt(0,5);
-
-            switch(selection){
-                case 0: logoutUser(); break;
-                case 1: manageSessions(); break;
-                case 2: manageActivities(); break;
-                case 3: manageFAQ(); break;
-                case 4: manageBio(); break;
-                case 5: manageAccount(); break;
-                default: System.out.println("Something went wrong!");
-            }
-        }while(selection!=0);
-    }
-    public void counselorMenu(){
-        final int MENU = 2;
-
-        int selection = 0;
-        do{
-            clearScreen();
-            System.out.println("Hello, [User]! (Director)");
-            System.out.println(menus[MENU]);
-            selection = promptInt(0,5);
-
-            switch(selection){
-                case 0: logoutUser(); break;
-                case 1: registerForCamp(); break;
-                case 2: viewRegistrations(); break;
-                case 3: manageNotes(); break;
-                case 4: manageBio(); break;
-                case 5: manageAccount(); break;
-                default: System.out.println("Something went wrong!");
+            System.out.printf("Hello, %s %s! (%s)%n%n", user.getFirstName(),
+                            user.getLastName(), user.getUserType());
+            switch(user.getUserType()){
+                case DIRECTOR:
+                    System.out.println(menus[3]);
+                    selection = promptInt(0,5);
+                    switch(selection){
+                        case 0: logoutUser(); break;
+                        case 1: manageSessions(); break;
+                        case 2: manageActivities(); break;
+                        case 3: manageFAQ(); break;
+                        case 4: manageBio(); break;
+                        case 5: manageAccount(); break;
+                    }
+                break;
+                case COUNSELOR:
+                    System.out.println(menus[2]);
+                    selection = promptInt(0,5);
+                    switch(selection){
+                        case 0: logoutUser(); break;
+                        case 1: registerForCamp(); break;
+                        case 2: viewRegistrations(); break;
+                        case 3: manageNotes(); break;
+                        case 4: manageBio(); break;
+                        case 5: manageAccount(); break;
+                    }
+                break;
+                case PARENT:
+                    System.out.println(menus[1]);
+                    selection = promptInt(0,5);
+                    switch(selection){
+                        case 0: logoutUser(); break;
+                        case 1: registerForCamp(); break;
+                        case 2: viewRegistrations(); break;
+                        case 3: manageCampers(); break;
+                        case 4: viewAboutPage(); break;
+                        case 5: manageAccount(); break;
+                    }
+                break;
             }
         }while(selection!=0);
     }
@@ -205,7 +207,7 @@ public class CampUI {
         int selection = 0;
         do{
             clearScreen();
-            System.out.println("Viewing Campers:");
+            System.out.println("Viewing Campers:\n");
             System.out.println(menus[MENU]);
             selection = promptInt(0,2);
 
@@ -217,48 +219,99 @@ public class CampUI {
             }
         }while(selection!=0);
     }
-    public void addCamper(){}
-    public void editCamper(){}
+
+    public void addCamper(){
+        clearScreen();
+        System.out.println("This is the Add Camper form. I don't do anything yet");
+        prompt(true);
+    }
+    
+    public void editCamper(){
+        clearScreen();
+        System.out.println("This is the edit camper menu. I don't do anything yet");
+        prompt(true);
+    }
 
     public void viewAboutPage(){
         clearScreen();
         System.out.println("Camp Information:");
-
         System.out.println("[Name]\n\nFAQ:");
         System.out.println("[LIST FAQs]\n");
-
         System.out.println("Suggested Packing List:");
         System.out.println("[PACKING LIST]\n");
-
         System.out.println("Office Phone: "+"[OFFICE PHONE]\n");
-
-        System.out.println("Press enter to return...");
         prompt(true);
     }
 
 
     //These are accessible only by directors
-    public void manageSessions(){}
-    public void addSession(){}
-    public void editSession(){}
+    public void manageSessions(){
+        clearScreen();
+        System.out.println("This is the manage sessions menu. I don't do anything yet");
+        prompt(true);
+    }
+    
+    public void addSession(){
+        clearScreen();
+        System.out.println("This is the add session form. I don't do anything yet");
+        prompt(true);
+    }
+    
+    public void editSession(){
+        clearScreen();
+        System.out.println("This is the session edit menu. I don't do anything yet");
+        prompt(true);
+    }
 
-    public void manageActivities(){}
-    public void manageFAQ(){}
-    public void manageDiscounts(){}
-    public void manageCabins(){}
+    public void manageActivities(){
+        clearScreen();
+        System.out.println("This is the manage activities menu. I don't do anything yet");
+        prompt(true);
+    }
+
+    public void manageFAQ(){
+        clearScreen();
+        System.out.println("This is the manage FAQ menu. I don't do anything yet");
+        prompt(true);
+    }
+    
+    public void manageDiscounts(){
+        clearScreen();
+        System.out.println("This is the manage discounts menu. I don't do anything yet");
+        prompt(true);
+    }
+
+    public void manageCabins(){
+        clearScreen();
+        System.out.println("This is the manage cabins menu. I don't do anything yet");
+        prompt(true);
+    }
 
     //These are accessible only by counselors
-    public void manageNotes(){}
+    public void manageNotes(){
+        clearScreen();
+        System.out.println("This is the manage notes menu. I don't do anything yet");
+        prompt(true);
+    }
 
     //This method is accessible to counselors and directors
-    public void manageBio(){}
+    public void manageBio(){
+        clearScreen();
+        System.out.println("This is the manage bio menu. I don't do anything yet");
+        prompt(true);
+    }
 
     //This method is accessible to counselors and parents
     public void registerForCamp(){
         //TODO: Needs to perform different operations based on user type
+        clearScreen();
+        System.out.println("This is the sign up for camp menu. I don't do anything yet");
+        prompt(true);
     }
     public void viewRegistrations(){
-
+        clearScreen();
+        System.out.println("This is the view current registrations menu. I don't do anything yet");
+        prompt(true);
     }
 
     //These methods are accessible to any logged in user
@@ -267,6 +320,7 @@ public class CampUI {
 
     /**
      * Prompts the user for input, and returns the input string directly
+     * with no checks on the data type
      * @return The String that the user inputted
      */
     private String prompt(){
@@ -275,12 +329,15 @@ public class CampUI {
 
     /**
      * Prompts the user for input, and returns the input string directly.
-     * Optional toggle to hide the '>' print for some screens
+     * Optional toggle to replace the '>' with 'Press enter to continue...'
      * @param hide A boolean
      * @return The String that the user inputted
      */
-    private String prompt(boolean hide){
-        if(!hide) System.out.print("> ");
+    private String prompt(boolean type){
+        if(!type) 
+            System.out.print("> ");
+        else
+            System.out.println("Press enter to continue...");
         return scan.nextLine();
     }
 
@@ -304,6 +361,7 @@ public class CampUI {
         System.out.print("> ");
         String input = scan.nextLine();
         //This is a regular expression designed to match a positive or negative number
+        //(idk why we would allow negative numbers, but just in case i guess)
         String filter = "-?\\d+";
         while(!input.matches(filter) || Integer.parseInt(input)<min || Integer.parseInt(input)>max){
             System.out.print("Invalid input, please try again: \n> ");
