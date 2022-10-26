@@ -1,8 +1,9 @@
 import java.util.*;
-
-import Users.User;
+import Users.*;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParsePosition;
 
 
 public class CampUI {
@@ -47,7 +48,7 @@ public class CampUI {
             "Please enter last name:",
             "Please enter phone number:",
             "Please enter birthdate (MM/DD/YYYY):",
-            "Please select security question:\n[LIST OF QUESTIONS]\n",
+            "Please select security question:\n",
             "Please answer the question you selected:",
         },
         {   // The prompts for loginUser()
@@ -70,7 +71,7 @@ public class CampUI {
         int selection = 0;
         do{
             clearScreen();
-            System.out.println("Welcome to [Camp]'s Portal!");
+            System.out.println("Welcome to "+campManager.getCamp().getName()+"'s Portal!");
             System.out.println(menus[MENU]);
             selection = promptInt(0,2);
 
@@ -107,6 +108,8 @@ public class CampUI {
      */
     public void createUser(){
         final int FORM = 0;
+        // a bulk storage object for the input loop, will be casted later when used.
+        // (input types are guarunteed, so this works completely fine despite being kinda silly)
         Object[] data = new Object[forms[FORM].length];
 
         clearScreen();
@@ -114,11 +117,44 @@ public class CampUI {
 
         for(int index = 0; index < forms[FORM].length; index++){
             System.out.println(forms[FORM][index]);
-            data[index] = prompt();
+            switch(index){
+                case 0:     // The user type selection prompt
+                    data[index] = promptInt(1,3);
+                case 7:     // The security question selection prompt
+                    ArrayList<String> questions = campManager.getCamp().getSecurityQuestions();
+                    for(int i=0; i<questions.size();i++){
+                        System.out.printf("%-4s%s%n",(i+1)+".", questions.get(i));
+                    }
+                    System.out.println(); // just inserting a newline for readability
+                    data[index] = promptInt(1,questions.size());
+                break;
+                case 6:     // The birthdate selection prompt
+                    data[index] = promptDate();
+                break;
+                default:
+                    data[index] = prompt();
+            }
         }
+        // grap the appropriate user type from input array
+        UserType type = UserType.PARENT; 
+        switch((int)data[0]){
+            case 1: type = UserType.PARENT; break;
+            case 2: type = UserType.DIRECTOR; break;
+            case 3: type = UserType.COUNSELOR; break;
+        }
+        // grab the appropriate question from the input array (have to decrement b/c input is 1 indexed)
+        String question = campManager.getCamp().getSecurityQuestions().get(((int)data[7]) - 1);
 
-        //TODO: run checks to see if the given data is valid, make the user, etc.
-        System.out.println("You completed the form!");
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put(question, (String) data[8]);
+
+        boolean success = campManager.createUser(type,(String)data[1],(String)data[2],(String)data[3],
+                                (String)data[4],(String)data[5],(Date)data[6],securityQuestion);
+
+        if(success)
+            System.out.println("Account created successfully! You can now proceed to login");
+        else
+            System.out.println("Account creation failed! Please try again with a different email or log in");
         prompt(true);
     }
 
@@ -129,10 +165,8 @@ public class CampUI {
      */
     public void loginUser(){
         final int FORM = 1;
-
         clearScreen();
         System.out.println("Logging you in!\n");
-
         System.out.println(forms[FORM][0]);
         String email = prompt();
         System.out.println(forms[FORM][1]);
@@ -296,9 +330,30 @@ public class CampUI {
 
     //This method is accessible to counselors and directors
     public void manageBio(){
-        clearScreen();
-        System.out.println("This is the manage bio menu. I don't do anything yet");
-        prompt(true);
+        final int MENU = 7;
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Manage Bio:\n\nCurrent bio:");
+            System.out.println(campManager.getBio()+"\n");
+
+            System.out.println(menus[MENU]);
+            selection = promptInt(0,1);
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: 
+                    System.out.println("Please enter a new bio:");
+                    String input = prompt();
+                    boolean success = campManager.setBio(input);
+                    if(!success){
+                        System.out.println("Something went wrong saving the bio, try again.");
+                        prompt(true);
+                    }
+                break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
 
     //This method is accessible to counselors and parents
@@ -315,12 +370,39 @@ public class CampUI {
     }
 
     //These methods are accessible to any logged in user
-    public void manageAccount(){}
+    public void manageAccount(){
+        final int MENU = 7;
+        int selection = 0;
+        DateFormat formatter = DateFormat.getDateInstance();
+        User user = campManager.getUser();
+        String format = "%-10s%s%n";
+        
+        do{
+            clearScreen();
+            System.out.println("Viewing Account Information:\n");
+
+            System.out.printf(format,"name:",user.getFirstName()+" "+user.getLastName());
+            System.out.printf(format,"email:",user.getEmail());
+            System.out.printf(format,"phone:",user.getPhone());
+            //currently null errors for some reason
+            //System.out.printf(format,"birth:",formatter.format(user.getBirthDate()));
+
+            System.out.println(menus[MENU]);
+            selection = promptInt(0,2);
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: addCamper(); break;
+                case 2: editCamper(); break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
+    }
 
 
     /**
-     * Prompts the user for input, and returns the input string directly
-     * with no checks on the data type
+     * Prompts the user for input, and returns the input string directly.
+     * Optional toggle to replace the '>' with 'Press enter to continue...'
      * @return The String that the user inputted
      */
     private String prompt(){
@@ -333,8 +415,8 @@ public class CampUI {
      * @param hide A boolean
      * @return The String that the user inputted
      */
-    private String prompt(boolean type){
-        if(!type) 
+    private String prompt(boolean hide){
+        if(!hide) 
             System.out.print("> ");
         else
             System.out.println("Press enter to continue...");
@@ -345,9 +427,16 @@ public class CampUI {
      * Prompts the user for a date string, repeatedly asking until they supply a valid date
      * @return The Date the user inputted
      */
-    private Date promptDate(){
-        //TODO: implement this bad boy
-        return null;
+    private Date promptDate() {
+        DateFormat parser = DateFormat.getDateInstance(DateFormat.SHORT);
+        ParsePosition pos = new ParsePosition(0);
+        System.out.print("> ");
+        String input = scan.nextLine();
+        while(parser.parse(input,pos)==null){
+            System.out.print("Invalid input, please try again: \n> ");
+            input = scan.nextLine();
+        }
+        return parser.parse(input, pos);
     }
 
     /**
