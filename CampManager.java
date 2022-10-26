@@ -14,8 +14,11 @@ public class CampManager{
     public boolean createUser(UserType type, String email,  String pass, 
                         String first, String last, String phone, Date birth, 
                         Map<String, String> securityQuestion){
+        
         if(users.getUser(email)!=null)
+            //Can't create account because one with that email already exists!
             return false;
+        //Creates the account
         switch(type){
             case PARENT:
                 users.addUser(new Parent(email, pass, first, last, phone, birth, securityQuestion));
@@ -27,6 +30,7 @@ public class CampManager{
                 users.addUser(new Counselor(email, pass, first, last, phone, birth, securityQuestion));
             break;
         }
+        //Return that this operation was successful
         return true;
     }
 
@@ -46,17 +50,23 @@ public class CampManager{
         return false;
     }
 
-    public void logoutUser(){
+    /**
+     * Does whatever processes are necessary to 
+     */
+    public boolean logoutUser(){
         if (currentUser==null)
-            return;
-        else {
-            // Insert save user info here?
-            currentUser=null;
-        }
+            //Logout wasn't successful, return false
+            return false;
+
+        // Insert save user info here?
+        currentUser=null;
+        //Logout was successful, return true
+        return true;
     }
 
 
     //I DONT THINK THIS IS NEEDED ANYMORE, SINCE THE UI FLOW TECHINCALLY HANDLES THIS
+    //(maybe keep it for "security" sake in case we ever decide to make a new UI?)
     /**
      * Verifies that the current user actually has the ability to perfom the action.
      * Each utility method in the manager will first check using this method that the currentUser's type is correct.
@@ -80,10 +90,17 @@ public class CampManager{
     
 
     //Parent-specific methods
-    public void addCamper(Parent parent, String first, String last, Date birth, 
+    public boolean addCamper(Parent parent, String first, String last, Date birth, 
                         String[] guardianContact, String[] doctorContact, String[] dentistContact,
                         String tshirt){
+        if(!checkPermissions("p")){
+            //The current user isn't allowed here, return false to indicate the operation failed
+            return false; 
+        }
+        //Tell the appropriate classes to add a camper object
         
+        //Return true since the operation was successful
+        return true;
     }
     public void registerCamper(Camper camper, Session session){}
     public void unregisterCamper(Camper camper, Session session){}
@@ -113,7 +130,21 @@ public class CampManager{
     public void removeNote(int index){}
     
     //shared by certain users
-    public void setBio(String bio){}
+    /**
+     * Set's the current user's bio to the given bio (if they're a director or counselor only)
+     * @param bio String the bio to set
+     * @return boolean indicating if the operation was successful
+     */
+    public boolean setBio(String bio){
+        if(!checkPermissions("dc")) 
+            return false;
+        if(currentUser.getUserType()==UserType.COUNSELOR)
+            ((Counselor)currentUser).addBio(bio);
+        else
+            ((Director)currentUser).addBio(bio);
+        return true;
+    }
+
     public void viewRegistrations(){}
     public void viewAboutPage(){}
 
@@ -128,6 +159,33 @@ public class CampManager{
 
 
     // Getters..?
-    public Camp getCamp(){return camp;}
-    public User getUser(){return currentUser;}
+    public Camp getCamp(){
+        return camp;
+    }
+    public User getUser(){
+        return currentUser;
+    }
+    public UserType getType(){
+        return currentUser.getUserType();
+    }
+
+    /**
+     * Retrieves the user's bio, returning null if the user is a parent,
+     * and an empty string if the user has not set thier bio
+     * @return String the bio of the current user
+     */
+    public String getBio(){
+        if(!checkPermissions("dc")) 
+            return null;
+        if(currentUser.getUserType()==UserType.COUNSELOR){
+            if(((Counselor)currentUser).getBio()==null)
+                return "";
+            return ((Counselor)currentUser).getBio();
+        }
+        else{
+            if(((Director)currentUser).getBio()==null)
+                return "";
+            return ((Director)currentUser).getBio();
+        }
+    }
 }
