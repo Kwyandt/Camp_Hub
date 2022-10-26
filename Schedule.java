@@ -8,6 +8,7 @@ import java.util.Map;
  */
 public class Schedule {
     private Map<Date, Activity> activities;
+    public int size = 0;
 
     /***
      * Constructor to create new schedule
@@ -31,13 +32,21 @@ public class Schedule {
      */
     public void addEvent(Activity activity, Date date) {
         activities.put(date, activity);
+        size++;
     }
 
     /**
      * View all activities occurring on the specified day
      */
-    public void getEventsOfDay(DayOfWeek day) {
+    public String getEventsOfDay(Date date) {
+        //get all of the indeces with the date
+        //concantenate then and return 
+        for(String key: Map.keySet()){
+            for(String value: Map.get(key)){
 
+            }
+        }
+        return null;
     }
 
     /***
