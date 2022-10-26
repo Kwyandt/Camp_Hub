@@ -1,8 +1,10 @@
 import java.util.*;
-
 import Users.User;
+import Users.UserType;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParsePosition;
 
 
 public class CampUI {
@@ -47,7 +49,10 @@ public class CampUI {
             "Please enter last name:",
             "Please enter phone number:",
             "Please enter birthdate (MM/DD/YYYY):",
-            "Please select security question:\n[LIST OF QUESTIONS]\n",
+            "Please select security question:\n"+
+            "1. What street did you grow up on?\n"+
+            "2. What was your pet's first name?\n"+
+            "3. What what was your favorite ice cream flavor circa 2017?",
             "Please answer the question you selected:",
         },
         {   // The prompts for loginUser()
@@ -70,7 +75,7 @@ public class CampUI {
         int selection = 0;
         do{
             clearScreen();
-            System.out.println("Welcome to [Camp]'s Portal!");
+            System.out.println("Welcome to "+campManager.getCamp().getName()+"'s Portal!");
             System.out.println(menus[MENU]);
             selection = promptInt(0,2);
 
@@ -107,6 +112,8 @@ public class CampUI {
      */
     public void createUser(){
         final int FORM = 0;
+        //just a bulk storage object for the input loop, will be casted later when used
+        // (input types are guarunteed!)
         Object[] data = new Object[forms[FORM].length];
 
         clearScreen();
@@ -114,11 +121,41 @@ public class CampUI {
 
         for(int index = 0; index < forms[FORM].length; index++){
             System.out.println(forms[FORM][index]);
-            data[index] = prompt();
+            switch(index){
+                case 0:
+                case 7:
+                    data[index] = promptInt(1,3);
+                break;
+                case 6:
+                    data[index] = promptDate();
+                break;
+                default:
+                    data[index] = prompt();
+            }
+        }
+        UserType type = UserType.PARENT; 
+        switch((int)data[0]){
+            case 1: type = UserType.PARENT; break;
+            case 2: type = UserType.DIRECTOR; break;
+            case 3: type = UserType.COUNSELOR; break;
+        }
+        String question = "bees?";
+        switch((int)data[7]){
+            case 1: question = "What street did you grow up on?"; break;
+            case 2: question = "What was your pet's first name?"; break;
+            case 3: question = "What what was your favorite ice cream flavor circa 2017?"; break;
         }
 
-        //TODO: run checks to see if the given data is valid, make the user, etc.
-        System.out.println("You completed the form!");
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put(question, (String) data[8]);
+
+        boolean success = campManager.createUser(type,(String)data[1],(String)data[2],(String)data[3],
+                                (String)data[4],(String)data[5],(Date)data[6],securityQuestion);
+
+        if(success)
+            System.out.println("Account created successfully! You can now proceed to login");
+        else
+            System.out.println("Account creation failed! Please try again with a different email or log in");
         prompt(true);
     }
 
@@ -129,10 +166,8 @@ public class CampUI {
      */
     public void loginUser(){
         final int FORM = 1;
-
         clearScreen();
         System.out.println("Logging you in!\n");
-
         System.out.println(forms[FORM][0]);
         String email = prompt();
         System.out.println(forms[FORM][1]);
@@ -345,9 +380,16 @@ public class CampUI {
      * Prompts the user for a date string, repeatedly asking until they supply a valid date
      * @return The Date the user inputted
      */
-    private Date promptDate(){
-        //TODO: implement this bad boy
-        return null;
+    private Date promptDate() {
+        DateFormat parser = DateFormat.getDateInstance(DateFormat.SHORT);
+        ParsePosition pos = new ParsePosition(0);
+        System.out.print("> ");
+        String input = scan.nextLine();
+        while(parser.parse(input,pos)==null){
+            System.out.print("Invalid input, please try again: \n> ");
+            input = scan.nextLine();
+        }
+        return parser.parse(input, pos);
     }
 
     /**

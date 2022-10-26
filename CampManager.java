@@ -11,9 +11,11 @@ public class CampManager{
         users = UserList.getInstance();
     }
 
-    public void createUser(UserType type, String email, String phone, String pass, 
-                        String first, String last, Date birth, 
+    public boolean createUser(UserType type, String email,  String pass, 
+                        String first, String last, String phone, Date birth, 
                         Map<String, String> securityQuestion){
+        if(users.getUser(email)!=null)
+            return false;
         switch(type){
             case PARENT:
                 users.addUser(new Parent(email, pass, first, last, phone, birth, securityQuestion));
@@ -25,6 +27,7 @@ public class CampManager{
                 users.addUser(new Counselor(email, pass, first, last, phone, birth, securityQuestion));
             break;
         }
+        return true;
     }
 
     /**
