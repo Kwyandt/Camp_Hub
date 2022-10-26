@@ -73,7 +73,7 @@ public class Activity {
      * @param name new name value
      */
     public void setName(String name) {
-
+        this.name = name;
     }
 
     /***
@@ -81,7 +81,7 @@ public class Activity {
      * @param description new description value
      */
     public void setDescription(String description) {
-
+        this.description = description;
     }
 
     /***
@@ -89,7 +89,7 @@ public class Activity {
      * @param location new location value
      */
     public void setLocation(String location) {
-
+        this.location = location;
     }
 
     /***

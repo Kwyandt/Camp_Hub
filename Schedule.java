@@ -2,12 +2,15 @@ import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.ArrayList;
 
 /***
  * @author Jackson
  */
 public class Schedule {
     private Map<Date, Activity> activities;
+    public int size = 0;
 
     /***
      * Constructor to create new schedule
@@ -31,13 +34,23 @@ public class Schedule {
      */
     public void addEvent(Activity activity, Date date) {
         activities.put(date, activity);
+        size++;
     }
 
     /**
      * View all activities occurring on the specified day
      */
-    public void getEventsOfDay(DayOfWeek day) {
-
+    public String getEventsOfDay(Date date) {
+        //get all of the indeces with the date
+        //concantenate then and return 
+        //I'm pretty sure this isn;t possiblezz
+        ArrayList<Activity> toReturn = new ArrayList<Activity> ();
+        Set<Date> keys = activities.keySet();
+        for(Date key : keys){
+            if(key.equals(date))
+                toReturn.add(activities.get(key));
+        }
+        return toReturn.toString();
     }
 
     /***

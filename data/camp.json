@@ -527,37 +527,37 @@
             "id":"41ee14d9-ed82-48fd-abe2-7e273d839c80",
             "name":"Horseback Riding",
             "description":"",
-            "location":"Farm/Equestrian Area"
+            "location":"Farm and Equestrian Area"
         },
         {
             "id":"e73f6c55-de3e-475b-a75b-0de927f1a772",
             "name":"Caring for Horses",
             "description":"",
-            "location":"Farm/Equestrian Area"
+            "location":"Farm and Equestrian Area"
         },
         {
             "id":"477da9bb-181b-49d1-ba58-2c12b1067118",
             "name":"Feeding Horses",
             "description":"",
-            "location":"Farm/Equestrian Area"
+            "location":"Farm and Equestrian Area"
         },
         {
             "id":"3cf431b1-87f9-4464-b55c-1c55be99ba9b",
             "name":"Trail Riding",
             "description":"",
-            "location":"Farm/Equestrian Area"
+            "location":"Farm and Equestrian Area"
         },
         {
             "id":"3a925594-da95-4158-a5ca-2f00d475329b",
             "name":"In Ring Instruction",
             "description":"",
-            "location":"Farm/Equestrian Area"
+            "location":"Farm and Equestrian Area"
         },
         {
             "id":"685d38b1-5fe6-4070-99c7-c2f2301b2aeb",
             "name":"Barrel Competition",
             "description":"",
-            "location":"Farm/Equestrian Area"
+            "location":"Farm and Equestrian Area"
         },
         {
             "id":"da28fe2c-5c1f-47e6-afbb-5797206c0af2",
@@ -599,7 +599,7 @@
                     "2 pairs of tennis shoes",
                     "1 pair sturdy shoes",
                     "1 pair rubber shoes for shower & pool",
-                    "1 pair wet weather shoes/boots",
+                    "1 pair wet weather shoes and boots",
                     "7 pairs of socks",
                     "7 pairs underwear",
                     "1 pair lightweight pajamas",

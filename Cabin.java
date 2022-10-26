@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+
 import Users.*;
 
 /***
@@ -9,7 +11,7 @@ public class Cabin {
     private int cabinNumber;
     private Schedule schedule;
     private Counselor counselor;
-    private Camper[] campers;
+    private Camper[] campers = new Camper[8];
 
     /***
      * Creates a new cabin
@@ -40,23 +42,38 @@ public class Cabin {
      * @param counselor new counselor for cabin
      */
     public void setCounselor(Counselor counselor){
-
+        this.counselor = counselor;
     }
 
     /***
      * Adds camper to campers if there is space
      * @param camper potential camper for cabin
      */
-    public void addCamper(Camper camper){
-
+    public boolean addCamper(Camper camper){
+        for(int i =0; i<campers.length; i++){
+            if(campers[i]==null){
+                campers[i] = camper;
+                return true;
+            }
+        }
+        return false;
     }
 
     /***
      * Removes camper from cabin if they are present
      * @param camper camper to be removed from cabin
      */
-    public void removeCamper(Camper camper){
-
+    public boolean removeCamper(Camper camper){
+        for(int i=0; i<campers.length; i++){
+            if(campers[i].equals(camper)){
+                campers[i] = null;
+                for(int j=i; j<campers.length-1; j++)
+                    campers[j] = campers[j+1];
+                campers[campers.length] = null;
+                 return true;
+             }
+         }
+         return false;
     }
 
     /***
@@ -64,7 +81,12 @@ public class Cabin {
      * @return ArrayList containing all meds used
      */
     public ArrayList<String> getMeds(){
-        return null;
+        ArrayList<String> meds = new ArrayList<String>();
+        for(int i=0; i< campers.length; i++){
+            if(campers[i].getMeds()!=null)
+                meds.addAll(campers[i].getMeds());
+        }
+        return meds;
     }
 
     /***
@@ -72,14 +94,23 @@ public class Cabin {
      * @return ArrayList containing all allergies
      */
     public ArrayList<String> getAllergies(){
-        return null;
+        ArrayList<String> allergies = new ArrayList<String>();
+        for(int i=0; i<campers.length; i++) {
+            if(campers[i].getAllergy()!=null)
+                allergies.addAll(campers[i].getAllergy());
+        }
+        return allergies;
     }
 
     /***
      * Displays the schedule of the cabin
      */
-    public void viewSchedule(){
-
+    public String viewSchedule(){
+        String toReturn = "";
+        for(int i =0; i<schedule.size; i++) {
+            toReturn = toReturn + "\n" + schedule.toString();
+        }
+        return toReturn;
     }
 
     /***
