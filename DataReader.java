@@ -244,12 +244,4 @@ public class DataReader extends DataConstants {
         }
     }
 
-    public static void main(String[] args) {
-        getCamp();
-        Map<Date, Activity> act = SessionList.getInstance().getSession(fromFormattedDate("18-Jun-2023"))
-                                        .getCabin(1).getSchedule().getActivities();
-        System.out.println(act.toString());
-        
-    }
-
 }
