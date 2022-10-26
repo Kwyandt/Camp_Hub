@@ -34,7 +34,7 @@ public class DataWriter extends DataConstants {
             }
         }
         //System.out.println(userArray.toJSONString());
-        try(FileWriter file = new FileWriter("usersDemo.json")) {
+        try(FileWriter file = new FileWriter(USERS_FILE_PATH)) {
             file.write(userArray.toJSONString());
             file.flush();
         }
@@ -53,7 +53,7 @@ public class DataWriter extends DataConstants {
     public static boolean saveCamp(Camp camp) {
         JSONObject campDetails = getCampJSON(camp);
         //System.out.println(campDetails);
-        try(FileWriter file = new FileWriter("campDemo.json")) {
+        try(FileWriter file = new FileWriter(CAMP_FILE_PATH)) {
             file.write(campDetails.toJSONString());
             file.flush();
         }
