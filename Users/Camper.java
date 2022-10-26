@@ -108,11 +108,15 @@ import java.util.*;
     }
 
     public ArrayList<String> getMeds () {
-      return meds;
+      if (meds != null)
+        return meds;
+      return null;
     }
 
     public ArrayList<String> getAllergy() {
-      return allergies;
+      if(meds != null)
+        return allergies;
+      return null;
     }
 
     public Map<Relationship, EmergencyContact> getEmergencyContact() {
