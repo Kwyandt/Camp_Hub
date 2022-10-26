@@ -59,7 +59,7 @@ public class Session {
      * Displays all counselors and campers registered for the session
      */
     public void viewAllParticipants(){
-
+        //iteratre through all cabins for the session
     }
 
     /***
@@ -67,7 +67,7 @@ public class Session {
      * @param counselor counselor to be added
      */
     public void addCounselor(Counselor counselor) {
-
+        //should this automatically add counselor to a session?
     }
 
     /***
@@ -75,7 +75,7 @@ public class Session {
      * @param camper camper to be added
      */
     public void addCamper(Camper camper) {
-
+        //should this automatically add the camper to a cabin?
     }
 
     /***
@@ -153,7 +153,7 @@ public class Session {
      * @param price new price of session
      */
     public void setPrice(double price) {
-
+        this.price = price;
     }
 
     /***
@@ -161,7 +161,7 @@ public class Session {
      * @param theme new theme of session
      */
     public void setTheme(String theme) {
-        
+        this.theme = theme;
     }
 
     /***
@@ -169,7 +169,7 @@ public class Session {
      * @param priorityDeadline new priorityDeadline of session
      */
     public void setPriorityDeadline(Date priorityDeadline) {
-        
+        this.priorityDeadline = priorityDeadline;
     }
 
     /***
@@ -177,7 +177,7 @@ public class Session {
      * @param regularDeadline new regularDeadline of session
      */
     public void setRegularDeadline(Date regularDeadline) {
-        
+        this.regularDeadline = regularDeadline;
     }
 
     /***
@@ -185,7 +185,7 @@ public class Session {
      * @param startDate new startDate of session
      */
     public void setStartDate(Date startDate) {
-
+        this.startDate = startDate;
     }
 
     /***
@@ -193,7 +193,7 @@ public class Session {
      * @param endDate new endDate of session
      */
     public void setEndDate(Date endDate) {
-        
+        this.endDate = endDate;
     }
 
     /***
