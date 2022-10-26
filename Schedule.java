@@ -2,6 +2,8 @@ import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.ArrayList;
 
 /***
  * @author Jackson
@@ -41,12 +43,14 @@ public class Schedule {
     public String getEventsOfDay(Date date) {
         //get all of the indeces with the date
         //concantenate then and return 
-        for(String key: Map.keySet()){
-            for(String value: Map.get(key)){
-
-            }
+        //I'm pretty sure this isn;t possiblezz
+        ArrayList<Activity> toReturn = new ArrayList<Activity> ();
+        Set<Date> keys = activities.keySet();
+        for(Date key : keys){
+            if(key.equals(date))
+                toReturn.add(activities.get(key));
         }
-        return null;
+        return toReturn.toString();
     }
 
     /***
