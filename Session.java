@@ -58,8 +58,13 @@ public class Session {
     /***
      * Displays all counselors and campers registered for the session
      */
-    public void viewAllParticipants(){
+    public String viewAllParticipants(){
         //iteratre through all cabins for the session
+        String toReturn = "";
+        for(Cabin cabin: cabins) {
+            toReturn = toReturn + cabin.toString();
+        }
+        return toReturn;
     }
 
     /***
@@ -68,6 +73,8 @@ public class Session {
      */
     public void addCounselor(Counselor counselor) {
         //should this automatically add counselor to a session?
+        //does this need to check if there is already a counselor assigned?
+        
     }
 
     /***
