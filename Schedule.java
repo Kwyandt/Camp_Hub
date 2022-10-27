@@ -2,9 +2,9 @@ import java.time.DayOfWeek;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class Schedule {
      * Constructor to create new schedule
      */
     public Schedule() {
-        this.activities = new TreeMap<Date, Activity>();
+        this.activities = new LinkedHashMap<Date, Activity>();
     }
 
     /**
