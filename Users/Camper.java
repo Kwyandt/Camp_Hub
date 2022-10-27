@@ -1,5 +1,8 @@
 package Users;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Katelyn Wyandt
@@ -16,6 +19,7 @@ import java.util.*;
     private Map<Relationship, EmergencyContact> emergencyContacts;
     private ArrayList<String> dietaryRestrictions;
     private String tShirt;
+    private int age;
 
     /**
      * Constructor for camper class, creates new camper 
@@ -44,7 +48,7 @@ import java.util.*;
      * @param dietaryRestrictions list of camper's dietary restrictions
      * @param tShirt tShirt size
      */
-    public Camper(UUID id, String firstName, String lastName, Date birthDate, ArrayList<String> meds, ArrayList<String> allergies, Map<Relationship, EmergencyContact> emergencyContacts, ArrayList<String> dietaryRestrictions, String tShirt) {
+    public Camper(UUID id, String firstName, String lastName, Date birthDate, ArrayList<String> meds, ArrayList<String> allergies, Map<Relationship, EmergencyContact> emergencyContacts, ArrayList<String> dietaryRestrictions, String tShirt, int age) {
       this.id = id;
       this.firstName = firstName;
       this.lastName = lastName;
@@ -54,6 +58,7 @@ import java.util.*;
       this.emergencyContacts = emergencyContacts;
       this.dietaryRestrictions = dietaryRestrictions;
       this.tShirt = tShirt;
+      this.age = getAge(birthDate);
     }
 
     /**
@@ -129,6 +134,23 @@ import java.util.*;
 
     public String getTShirt() {
       return tShirt;
+    }
+
+    public int getAge(Date birthDate) {
+      //get current date
+      Date today = new Date();
+      Calendar current = Calendar.getInstance();
+      current.setTime(today);
+      Calendar birth = Calendar.getInstance();
+      current.setTime(birthDate);
+      //check the year, month, then day 
+      int age = current.get(Calendar.YEAR) - birth.get(Calendar.YEAR) -1;
+      if(birth.get(Calendar.MONTH) <= current.get(Calendar.MONTH) && birth.get(Calendar.DAY_OF_MONTH) <= current.get(Calendar.DAY_OF_MONTH))
+        age++;
+      return age;
+      //for formatting/printing
+      //DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");  
+      //String strDate = dateFormat.format(date);
     }
 
     public String toString() {
