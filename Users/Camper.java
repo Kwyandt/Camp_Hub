@@ -19,7 +19,6 @@ import java.time.temporal.ChronoUnit;
     private Map<Relationship, EmergencyContact> emergencyContacts;
     private ArrayList<String> dietaryRestrictions;
     private String tShirt;
-    private int age;
 
     /**
      * Constructor for camper class, creates new camper 
@@ -58,7 +57,6 @@ import java.time.temporal.ChronoUnit;
       this.emergencyContacts = emergencyContacts;
       this.dietaryRestrictions = dietaryRestrictions;
       this.tShirt = tShirt;
-      this.age = getAge(birthDate);
     }
 
     /**
