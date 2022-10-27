@@ -35,19 +35,19 @@
                                     "firstName":"Hank",
                                     "lastName":"Hill",
                                     "phoneNumber":"(864) 550-0029",
-                                    "location":"7751 Baymeadows Rd E, Jacksonville, FL 32256"
+                                    "location":"7751 Baymeadows Rd E, Jacksonville, SC 29650"
                                 },
                                 "DENTIST":{
                                     "firstName":"Elizabeth",
                                     "lastName":"Rosa",
                                     "phoneNumber":"(864) 304-3978",
-                                    "location":"761 Main Avenue, Suite 111, Norwalk, CT 06850"
+                                    "location":"761 Main Avenue, Suite 111, Norwalk, SC 29650"
                                 },
                                 "GUARDIAN":{
                                     "firstName":"Barbara",
                                     "lastName":"Frizzell",
                                     "phoneNumber":"(864) 771-8831",
-                                    "location":"72638 Pitahaya St, Palm Desert, CA"
+                                    "location":"72638 Pitahaya St, Palm Desert, SC 29650"
                                 }},
             "dietaryRestrictions":["Vegetarian"],
             "tShirt":"S"
@@ -63,19 +63,19 @@
                                     "firstName":"Hank",
                                     "lastName":"Hill",
                                     "phoneNumber":"(864) 550-0029",
-                                    "location":"7751 Baymeadows Rd E, Jacksonville, FL 32256"
+                                    "location":"7751 Baymeadows Rd E, Jacksonville, SC 29650"
                                 },
                                 "DENTIST":{
                                     "firstName":"Elizabeth",
                                     "lastName":"Rosa",
                                     "phoneNumber":"(864) 304-3978",
-                                    "location":"761 Main Avenue, Suite 111, Norwalk, CT 06850"
+                                    "location":"761 Main Avenue, Suite 111, Norwalk, SC 29650"
                                 },
                                 "GUARDIAN":{
                                     "firstName":"Barbara",
                                     "lastName":"Frizzell",
                                     "phoneNumber":"(864) 771-8831",
-                                    "location":"72638 Pitahaya St, Palm Desert, CA"
+                                    "location":"72638 Pitahaya St, Palm Desert, SC 29650"
                                 }},
             "dietaryRestrictions":[],
             "tShirt":"M"
@@ -90,17 +90,20 @@
             "emergencyContacts":{"DOCTOR":{
                                     "firstName":"Hank",
                                     "lastName":"Hill",
-                                    "phoneNumber":"(864) 550-0029"
+                                    "phoneNumber":"(864) 550-0029",
+                                    "location":"7751 Baymeadows Rd E, Jacksonville, SC 29650"
                                 },
                                 "DENTIST":{
                                     "firstName":"Elizabeth",
                                     "lastName":"Rosa",
-                                    "phoneNumber":"(864) 304-3978"
+                                    "phoneNumber":"(864) 304-3978",
+                                    "location":"761 Main Avenue, Suite 111, Norwalk, SC 29650"
                                 },
                                 "GUARDIAN":{
                                     "firstName":"Barbara",
                                     "lastName":"Frizzell",
-                                    "phoneNumber":"(864) 771-8831"
+                                    "phoneNumber":"(864) 771-8831",
+                                    "location":"72638 Pitahaya St, Palm Desert, SC 29650"
                                 }},
             "dietaryRestrictions":[],
             "tShirt":"L"
@@ -124,17 +127,20 @@
 	"emergencyContacts":{"DOCTOR":{
                             "firstName":"Hank",
                             "lastName":"Hill",
-                            "phoneNumber":"(864) 550-0029"
+                            "phoneNumber":"(864) 550-0029",
+                            "location":"7751 Baymeadows Rd E, Jacksonville, TX 77027"
                         },
                         "DENTIST":{
                             "firstName":"William",
                             "lastName":"Greene",
-                            "phoneNumber":"(325) 294-6829"
+                            "phoneNumber":"(325) 294-6829",
+                            "location":"3741 Landmark Dr, Columbia, TX 77027"
                         },
                         "GUARDIAN":{
                             "firstName":"Gerald",
                             "lastName":"Johnson",
-                            "phoneNumber":"(325) 754-2938"
+                            "phoneNumber":"(325) 754-2938",
+                            "location":"45 Briar Hollow Ln Houston, TX 77027"
                         }},
 	"dietaryRestrictions":[],
 	"tShirt":"M",
@@ -157,17 +163,20 @@
     "emergencyContacts":{"DOCTOR":{
                             "firstName":"Ed",
                             "lastName":"Bernard",
-                            "phoneNumber":"(804) 991-6739"
+                            "phoneNumber":"(804) 991-6739",
+                            "location":"730 Stoney Landing Rd, Moncks Corner, VA 22193"
                         },
                         "DENTIST":{
                             "firstName":"James",
                             "lastName":"Krasinki",
-                            "phoneNumber":"(804) 918-1589"
+                            "phoneNumber":"(804) 918-1589",
+                            "location":"7319 College St, Irmo, VA 23464"
                         },
                         "GUARDIAN":{
                             "firstName":"Dale",
                             "lastName":"Miller",
-                            "phoneNumber":"(865) 328-7345"
+                            "phoneNumber":"(865) 328-7345",
+                            "location":"634 Stony Avenue, Richmond, VA 23173"
                         }},
     "dietaryRestrictions":["Kosher"],
     "tShirt":"S",
@@ -190,17 +199,20 @@
     "emergencyContacts":{"DOCTOR":{
                             "firstName":"Ed",
                             "lastName":"Bernard",
-                            "phoneNumber":"(804) 991-6739"
+                            "phoneNumber":"(804) 991-6739",
+                            "location":"730 Stoney Landing Rd, Moncks Corner, VA 22193"
                         },
                         "DENTIST":{
                             "firstName":"James",
                             "lastName":"Krasinki",
-                            "phoneNumber":"(804) 918-1589"
+                            "phoneNumber":"(804) 918-1589",
+                            "location":"7319 College St, Irmo, VA 23464"
                         },
                         "GUARDIAN":{
                             "firstName":"Dale",
                             "lastName":"Miller",
-                            "phoneNumber":"(865) 328-7345"
+                            "phoneNumber":"(865) 328-7345",
+                            "location":"634 Stony Avenue, Richmond, VA 23173"
                         }},
     "dietaryRestrictions":["Kosher","Vegetarian"],
     "tShirt":"M",

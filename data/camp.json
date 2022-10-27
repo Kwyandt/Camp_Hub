@@ -123,7 +123,9 @@
                         }
                     },
                     "counselor":"25274f8a-34fd-419c-b241-f704e81700da",
-                    "campers":["8402c88d-a8c9-4f57-afba-071ad6749ca3"]
+                    "campers":["8402c88d-a8c9-4f57-afba-071ad6749ca3"],
+                    "minAge":8,
+                    "maxAge":10
                 },
                 {
                     "cabinNumber":2,
@@ -149,7 +151,9 @@
                         }
                     },
                     "counselor":"6b4ceb70-2ec9-4a39-83df-9c2feb7fe185",
-                    "campers":["3f8913bb-b642-4e08-948c-cb36c07493c5"]
+                    "campers":["3f8913bb-b642-4e08-948c-cb36c07493c5"],
+                    "minAge":14,
+                    "maxAge":16
                 },
                 {
                     "cabinNumber":3,
@@ -175,7 +179,9 @@
                         }
                     },
                     "counselor":"d788bcbd-0a8e-406f-b3d3-56703bb1a36a",
-                    "campers":["1cc30f41-26de-49bd-a6b9-27dcd3bf9318"]
+                    "campers":["1cc30f41-26de-49bd-a6b9-27dcd3bf9318"],
+                    "minAge":11,
+                    "maxAge":13
                 }
             ],
             "priorityDeadline":"14-May-2023",

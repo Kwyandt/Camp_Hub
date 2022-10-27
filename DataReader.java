@@ -201,8 +201,8 @@ public class DataReader extends DataConstants {
                     for (int i = 0; i < campersJSON.size(); i++) {
                         campers[i] = userList.getCamperByUUID(UUID.fromString((String)campersJSON.get(i)));
                     }
-                    int minAge = (int)cabinJSON.get(CABIN_MIN_AGE);
-                    int maxAge = (int)cabinJSON.get(CABIN_MAX_AGE);
+                    int minAge = ((Number)cabinJSON.get(CABIN_MIN_AGE)).intValue();
+                    int maxAge = ((Number)cabinJSON.get(CABIN_MAX_AGE)).intValue();
                     cabins.add(new Cabin(cabinNumber, schedule, counselor, campers, minAge, maxAge));
                 }
                 Date priorityDeadline = fromFormattedDate(sessionJSON.get(SESSION_PRIORITY_DEADLINE));
@@ -246,6 +246,10 @@ public class DataReader extends DataConstants {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void main(String[] args) {
+        getCamp();
     }
 
 }
