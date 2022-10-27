@@ -27,6 +27,8 @@ public abstract class DataConstants {
 	protected static final String CABIN_SCHEDULE = "schedule";
 	protected static final String CABIN_COUNSELOR = "counselor";
 	protected static final String CABIN_CAMPERS = "campers";
+	protected static final String CABIN_MIN_AGE = "minAge";
+	protected static final String CABIN_MAX_AGE = "maxAge";
 	protected static final String SCHEDULE_ACTIVITIES = "activities";
 	protected static final String USER_ID = "id";
 	protected static final String USER_TYPE = "userType";

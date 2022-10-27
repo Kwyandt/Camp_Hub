@@ -92,7 +92,8 @@ public class DataReader extends DataConstants {
                             String ECfirstName = (String)contactJSON.get(EMERGENCY_CONTACT_FIRST_NAME);
                             String EClastName = (String)contactJSON.get(EMERGENCY_CONTACT_LAST_NAME);
                             String ECphoneNumber = (String)contactJSON.get(EMERGENCY_CONTACT_PHONE_NUMBER);
-                            camperEmergencyContacts.put(relationship, new EmergencyContact(ECfirstName, EClastName, ECphoneNumber));
+                            String EClocation = (String)contactJSON.get(EMERGENCY_CONTACT_LOCATION);
+                            camperEmergencyContacts.put(relationship, new EmergencyContact(ECfirstName, EClastName, ECphoneNumber, EClocation));
                         }
                         ArrayList<String> camperDietaryRestrictions = JSONArrToArrayList(camperJSON.get(CAMPER_DIETARY_RESTRICTIONS));
                         String camperTShirt = (String)camperJSON.get(CAMPER_T_SHIRT);
@@ -124,7 +125,8 @@ public class DataReader extends DataConstants {
                         String ECfirstName = (String)contactJSON.get(EMERGENCY_CONTACT_FIRST_NAME);
                         String EClastName = (String)contactJSON.get(EMERGENCY_CONTACT_LAST_NAME);
                         String ECphoneNumber = (String)contactJSON.get(EMERGENCY_CONTACT_PHONE_NUMBER);
-                        emergencyContacts.put(relationship, new EmergencyContact(ECfirstName, EClastName, ECphoneNumber));
+                        String EClocation = (String)contactJSON.get(EMERGENCY_CONTACT_LOCATION);
+                        emergencyContacts.put(relationship, new EmergencyContact(ECfirstName, EClastName, ECphoneNumber, EClocation));
                     }
                     ArrayList<String> dietaryRestrictions = JSONArrToArrayList(userJSON.get(COUNSELOR_DIETARY_RESTRICTIONS));
                     String tShirt = (String)userJSON.get(COUNSELOR_T_SHIRT);
@@ -199,7 +201,9 @@ public class DataReader extends DataConstants {
                     for (int i = 0; i < campersJSON.size(); i++) {
                         campers[i] = userList.getCamperByUUID(UUID.fromString((String)campersJSON.get(i)));
                     }
-                    cabins.add(new Cabin(cabinNumber, schedule, counselor, campers));
+                    int minAge = ((Number)cabinJSON.get(CABIN_MIN_AGE)).intValue();
+                    int maxAge = ((Number)cabinJSON.get(CABIN_MAX_AGE)).intValue();
+                    cabins.add(new Cabin(cabinNumber, schedule, counselor, campers, minAge, maxAge));
                 }
                 Date priorityDeadline = fromFormattedDate(sessionJSON.get(SESSION_PRIORITY_DEADLINE));
                 Date regularDeadline = fromFormattedDate(sessionJSON.get(SESSION_REGULAR_DEADLINE));
@@ -242,6 +246,10 @@ public class DataReader extends DataConstants {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void main(String[] args) {
+        getCamp();
     }
 
 }

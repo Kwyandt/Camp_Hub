@@ -1,5 +1,8 @@
 package Users;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Katelyn Wyandt
@@ -129,6 +132,32 @@ import java.util.*;
 
     public String getTShirt() {
       return tShirt;
+    }
+
+    public int getAge(Date birthDate) {
+      //get current date
+      Date today = new Date();
+      Calendar current = Calendar.getInstance();
+      current.setTime(today);
+      Calendar birth = Calendar.getInstance();
+      current.setTime(birthDate);
+      //check the year, month, then day 
+      int age = current.get(Calendar.YEAR) - birth.get(Calendar.YEAR) -1;
+      if(birth.get(Calendar.MONTH) <= current.get(Calendar.MONTH) && birth.get(Calendar.DAY_OF_MONTH) <= current.get(Calendar.DAY_OF_MONTH))
+        age++;
+      return age;
+      //for formatting/printing
+      //DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");  
+      //String strDate = dateFormat.format(date);
+    }
+
+    public boolean equals (Camper aCamper) {
+      return aCamper != null&&
+        this.firstName == aCamper.getFirst()&&
+        this.lastName == aCamper.getLast () &&
+        this.birthDate == aCamper.getBirth() &&
+        this.emergencyContacts == aCamper.getEmergencyContact()&&
+        this.tShirt == aCamper.getTShirt();
     }
 
     public String toString() {
