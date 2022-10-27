@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.Map.Entry;
+
 import Users.*;
 
 public class CampManager{
@@ -102,32 +104,103 @@ public class CampManager{
         //Return true since the operation was successful
         return true;
     }
-    public void registerCamper(Camper camper, Session session){}
-    public void unregisterCamper(Camper camper, Session session){}
+    public boolean registerCamper(Camper camper, Session session){
+        return false;
+    }
+    public boolean unregisterCamper(Camper camper, Session session){
+        return false;
+    }
+    /**
+     * For parents, returns a list of the current user's campers
+     * @return ArrayList<String> The list of children
+     */
+    public ArrayList<Camper> getChildren(){
+        if(!checkPermissions("p"))
+            return null;
+        
+        return ((Parent) currentUser).getChildren();
+    }
 
 
 
     //director specific
-    public void addActivity(String name, String description, String location){}
-    public void removeActivity(int index){}
-    public void addSession(String theme, Date priorityDate, Date regularDate, Date startDate){}
-    public void removeSession(int index){}
-    public void setDiscount(Parent parent, double discount){}
-    public void addFAQ(String faq){}
-    public void removeFAQ(int index){}
-    public void addPackingItem(String item){}
-    public void removePackingItem(int index){}
-    public void assignCounselor(Session session, Counselor counselor, Cabin cabin){}
-    public void assignCamper(Session session, Camper camper, Cabin cabin){}
+    public boolean addActivity(String name, String description, String location){
+        return false;
+    }
+    public boolean removeActivity(int index){
+        return false;
+    }
+    public boolean addSession(String theme, Date priorityDate, Date regularDate, Date startDate){
+        return false;
+    }
+    public boolean removeSession(int index){
+        return false;
+    }
+    public boolean setDiscount(Parent parent, double discount){
+        return false;
+    }
+    
+    /**
+     * For directors, adds a new faq question
+     * @param q String the question to add
+     * @param a String the answer to add
+     */
+    public boolean addFAQ(String question, String answer){
+        if(!checkPermissions("d"))
+            return false;
+        camp.addFAQ(question, answer);
+        return true;
+    }
+    
+    /**
+     * For directors, removes a given faq question.
+     * @param question
+     */
+    public boolean removeFAQ(String question){
+        camp.removeFAQ(question);
+        return true;
+    }
+
+    public boolean addPackingItem(String item){
+        return false;
+    }
+    public boolean removePackingItem(int index){
+        return false;
+    }
+    public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin){
+        return false;
+    }
+    public boolean assignCamper(Session session, Camper camper, Cabin cabin){
+        return false;
+    }
 
     
 
 
     //counselor specific
-    public void registerCounselor(Counselor counselor, Session session){}
-    public void unregisterCounselor(Counselor counselor, Session session){}
-    public void addNote(String note){}
-    public void removeNote(int index){}
+    public boolean registerCounselor(Counselor counselor, Session session){
+        return false;
+    }
+    public boolean unregisterCounselor(Counselor counselor, Session session){ 
+        return false;
+    }
+    public boolean addNote(String note){
+        if(!checkPermissions("c")) 
+            return false;
+        ((Counselor) currentUser).addNote(note);
+        return true;
+    }
+    public boolean removeNote(int index){
+        if(!checkPermissions("c")) 
+            return false;
+        ((Counselor) currentUser).removeNote(index);
+        return true;
+    }
+    public ArrayList<String> getNotes(){
+        if(!checkPermissions("c")) 
+            return null;
+        return ((Counselor) currentUser).getNotes();
+    }
     
     //shared by certain users
     /**
@@ -145,8 +218,41 @@ public class CampManager{
         return true;
     }
 
-    public void viewRegistrations(){}
-    public void viewAboutPage(){}
+     /**
+     * Retrieves the user's bio, returning null if the user is a parent,
+     * and an empty string if the user has not set thier bio
+     * @return String the bio of the current user
+     */
+    public String getBio(){
+        if(!checkPermissions("dc")) 
+            return null;
+        if(currentUser.getUserType()==UserType.COUNSELOR){
+            if(((Counselor)currentUser).getBio()==null)
+                return "";
+            return ((Counselor)currentUser).getBio();
+        }
+        else{
+            if(((Director)currentUser).getBio()==null)
+                return "";
+            return ((Director)currentUser).getBio();
+        }
+    }
+
+    public String viewRegistrations(){
+        return null;
+    }
+    
+    public String getAboutPage(){
+        String info = "Camp Information:\n"+camp.getName()+"\nFAQ:";
+        for(Entry<String, String> entry : camp.getFAQs().entrySet()){
+            info += String.format("Q: %s%nA: %s%n", entry.getKey(), entry.getValue());
+        }
+        info += "\nSuggested Packing List:";
+        for(int i = 0; i < camp.getPackingList().size(); i++){
+            info += String.format("%d. %s%n", i+1, camp.getPackingList().get(i));
+        }
+        return info;
+    }
 
 
 
@@ -167,25 +273,5 @@ public class CampManager{
     }
     public UserType getType(){
         return currentUser.getUserType();
-    }
-
-    /**
-     * Retrieves the user's bio, returning null if the user is a parent,
-     * and an empty string if the user has not set thier bio
-     * @return String the bio of the current user
-     */
-    public String getBio(){
-        if(!checkPermissions("dc")) 
-            return null;
-        if(currentUser.getUserType()==UserType.COUNSELOR){
-            if(((Counselor)currentUser).getBio()==null)
-                return "";
-            return ((Counselor)currentUser).getBio();
-        }
-        else{
-            if(((Director)currentUser).getBio()==null)
-                return "";
-            return ((Director)currentUser).getBio();
-        }
     }
 }

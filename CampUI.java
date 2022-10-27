@@ -37,7 +37,11 @@ public class CampUI {
         // The manage notes menu (8)
         "Please select:\n0. Go back\n1. Add note\n2. Remove note\n",
         // The manage discounts menu (9)
-        "Please select:\n0. Go back\n1. Set discount\n"
+        "Please select:\n0. Go back\n1. Set discount\n",
+        // The manage FAQs menu (10)
+        "Please select:\n0. Go back\n1. Add FAQ\n2. Remove FAQ\n",
+        // The camper edit menu (11)
+        "Please select:\n0. Go back\n1. Update \n2. [add more]\n"
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
@@ -245,13 +249,29 @@ public class CampUI {
         do{
             clearScreen();
             System.out.println("Viewing Campers:\n");
-            System.out.println(menus[MENU]);
+            ArrayList<Camper> kids = campManager.getChildren();
+            for(int i = 0; i < kids.size(); i++){
+                System.out.printf("%d. %s %s%n", i+1, kids.get(i).getFirst(), kids.get(i).getLast());
+            }
+            if(kids.size() == 0){
+                System.out.println("No campers added yet.");
+            }
+            System.out.println("\n"+menus[MENU]);
             selection = promptInt(0,2);
 
             switch(selection){
-                case 0: exit(); break;
+                case 0: break;
                 case 1: addCamper(); break;
-                case 2: editCamper(); break;
+                case 2: 
+                    if(kids.size() == 0){
+                        System.out.println("No campers to edit.");
+                        prompt(true);
+                        break;
+                    }
+                    System.out.println("Please select camper to edit: ");
+                    int input = promptInt(1, kids.size());
+                    editCamper(input - 1); 
+                    break;
                 default: System.out.println("Something went wrong!");
             }
         }while(selection!=0);
@@ -263,28 +283,53 @@ public class CampUI {
         prompt(true);
     }
     
-    public void editCamper(){
-        clearScreen();
-        System.out.println("This is the edit camper menu. I don't do anything yet");
-        prompt(true);
+    public void editCamper(int index){
+        final int MENU = 11;
+        int selection = 0;
+        Camper camper = campManager.getChildren().get(index);
+        DateFormat formatter = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        do{
+            clearScreen();
+            System.out.println("Viewing Camper:\n");
+            System.out.printf("%-10s%s %s%n","Name: ", camper.getFirst(),camper.getLast());
+            System.out.printf("%-10s%s (Age: %d)%n","Birth: ", formatter.format(camper.getBirth()),camper.getAge(camper.getBirth()));
+            System.out.printf("%-10s%s%n","Tshirt: ",camper.getTShirt());
+            System.out.println("Allergies:");
+            for(int i = 0;  i < camper.getAllergy().size(); i++){
+                System.out.printf("    %d. %s%n",i+1,camper.getAllergy().get(i));
+            }
+            System.out.println("Dietary Restrictions:");
+            for(int i = 0;  i < camper.getDietaryRestrictions().size(); i++){
+                System.out.printf("    %d. %s%n",i+1,camper.getDietaryRestrictions().get(i));
+            }
+            System.out.println("Medications:");
+            for(int i = 0;  i < camper.getMeds().size(); i++){
+                System.out.printf("    %d. %s%n",i+1,camper.getMeds().get(i));
+            }
+            System.out.println("\n"+menus[MENU]);
+
+            selection = promptInt(0,2);
+
+
+            switch(selection){
+                case 0: break;
+                case 1: 
+                    // perform whatever action here
+                break;
+                case 2: 
+                     
+                break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
 
     /**
      * Displays camp information, then returns user to the menu
      */
     public void viewAboutPage(){
-        Camp camp = campManager.getCamp();
         clearScreen();
-        System.out.println("Camp Information:\n"+camp.getName());
-        System.out.println("\nFAQ:");
-        for(Entry<String, String> entry : camp.getFAQs().entrySet()){
-            System.out.printf("Q: %s%nA: %s%n", entry.getKey(), entry.getValue());
-        }
-        System.out.println("\nSuggested Packing List:");
-        for(int i = 0; i < camp.getPackingList().size(); i++){
-            System.out.printf("%d. %s%n", i+1, camp.getPackingList().get(i));
-        }
-        System.out.println("\nOffice Phone: "+camp.getOfficePhone()+"\n");
+        System.out.println(campManager.getAboutPage());
         prompt(true);
     }
 
@@ -316,8 +361,41 @@ public class CampUI {
 
     public void manageFAQ(){
         clearScreen();
-        System.out.println("This is the manage FAQ menu. I don't do anything yet");
-        prompt(true);
+        final int MENU = 10;
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Manage FAQs:\n\nCurrent FAQs:");
+            Map<String,String> faqs = campManager.getCamp().getFAQs();
+            Map<Integer, String> tempMap = new HashMap<Integer, String>();
+            int index = 1;
+            for(Entry<String, String> entry : faqs.entrySet()){
+                System.out.printf("%d. Q: %s%n      A: %s", index, entry.getKey(), entry.getValue());
+                tempMap.put(index, entry.getKey());
+                index++;
+            }
+
+            System.out.println("\n"+menus[MENU]);
+            selection = promptInt(0,2);
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: 
+                    System.out.println("Please enter question:");
+                    String q = prompt();
+                    System.out.println("Please enter answer:");
+                    String a = prompt();
+                    campManager.addFAQ(q, a);
+                break;
+                case 2:
+                    System.out.println("Please enter a number to remove (0 to cancel)");
+                    int input = promptInt(0, tempMap.size());
+                    if(input == 0) 
+                        break;
+                    campManager.removeFAQ(tempMap.get(index));
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
     
     public void manageDiscounts(){
@@ -334,9 +412,32 @@ public class CampUI {
 
     //These are accessible only by counselors
     public void manageNotes(){
-        clearScreen();
-        System.out.println("This is the manage notes menu. I don't do anything yet");
-        prompt(true);
+        final int MENU = 10;
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Manage Notess:\n\nCurrent Notes:");
+            ArrayList<String> notes = campManager.getNotes();
+
+            System.out.println("\n"+menus[MENU]);
+            selection = promptInt(0,2);
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: 
+                    System.out.println("Please enter note:");
+                    String note = prompt();
+                    campManager.addNote(note);
+                break;
+                case 2:
+                    System.out.println("Please enter a number to remove (0 to cancel)");
+                    int input = promptInt(0, notes.size());
+                    if(input == 0) 
+                        break;
+                    campManager.removeNote(input);
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
 
     //This method is accessible to counselors and directors
