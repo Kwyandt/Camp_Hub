@@ -4,7 +4,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -17,7 +20,7 @@ public class Schedule {
      * Constructor to create new schedule
      */
     public Schedule() {
-        this.activities = new HashMap<Date, Activity>();
+        this.activities = new TreeMap<Date, Activity>();
     }
 
     /**
@@ -63,6 +66,25 @@ public class Schedule {
      */
     public String toString() {
         return "Activities: " + this.activities.toString();
+    }
+
+    public String displayOrderedSchedule() {
+        String str = "";
+        for(Date d: activities.keySet()) {
+            str += d.toString() + " - " + activities.get(d).getName() + " - " + activities.get(d).getLocation() + "\n";
+        }
+        return str;
+    }
+
+    public void printOrderedSchedule(int sessionNumber, int cabinNumber) {
+        String str = this.displayOrderedSchedule();
+        String fileName = "session" + sessionNumber + "cabin" + cabinNumber + "schedule.txt";
+        try(FileWriter file = new FileWriter(fileName)) {
+            file.write(str);
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
