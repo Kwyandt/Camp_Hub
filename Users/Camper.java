@@ -47,7 +47,7 @@ import java.time.temporal.ChronoUnit;
      * @param dietaryRestrictions list of camper's dietary restrictions
      * @param tShirt tShirt size
      */
-    public Camper(UUID id, String firstName, String lastName, Date birthDate, ArrayList<String> meds, ArrayList<String> allergies, Map<Relationship, EmergencyContact> emergencyContacts, ArrayList<String> dietaryRestrictions, String tShirt, int age) {
+    public Camper(UUID id, String firstName, String lastName, Date birthDate, ArrayList<String> meds, ArrayList<String> allergies, Map<Relationship, EmergencyContact> emergencyContacts, ArrayList<String> dietaryRestrictions, String tShirt) {
       this.id = id;
       this.firstName = firstName;
       this.lastName = lastName;

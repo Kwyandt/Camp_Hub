@@ -34,17 +34,20 @@
             "emergencyContacts":{"DOCTOR":{
                                     "firstName":"Hank",
                                     "lastName":"Hill",
-                                    "phoneNumber":"(864) 550-0029"
+                                    "phoneNumber":"(864) 550-0029",
+                                    "location":"7751 Baymeadows Rd E, Jacksonville, FL 32256"
                                 },
                                 "DENTIST":{
                                     "firstName":"Elizabeth",
                                     "lastName":"Rosa",
-                                    "phoneNumber":"(864) 304-3978"
+                                    "phoneNumber":"(864) 304-3978",
+                                    "location":"761 Main Avenue, Suite 111, Norwalk, CT 06850"
                                 },
                                 "GUARDIAN":{
                                     "firstName":"Barbara",
                                     "lastName":"Frizzell",
-                                    "phoneNumber":"(864) 771-8831"
+                                    "phoneNumber":"(864) 771-8831",
+                                    "location":"72638 Pitahaya St, Palm Desert, CA"
                                 }},
             "dietaryRestrictions":["Vegetarian"],
             "tShirt":"S"
@@ -59,17 +62,20 @@
             "emergencyContacts":{"DOCTOR":{
                                     "firstName":"Hank",
                                     "lastName":"Hill",
-                                    "phoneNumber":"(864) 550-0029"
+                                    "phoneNumber":"(864) 550-0029",
+                                    "location":"7751 Baymeadows Rd E, Jacksonville, FL 32256"
                                 },
                                 "DENTIST":{
                                     "firstName":"Elizabeth",
                                     "lastName":"Rosa",
-                                    "phoneNumber":"(864) 304-3978"
+                                    "phoneNumber":"(864) 304-3978",
+                                    "location":"761 Main Avenue, Suite 111, Norwalk, CT 06850"
                                 },
                                 "GUARDIAN":{
                                     "firstName":"Barbara",
                                     "lastName":"Frizzell",
-                                    "phoneNumber":"(864) 771-8831"
+                                    "phoneNumber":"(864) 771-8831",
+                                    "location":"72638 Pitahaya St, Palm Desert, CA"
                                 }},
             "dietaryRestrictions":[],
             "tShirt":"M"
