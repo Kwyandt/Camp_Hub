@@ -153,6 +153,15 @@ import java.time.temporal.ChronoUnit;
       //String strDate = dateFormat.format(date);
     }
 
+    public boolean equals (Camper aCamper) {
+      return aCamper != null&&
+        this.firstName == aCamper.getFirst()&&
+        this.lastName == aCamper.getLast () &&
+        this.birthDate == aCamper.getBirth() &&
+        this.emergencyContacts == aCamper.getEmergencyContact()&&
+        this.tShirt == aCamper.getTShirt();
+    }
+
     public String toString() {
       return this.id + "\n" + this.firstName + "\n" + this.lastName + "\n" + this.birthDate.toString() + "\n" + this.meds.toString() + "\n" + this.allergies.toString() + "\n" + this.emergencyContacts.toString() + "\n" + this.dietaryRestrictions.toString() + "\n" + this.tShirt;
     }
