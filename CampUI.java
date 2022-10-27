@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.Map.Entry;
+
 import Users.*;
 
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class CampUI {
         // The register camper menu (after you select a session to register for) (5)
         "Please select a camper to register:\n0. Go back\n1. Add camper",
         // The manage account menu (6)
-        "Please select:\n1. Update email\n3. Update password\n3. Update phone number\n4. Update security question\n",
+        "Please select:\n0. Go back\n1. Update email\n3. Update password\n3. Update phone number\n4. Update security question\n",
         // The manage bio menu (7)
         "Please select:\n0. Go back\n1. Update bio\n",
         // The manage notes menu (8)
@@ -41,7 +43,7 @@ public class CampUI {
     // A massive list of 'forms', which are just arrays of prompts (strings)
     private final String[][] forms = {
         {   // The prompts for createUser()
-            "Please enter user type:\n1. Parent\n2. Director\n3. Counselor\n",
+            "Please enter user type:\n1. Parent\n2. Counselor\n",
             "Please enter email",
             "Please enter password:",
             "Please enter first name:",
@@ -119,18 +121,19 @@ public class CampUI {
             System.out.println(forms[FORM][index]);
             switch(index){
                 case 0:     // The user type selection prompt
-                    data[index] = promptInt(1,3);
+                    data[index] = promptInt(1,2);
+                    break;
                 case 7:     // The security question selection prompt
                     ArrayList<String> questions = campManager.getCamp().getSecurityQuestions();
                     for(int i=0; i<questions.size();i++){
                         System.out.printf("%-4s%s%n",(i+1)+".", questions.get(i));
                     }
-                    System.out.println(); // just inserting a newline for readability
-                    data[index] = promptInt(1,questions.size());
-                break;
+                    System.out.println(); // inserting a newline for readability
+                    data[index] = promptInt(1, questions.size());
+                    break;
                 case 6:     // The birthdate selection prompt
                     data[index] = promptDate();
-                break;
+                    break;
                 default:
                     data[index] = prompt();
             }
@@ -139,8 +142,7 @@ public class CampUI {
         UserType type = UserType.PARENT; 
         switch((int)data[0]){
             case 1: type = UserType.PARENT; break;
-            case 2: type = UserType.DIRECTOR; break;
-            case 3: type = UserType.COUNSELOR; break;
+            case 2: type = UserType.COUNSELOR; break;
         }
         // grab the appropriate question from the input array (have to decrement b/c input is 1 indexed)
         String question = campManager.getCamp().getSecurityQuestions().get(((int)data[7]) - 1);
@@ -148,8 +150,9 @@ public class CampUI {
         Map<String, String> securityQuestion = new HashMap<String, String>();
         securityQuestion.put(question, (String) data[8]);
 
-        boolean success = campManager.createUser(type,(String)data[1],(String)data[2],(String)data[3],
-                                (String)data[4],(String)data[5],(Date)data[6],securityQuestion);
+        // attempt to create the user now that we have all the necessary info
+        boolean success = campManager.createUser(type, (String) data[1], (String) data[2], (String) data[3],
+                                (String) data[4], (String) data[5], (Date) data[6], securityQuestion);
 
         if(success)
             System.out.println("Account created successfully! You can now proceed to login");
@@ -266,14 +269,22 @@ public class CampUI {
         prompt(true);
     }
 
+    /**
+     * Displays camp information, then returns user to the menu
+     */
     public void viewAboutPage(){
+        Camp camp = campManager.getCamp();
         clearScreen();
-        System.out.println("Camp Information:");
-        System.out.println("[Name]\n\nFAQ:");
-        System.out.println("[LIST FAQs]\n");
-        System.out.println("Suggested Packing List:");
-        System.out.println("[PACKING LIST]\n");
-        System.out.println("Office Phone: "+"[OFFICE PHONE]\n");
+        System.out.println("Camp Information:\n"+camp.getName());
+        System.out.println("\nFAQ:");
+        for(Entry<String, String> entry : camp.getFAQs().entrySet()){
+            System.out.printf("Q: %s%nA: %s%n", entry.getKey(), entry.getValue());
+        }
+        System.out.println("\nSuggested Packing List:");
+        for(int i = 0; i < camp.getPackingList().size(); i++){
+            System.out.printf("%d. %s%n", i+1, camp.getPackingList().get(i));
+        }
+        System.out.println("\nOffice Phone: "+camp.getOfficePhone()+"\n");
         prompt(true);
     }
 
@@ -371,7 +382,7 @@ public class CampUI {
 
     //These methods are accessible to any logged in user
     public void manageAccount(){
-        final int MENU = 7;
+        final int MENU = 6;
         int selection = 0;
         DateFormat formatter = DateFormat.getDateInstance();
         User user = campManager.getUser();
@@ -385,15 +396,25 @@ public class CampUI {
             System.out.printf(format,"email:",user.getEmail());
             System.out.printf(format,"phone:",user.getPhone());
             //currently null errors for some reason
-            //System.out.printf(format,"birth:",formatter.format(user.getBirthDate()));
+            System.out.printf(format,"birth:",formatter.format(user.getBirthDate()));
 
-            System.out.println(menus[MENU]);
-            selection = promptInt(0,2);
+            System.out.println("\n"+menus[MENU]);
+            selection = promptInt(0,4);
 
             switch(selection){
                 case 0: exit(); break;
-                case 1: addCamper(); break;
-                case 2: editCamper(); break;
+                case 1: 
+                    // Prompt to update email
+                    break;
+                case 2: 
+                    // Prompt to update pass 
+                    break;
+                case 3:
+                    // Prompt to update phone
+                    break;
+                case 4:
+                    // Prompt to update question and answer
+                    break;
                 default: System.out.println("Something went wrong!");
             }
         }while(selection!=0);
