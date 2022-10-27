@@ -195,6 +195,7 @@ public class DataWriter extends DataConstants {
             contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
             contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
             contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());
+            contactDetails.put(EMERGENCY_CONTACT_LOCATION, ec.getLocation());
             // organizes contact with its relation
             contactObject.put(relation, contactDetails);
         }
@@ -238,6 +239,7 @@ public class DataWriter extends DataConstants {
             contactDetails.put(EMERGENCY_CONTACT_FIRST_NAME, ec.getFirst());
             contactDetails.put(EMERGENCY_CONTACT_LAST_NAME, ec.getLast());
             contactDetails.put(EMERGENCY_CONTACT_PHONE_NUMBER, ec.getPhone());
+            contactDetails.put(EMERGENCY_CONTACT_LOCATION, ec.getLocation());
             // organizes contact with its relation
             contactObject.put(relation, contactDetails);
         }

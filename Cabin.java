@@ -12,15 +12,19 @@ public class Cabin {
     private Schedule schedule;
     private Counselor counselor;
     private Camper[] campers = new Camper[8];
+    private int minAge;
+    private int maxAge;
 
     /***
      * Creates a new cabin
      * @param schedule schedule for the cabin
      * @param counselor counselor of the cabin
      */
-    public Cabin(Schedule schedule, Counselor counselor) {
+    public Cabin(Schedule schedule, Counselor counselor, int minAge, int maxAge) {
         this.schedule = schedule;
         this.counselor = counselor;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
     }
 
     /***
@@ -30,11 +34,13 @@ public class Cabin {
      * @param counselor counselor of the cabin
      * @param campers campers in the cabin
      */
-    public Cabin(int cabinNumber, Schedule schedule, Counselor counselor, Camper[] campers){
+    public Cabin(int cabinNumber, Schedule schedule, Counselor counselor, Camper[] campers, int minAge, int maxAge){
         this.cabinNumber = cabinNumber;
         this.schedule = schedule;
         this.counselor = counselor;
         this.campers = campers;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
     }
 
     /***
@@ -107,7 +113,7 @@ public class Cabin {
      */
     public String viewSchedule(){
         String toReturn = "";
-        for(int i =0; i<schedule.size; i++) {
+        for(int i =0; i<schedule.getActivities().size(); i++) {
             toReturn = toReturn + "\n" + schedule.toString();
         }
         return toReturn;
@@ -143,6 +149,23 @@ public class Cabin {
      */
     public Camper[] getCampers(){
         return campers;
+    }
+
+    public int getMinAge () {
+        return minAge;
+    }
+
+    public int getMaxAge () {
+        return maxAge;
+    }
+
+    /**
+     * Equals method for cabin
+     * @param cabin to be compared to this.cabin
+     * @return boolean true or false
+     */
+    public boolean equals (Cabin cabin) {
+        return false;
     }
 
     /***

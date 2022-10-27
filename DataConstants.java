@@ -62,5 +62,6 @@ public abstract class DataConstants {
 	protected static final String EMERGENCY_CONTACT_FIRST_NAME = "firstName";
 	protected static final String EMERGENCY_CONTACT_LAST_NAME = "lastName";
 	protected static final String EMERGENCY_CONTACT_PHONE_NUMBER = "phoneNumber";
+	protected static final String EMERGENCY_CONTACT_LOCATION = "location";
 }
 
