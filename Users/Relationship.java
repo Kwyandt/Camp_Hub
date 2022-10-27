@@ -8,5 +8,6 @@ package Users;
  public enum Relationship {
     DENTIST,
     DOCTOR,
-    GUARDIAN
+    GUARDIAN,
+    OTHER
  }
