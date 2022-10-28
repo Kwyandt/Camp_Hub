@@ -112,6 +112,48 @@ import java.util.*;
         return notes;
     }
 
+    /**
+     * Method to add medicine to arraylist of meds
+     * @param med the medicine being added
+     */
+    public void addMed(String med) {
+        this.meds.add(med);
+      }
+  
+      /**
+       * Method to remove medicine from list of meds
+       * @param index index of medicine to be removed
+       * @return false if index is out of range of meds, true otherwise
+       */
+      public boolean removeMed(int index) {
+        if(index < 0 || index >= meds.size()) {
+          return false;
+        }
+        this.meds.remove(index);
+        return true;
+      }
+  
+      /**
+       * Method to add allergy to list of allergies
+       * @param allergy allergy of camper
+       */
+      public void addAllergy(String allergy) {
+        this.allergies.add(allergy);
+      }
+  
+      /**
+       * Method to remove allergy from list of allergies
+       * @param index index of allergy to be removed
+       * @return false if index is out of range of allergies, true otherwise
+       */
+      public boolean removeAllergy(int index) {
+        if(index < 0 || index >= allergies.size()) {
+          return false;
+        }
+        this.allergies.remove(index);
+        return true;
+      }
+
     public String toString() {
         return "Counselor: " + super.toString() + "\n\t" + meds.toString() + "\n\t" + allergies.toString() + "\n\t" + emergencyContacts.toString() + "\n\t" + dietaryRestrictions.toString() + "\n\t" + tShirt + "\n\t" + bio + "\n\t" + notes.toString();
     }

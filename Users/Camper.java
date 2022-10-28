@@ -60,11 +60,24 @@ import java.time.temporal.ChronoUnit;
     }
 
     /**
-     * Method to add medicine to arraulist of meds
+     * Method to add medicine to arraylist of meds
      * @param med the medicine being added
      */
     public void addMed(String med) {
       this.meds.add(med);
+    }
+
+    /**
+     * Method to remove medicine from list of meds
+     * @param index index of medicine to be removed
+     * @return false if index is out of range of meds, true otherwise
+     */
+    public boolean removeMed(int index) {
+      if(index < 0 || index >= meds.size()) {
+        return false;
+      }
+      this.meds.remove(index);
+      return true;
     }
 
     /**
@@ -73,6 +86,19 @@ import java.time.temporal.ChronoUnit;
      */
     public void addAllergy(String allergy) {
       this.allergies.add(allergy);
+    }
+
+    /**
+     * Method to remove allergy from list of allergies
+     * @param index index of allergy to be removed
+     * @return false if index is out of range of allergies, true otherwise
+     */
+    public boolean removeAllergy(int index) {
+      if(index < 0 || index >= allergies.size()) {
+        return false;
+      }
+      this.allergies.remove(index);
+      return true;
     }
 
     /**
