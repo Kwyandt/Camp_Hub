@@ -254,6 +254,21 @@ public class CampManager{
         return info;
     }
 
+    public boolean setEmail(String email) {
+        if(users.getUser(email)!=null)
+            return false;
+        // TODO: waiting for setters
+        return false;
+    }
+
+    public boolean setPass(String oldPass, String newPass){
+        return currentUser.changePassword(oldPass, newPass);
+    }    
+
+    public boolean setPhone(String phone) {
+        // TODO: waiting for setters
+        return false;
+	}
 
 
     // These methods may or may not actually be in the final version
@@ -274,4 +289,6 @@ public class CampManager{
     public UserType getType(){
         return currentUser.getUserType();
     }
+
+	
 }
