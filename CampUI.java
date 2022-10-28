@@ -206,7 +206,7 @@ public class CampUI {
                     selection = promptInt(0,5);
                     switch(selection){
                         case 0: logoutUser(); break;
-                        case 1: manageSessions(); break;
+                        case 1: viewSessions(); break;
                         case 2: manageActivities(); break;
                         case 3: manageFAQ(); break;
                         case 4: manageBio(); break;
@@ -218,7 +218,7 @@ public class CampUI {
                     selection = promptInt(0,5);
                     switch(selection){
                         case 0: logoutUser(); break;
-                        case 1: registerForCamp(); break;
+                        case 1: viewSessions(); break;
                         case 2: viewRegistrations(); break;
                         case 3: manageNotes(); break;
                         case 4: manageBio(); break;
@@ -230,7 +230,7 @@ public class CampUI {
                     selection = promptInt(0,5);
                     switch(selection){
                         case 0: logoutUser(); break;
-                        case 1: registerForCamp(); break;
+                        case 1: viewSessions(); break;
                         case 2: viewRegistrations(); break;
                         case 3: manageCampers(); break;
                         case 4: viewAboutPage(); break;
@@ -335,7 +335,7 @@ public class CampUI {
 
 
     //These are accessible only by directors
-    public void manageSessions(){
+    public void manageSession(int index){
         clearScreen();
         System.out.println("This is the manage sessions menu. I don't do anything yet");
         prompt(true);
@@ -468,13 +468,56 @@ public class CampUI {
         }while(selection!=0);
     }
 
-    //This method is accessible to counselors and parents
-    public void registerForCamp(){
-        //TODO: Needs to perform different operations based on user type
-        clearScreen();
-        System.out.println("This is the sign up for camp menu. I don't do anything yet");
-        prompt(true);
+    /**
+     * All users have some form of viewing and selecting from a list of sessions:
+     *  - Parents & Counselors can register (in slightly different ways)
+     *  - Directors can view a list of sessions and edit those sessions
+     * 
+     * So this method handles all of those abilities, similar to the userMenu
+     */
+    public void viewSessions(){
+        int selection =0;
+        do{
+            System.out.println("Viewing Sessions:\n\n0. Go back");
+            //print sessions
+            System.out.println("\nPlease select a session to see more information:");
+            selection = promptInt(0,0);
+            if(selection==0)
+                break;
+            switch(campManager.getUser().getUserType()){
+                case DIRECTOR:
+                    manageSession(selection-1);
+                    break;
+                case PARENT:
+                case COUNSELOR:
+                    registerForSession(selection-1);
+                    break;
+            }
+        }while(selection != 0);
     }
+
+    public void registerForSession(int index){
+        System.out.println("Registering for session!\n\n");
+        // Grab session object, print information
+
+        /* switch(campManager.getUser().getUserType()){
+            case COUNSELOR:
+                break;
+            case PARENT:
+                if(campManager.getChildren().size()==0)
+                    System.out.println("(No campers registered yet, please add a camper)");
+                else{
+                    for(Camper c : ((Parent)campManager.getUser()).getChildren()){
+                        System.out.printf("")
+                    }
+                }
+                System.out.println("Please select")
+                break;
+            default:
+        } */
+    }
+
+    //This method is accessible to counselors and parents
     public void viewRegistrations(){
         clearScreen();
         System.out.println("This is the view current registrations menu. I don't do anything yet");
@@ -504,11 +547,25 @@ public class CampUI {
 
             switch(selection){
                 case 0: exit(); break;
-                case 1: 
-                    // Prompt to update email
+                case 1:
+                    System.out.println("Please enter new email: ");
+                    String input = prompt();
+                    if(!campManager.setEmail(input)){
+                        System.out.println("Email change unsuccessful. Likely another user with that email already exists!");
+                        prompt(true);
+                    }
                     break;
                 case 2: 
-                    // Prompt to update pass 
+                    System.out.println("Please enter old password: ");
+                    String oldPass = prompt();
+                    System.out.println("Please enter new password: ");
+                    String newPass = prompt();
+                    if(!campManager.setPass(oldPass, newPass)){
+                        System.out.println("Password change unsuccessful.");
+                        prompt(true);
+                    }
+                    System.out.println("Password change successful.");
+                    prompt(true);
                     break;
                 case 3:
                     // Prompt to update phone
