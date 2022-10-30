@@ -97,6 +97,6 @@ public class Activity {
      * @return String representation of Activity
      */
     public String toString() {
-        return "Activity with id " + this.id + ", name " + this.name + ", description " + this.description + ", location " + this.location + ".";
+        return name + " - " + description;
     }
 }
