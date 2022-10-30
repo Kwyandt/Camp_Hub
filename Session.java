@@ -255,6 +255,6 @@ public class Session {
      * @return String representation of session
      */
     public String toString() {
-        return "Session:\n\t" + this.price + "\n\t" + this.theme + "\n\t" + this.description + "\n\t" + this.cabins.toString() + "\n\t" + this.priorityDeadline + "\n\t" + this.regularDeadline + "\n\t" + this.startDate + "\n\t" + this.endDate;
+        return theme + " " + price + " " + startDate + " - " + endDate;
     }
 }
