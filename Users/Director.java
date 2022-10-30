@@ -95,6 +95,6 @@ public class Director extends User{
     }
 
     public String toString() {
-        return "director";
+        return super.toString() + "\n\tDirector";
     }
 }
