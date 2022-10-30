@@ -1,13 +1,21 @@
 import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.UUID;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -20,7 +28,7 @@ public class Schedule {
      * Constructor to create new schedule
      */
     public Schedule() {
-        this.activities = new LinkedHashMap<Date, Activity>();
+        this.activities = new TreeMap<Date, Activity>();
     }
 
     /**
@@ -68,16 +76,38 @@ public class Schedule {
         return "Activities: " + this.activities.toString();
     }
 
-    public String displayOrderedSchedule() {
+    /**
+     * Creates a String visualizing the cabin's schedule
+     * @param sessionNumber session of specific cabin
+     * @param cabinNumber cabin number
+     * @return String representation of schedule
+     */
+    public String displayOrderedSchedule(int sessionNumber, int cabinNumber) {
         String str = "";
+        str += "Schedule for Session " + sessionNumber + ", Cabin " + cabinNumber + "\n\n\n";
+        // array tracking if day has been printed yet
+        boolean[] days = new boolean[7];
+        String dashes = "---------------------";
         for(Date d: activities.keySet()) {
-            str += d.toString() + " - " + activities.get(d).getName() + " - " + activities.get(d).getLocation() + "\n";
+            Instant i = d.toInstant();
+            LocalDateTime ldt = LocalDateTime.ofInstant(i, ZoneId.systemDefault());
+            // day has not been printed yet
+            if(!days[dayToNumber(ldt.getDayOfWeek())]) {
+                str += dashes + ldt.getDayOfWeek() + ", " + ldt.getMonth() + " " + ldt.getDayOfMonth() + dashes + "\n";
+                days[dayToNumber(ldt.getDayOfWeek())] = true;
+            }
+            str += ldt.getHour() + ":" + ldt.getMinute() + " - " + activities.get(d).getName() + " at " + activities.get(d).getLocation() + "\n";
         }
         return str;
     }
 
+    /**
+     * Saves schedule to a txt file
+     * @param sessionNumber session of specific cabin
+     * @param cabinNumber cabin number
+     */
     public void printOrderedSchedule(int sessionNumber, int cabinNumber) {
-        String str = this.displayOrderedSchedule();
+        String str = this.displayOrderedSchedule(sessionNumber, cabinNumber);
         String fileName = "session" + sessionNumber + "cabin" + cabinNumber + "schedule.txt";
         try(FileWriter file = new FileWriter(fileName)) {
             file.write(str);
@@ -94,5 +124,103 @@ public class Schedule {
      */
     public boolean equals(Schedule otherSchedule) {
         return activities.equals(otherSchedule.getActivities());
+    }
+
+    /**
+     * DELETES all current activities, and then populates meal times
+     * and randomly chosen activities throughout the days.
+     * @param start Start date of the session
+     * @param end End date of the session
+     */
+    public void randomlyPopulate(Date start, Date end) {
+        // Deletes old activities
+        this.activities = new TreeMap<Date, Activity>();
+        // Set up constants: meals are in order breakfast, lunch, dinner
+        Activity[] mealActivities = {
+            Camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
+            Camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
+            Camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
+        };
+        int[] mealTimes = {8,13,18};
+        int[] activityTimes = {9,10,15,16};
+        LocalDateTime startLDT = LocalDateTime.ofInstant(start.toInstant(), ZoneId.systemDefault());
+        LocalDateTime endLDT = LocalDateTime.ofInstant(end.toInstant(), ZoneId.systemDefault());
+        int numDays = ((Number)ChronoUnit.DAYS.between(startLDT, endLDT)).intValue();
+        // Dinner evening after arriving
+        LocalDateTime dinnerStart = startLDT.withHour(mealTimes[2]);
+        this.activities.put(Date.from(dinnerStart.atZone(ZoneId.systemDefault()).toInstant()), mealActivities[2]);
+        // Loops through all the days between the start and end
+        for (int day = 1; day < numDays; day++) {
+            // Generate activities
+            LocalDateTime dayLDT = startLDT.plusDays(day);
+            LocalDateTime[] meals = new LocalDateTime[mealTimes.length];
+            for (int meal = 0; meal < meals.length; meal++)
+                meals[meal] = dayLDT.withHour(mealTimes[meal]);
+            LocalDateTime[] activities = new LocalDateTime[activityTimes.length];
+            for (int activity = 0; activity < activities.length; activity++)
+                activities[activity] = dayLDT.withHour(activityTimes[activity]);
+            Activity[] randomActivities = chooseKRandomActivities(activities.length);
+            // Add in activities
+            this.activities.put(Date.from(meals[0].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[0]);
+            this.activities.put(Date.from(activities[0].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[0]);
+            this.activities.put(Date.from(activities[1].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[1]);
+            this.activities.put(Date.from(meals[1].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[1]);
+            this.activities.put(Date.from(activities[2].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[2]);
+            this.activities.put(Date.from(activities[3].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[3]);
+            this.activities.put(Date.from(meals[2].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[2]);
+        }
+        // Breakfast morning before leaving
+        LocalDateTime breakfastEnd = endLDT.withHour(mealTimes[0]);
+        this.activities.put(Date.from(breakfastEnd.atZone(ZoneId.systemDefault()).toInstant()), mealActivities[0]);
+    }
+
+    private int dayToNumber(DayOfWeek day) {
+        switch(day) {
+            case SUNDAY:
+                return 0;
+            case MONDAY:
+                return 1;
+            case TUESDAY:
+                return 2;
+            case WEDNESDAY:
+                return 3;
+            case THURSDAY:
+                return 4;
+            case FRIDAY:
+                return 5;
+            case SATURDAY:
+                return 6;
+        }
+        return -1;
+    }
+
+    // Returns k random non-meal activities from Camp.Activities. If there are
+    // fewer than k activities, the whole list is returned.
+    // Precondition: Camp.activities is not null
+    private Activity[] chooseKRandomActivities(int k) {
+        ArrayList<Activity> activities = Camp.getActivities();
+        // Remove meal activities from list of options
+        Activity[] mealActivities = {
+            Camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
+            Camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
+            Camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
+        };
+        for (int i = 0; i < mealActivities.length; i++)
+            activities.remove(mealActivities[i]);
+        if (k >= activities.size())
+            return activities.toArray(new Activity[activities.size()]);
+        Activity[] activitiesToReturn = new Activity[k];
+        for (int i = 0; i < k; i++)
+            activitiesToReturn[i] = activities.remove((int)(Math.random()*activities.size()));
+        return activitiesToReturn;
+    }
+
+    public static void main(String[] args) throws ParseException {
+        DataReader.getCamp();
+        Date start = new SimpleDateFormat("dd-MMM-yyyy").parse("18-Jun-2023");
+        Date end = new SimpleDateFormat("dd-MMM-yyyy").parse("24-Jun-2023");
+        Schedule schedule = SessionList.getInstance().getSession(start).getCabin(2).getSchedule();
+        schedule.randomlyPopulate(start, end);
+        System.out.println(schedule.displayOrderedSchedule(1, 2));
     }
 }

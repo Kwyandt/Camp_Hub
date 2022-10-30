@@ -12,7 +12,7 @@ public class Camp {
     private SessionList sessions;
     private Map<String, String> faqs;
     private ArrayList<String> securityQuestions;
-    private ArrayList<Activity> activities;
+    private static ArrayList<Activity> activities;
     private String officePhone;
     private ArrayList<String> packingList;
 
@@ -26,7 +26,7 @@ public class Camp {
         this.sessions = SessionList.getInstance();
         this.faqs = new HashMap<String, String>();
         this.securityQuestions = new ArrayList<String>();
-        this.activities = new ArrayList<Activity>();
+        Camp.activities = new ArrayList<Activity>();
         this.officePhone = officePhone;
         this.packingList = new ArrayList<String>();
     }
@@ -45,7 +45,7 @@ public class Camp {
         this.sessions = sessions;
         this.faqs = faqs;
         this.securityQuestions = securityQuestions;
-        this.activities = activities;
+        Camp.activities = activities;
         this.officePhone = officePhone;
         this.packingList = packingList;
     }
@@ -54,24 +54,27 @@ public class Camp {
      * Adds activity to activities ArrayList 
      * @param activity activity to be added
      */
-    public void addActivity(Activity activity) {
-        this.activities.add(activity);
+    public static void addActivity(Activity activity) {
+        Camp.activities.add(activity);
     }
 
     /***
      * Removes activity at specified index
      * @param index index of activity to be removed
      */
-    public void removeActivity(int index) {
-        this.activities.remove(index);
+    public static void removeActivity(int index) {
+        Camp.activities.remove(index);
     }
 
-    public Activity getActivitiyByUUID(UUID id) {
-        for (Activity activity : activities) {
-            if (activity.getId().equals(id)) {
+    /**
+     * Finds a certain activity with a given UUID and returns it
+     * @param id Gets a particular activity by UUID
+     * @return Activity with given UUID
+     */
+    public static Activity getActivityByUUID(UUID id) {
+        for (Activity activity : activities)
+            if (activity.getId().equals(id))
                 return activity;
-            }
-        }
         return null;
     }
 
@@ -152,7 +155,7 @@ public class Camp {
      * Accessor method for activities
      * @return activities of the camp
      */
-    public ArrayList<Activity> getActivities() {
+    public static ArrayList<Activity> getActivities() {
         return activities;
     }
 
@@ -177,6 +180,6 @@ public class Camp {
      * @return String representation of the camp
      */
     public String toString() {
-        return this.name + "\n" + this.sessions + "\n" + this.faqs + "\n" + this.securityQuestions + "\n" + this.activities + "\n" + this.officePhone + "\n" + this.packingList;
+        return this.name + "\n" + this.sessions + "\n" + this.faqs + "\n" + this.securityQuestions + "\n" + Camp.activities + "\n" + this.officePhone + "\n" + this.packingList;
     }
 }

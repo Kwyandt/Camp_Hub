@@ -168,6 +168,40 @@ public class Cabin {
         return false;
     }
 
+    /**
+     * Shows all vital info about each camper
+     * @return formatted String detailing camper vitals
+     */
+    public String getAllCampersInfo() {
+        String str = "";
+        String dashes = "---------------------";
+        for(Camper c: campers) {
+            if(c == null) {
+                continue;
+            }
+            str += dashes + " " + c.getFirst() + " " + c.getLast() + " " + dashes + "\n";
+            str += "Allergies: ";
+            for(String a: c.getAllergy()) {
+                str += a + ", ";
+            }
+            // cuts off extra comma
+            str = str.substring(0, str.length()-2);
+            str += "\n";
+            str += "Medications: ";
+            for(String m: c.getMeds()) {
+                str += m + ", ";
+            }
+            str = str.substring(0, str.length()-2);
+            str += "\n";
+            str += "Emergency contacts: ";
+            for(Relationship r: c.getEmergencyContact().keySet()) {
+                EmergencyContact ec = c.getEmergencyContact().get(r);
+                str += r.toString().toLowerCase() + ": " + ec.getFirst() + " " + ec.getLast() + ", " + ec.getLocation() + ", " + ec.getPhone() + "\n";
+            }
+        }
+        return str;
+    }
+
     /***
      * toString for Cabin
      * @return String representation of Cabin
