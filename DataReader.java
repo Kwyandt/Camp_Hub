@@ -218,7 +218,7 @@ public class DataReader extends DataConstants {
             ArrayList<String> securityQuestions = JSONArrToArrayList(campJSON.get(CAMP_SECURITY_QUESTIONS));
             String officePhone = (String)campJSON.get(CAMP_OFFICE_PHONE);
             ArrayList<String> packingList = JSONArrToArrayList(campJSON.get(CAMP_PACKING_LIST));
-            return new Camp(name, sessions, faqs, securityQuestions, activities, officePhone, packingList);
+            return new Camp(name, faqs, securityQuestions, activities, officePhone, packingList);
         } catch (Exception e) {
             e.printStackTrace();
         }

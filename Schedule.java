@@ -215,12 +215,12 @@ public class Schedule {
         return activitiesToReturn;
     }
 
-    public static void main(String[] args) throws ParseException {
+    /*public static void main(String[] args) throws ParseException {
         DataReader.getCamp();
         Date start = new SimpleDateFormat("dd-MMM-yyyy").parse("18-Jun-2023");
         Date end = new SimpleDateFormat("dd-MMM-yyyy").parse("24-Jun-2023");
         Schedule schedule = SessionList.getInstance().getSession(start).getCabin(2).getSchedule();
         schedule.randomlyPopulate(start, end);
         System.out.println(schedule.displayOrderedSchedule(1, 2));
-    }
+    }*/
 }
