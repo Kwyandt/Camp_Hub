@@ -367,11 +367,11 @@ public class CampUI {
             clearScreen();
             System.out.println("Manage FAQs:\n\nCurrent FAQs:");
             Map<String,String> faqs = campManager.getCamp().getFAQs();
-            Map<Integer, String> tempMap = new HashMap<Integer, String>();
-            int index = 1;
-            for(Entry<String, String> entry : faqs.entrySet()){
-                System.out.printf("%d. Q: %s%n      A: %s", index, entry.getKey(), entry.getValue());
-                tempMap.put(index, entry.getKey());
+            String[] questions = new String[faqs.size()];
+            int index = 0;
+            for(String key : faqs.keySet()){
+                System.out.printf("%d. Q: %s%n      A: %s", index, key, faqs.get(key));
+                questions[index] = key;
                 index++;
             }
 
@@ -389,10 +389,10 @@ public class CampUI {
                 break;
                 case 2:
                     System.out.println("Please enter a number to remove (0 to cancel)");
-                    int input = promptInt(0, tempMap.size());
+                    int input = promptInt(0, questions.length);
                     if(input == 0) 
                         break;
-                    campManager.removeFAQ(tempMap.get(index));
+                    campManager.removeFAQ(questions[input]);
                 default: System.out.println("Something went wrong!");
             }
         }while(selection!=0);
