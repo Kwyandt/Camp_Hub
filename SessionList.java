@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import Users.*;
+
 public class SessionList {
     
     private ArrayList<Session> sessions;
@@ -135,6 +137,40 @@ public class SessionList {
      */
     public ArrayList<Session> getAllSessions() {
         return sessions;
+    }
+
+    /**
+     * Provides an ArrayList of sessions containing specified camper
+     * @param c camper to get all sessions for
+     * @return all sessions containing camper
+     */
+    public ArrayList<Session> getCamperSessions(Camper c) {
+        ArrayList<Session> ret = new ArrayList<Session>();
+        for(Session s: sessions) {
+            for(Cabin cab: s.getCabins()) {
+                if(cab.camperInCabin(c)) {
+                    ret.add(s);
+                }
+            }
+        }
+        return ret;
+    }
+    
+     /**
+     * Provides an ArrayList of sessions containing specified counselor
+     * @param c counselor to get all sessions for
+     * @return all sessions containing counselor
+     */
+    public ArrayList<Session> getCounselorSessions(Counselor c) {
+        ArrayList<Session> ret = new ArrayList<Session>();
+        for(Session s: sessions) {
+            for(Cabin cab: s.getCabins()) {
+                if(cab.counselorInCabin(c)) {
+                    ret.add(s);
+                }
+            }
+        }
+        return ret;
     }
 
     /**

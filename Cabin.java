@@ -202,6 +202,33 @@ public class Cabin {
         return str;
     }
 
+    /**
+     * Checks if camper is in cabin
+     * @param c camper to check
+     * @return true if c is in cabin, false otherwise
+     */
+    public boolean camperInCabin(Camper c) {
+        if(c.getAge(c.getBirth()) < minAge || c.getAge(c.getBirth()) > maxAge) {
+            // c is outside of valid age range for this cabin
+            return false;
+        }
+        for(Camper x: campers) {
+            if(x != null && c.equals(x)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if counselor is in cabin
+     * @param c counselor to check
+     * @return true if c is cabin's counselor, false otherwise
+     */
+    public boolean counselorInCabin(Counselor c) {
+        return this.counselor != null && c.equals(counselor);
+    }
+
     /***
      * toString for Cabin
      * @return String representation of Cabin
