@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.NoSuchElementException;
 
 public class SessionList {
     
@@ -19,7 +18,7 @@ public class SessionList {
      * @return SessionList
      */
     public static SessionList getInstance() {
-        if(sessionList == null) {
+        if (sessionList == null) {
             sessionList = new SessionList();
             return sessionList;
         }
@@ -34,9 +33,8 @@ public class SessionList {
      * @param start
      * @param end
      */
-    public void addSession(String theme, Date priorityDeadline, Date regularDeadline, Date start, Date end) {
-        Session session = new Session(theme, priorityDeadline, regularDeadline, start, end);
-        sessions.add(session);
+    public void addSession(String theme, Date priorityDeadline, Date regularDeadline, Date start, Date end) { 
+        sessions.add(new Session(theme, priorityDeadline, regularDeadline, start, end));
     }
 
     /**
@@ -50,47 +48,85 @@ public class SessionList {
 
     /** 
      * Gets the session based on start.
-     * @param start
-     * @throws NoSuchElementException If session is not found
-     * @return Session
+     * @param start Start date of session to get
+     * @return Desired session, or null if not found
      */
-    public Session getSession(Date start) throws NoSuchElementException {
+    public Session getSession(Date start) {
         for (Session session : sessions)
             if (session.getStartDate().equals(start))
                 return session;
-        // We didn't find it, so throw exception
-        throw new NoSuchElementException();
+        // We didn't find it, so return null
+        return null;
     }
 
     /**
-     * Removes a session starting with date
-     * @param start Start date of session to remove
-     * @throws NoSuchElementException If session wasn't found
+     * Gets the session at given index
+     * @param index Index in sessions ArrayList
+     * @return Session at index
      */
-    public void removeSession(Date start) throws NoSuchElementException {
-        for (int i = 0; i < sessions.size(); i++) {
-            if (sessions.get(i).getStartDate().equals(start)) {
-                sessions.remove(i);
-                return;
-            }
-        }
-        // We didn't find it, so throw exception
-        throw new NoSuchElementException();
+    public Session getSession(int index) {
+        return sessions.get(index);
     }
 
     /**
      * Replaces the session in the list with the same start date
      * with the session being passed in. 
-     * @throws NoSuchElementException if there is no session in the list
-     * with a matching date as session
      * @param session Replaces session in list with the same start date.
      */
-    public void editSession(Session session) throws NoSuchElementException {
-        for (int i = 0; i < sessions.size(); i++)
-            if (session.getStartDate().equals(sessions.get(i).getStartDate()))
+    public boolean editSession(Session session) {
+        for (int i = 0; i < sessions.size(); i++) {
+            if (session.getStartDate().equals(sessions.get(i).getStartDate())) {
                 sessions.set(i, session);
-        // We didn't find the session, so throw an exception
-        throw new NoSuchElementException();
+                return true;
+            }
+        }
+        // We didn't find the session, so return false
+        return false;
+    }
+
+    /**
+     * Replaces session at index with parameter session
+     * @param index Index of session to edit
+     * @param session Session to replace one at index
+     * @return True iff edit was sucessful
+     */
+    public boolean editSession(int index, Session session) {
+        try {
+            sessions.set(index, session);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Removes a session starting with date
+     * @param start Start date of session to remove
+     * @return True iff removal was sucessful
+     */
+    public boolean removeSession(Date start) {
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessions.get(i).getStartDate().equals(start)) {
+                sessions.remove(i);
+                return true;
+            }
+        }
+        // We didn't find it, so return false
+        return false;
+    }
+
+    /**
+     * Removes session at index
+     * @param index Index to remove session at
+     * @return True iff removal was sucessful
+     */
+    public boolean removeSession(int index) {
+        try {
+            sessions.remove(index);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

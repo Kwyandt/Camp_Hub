@@ -99,14 +99,17 @@ public class UserList {
      * Replace the user with the given ID in the last with the
      * parameter user
      * @param user User to replace user in list
-     * @throws NoSuchElementException
+     * @return True iff the edit was successful
      */
-    public void editUser(User user) throws NoSuchElementException {
-        for (int i = 0; i < users.size(); i++)
-            if (user.getUuid().equals(users.get(i).getUuid()))
+    public boolean editUser(User user) {
+        for (int i = 0; i < users.size(); i++) {
+            if (user.getUuid().equals(users.get(i).getUuid())) {
                 users.set(i, user);
-        // We didn't find the user, so throw exception
-        throw new NoSuchElementException();
+                return false;
+            }
+        }
+        // We didn't find the user, so return false
+        return false;
     }
 
     /**
