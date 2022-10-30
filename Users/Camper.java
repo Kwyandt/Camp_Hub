@@ -160,7 +160,7 @@ import java.time.temporal.ChronoUnit;
       return tShirt;
     }
 
-    public int getAge(Date birthDate) {
+    public int getAge() {
       //get current date
       Date today = new Date();
       Calendar current = Calendar.getInstance();

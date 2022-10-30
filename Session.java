@@ -95,9 +95,25 @@ public class Session {
     /***
      * Adds a camper to a cabin if there is space
      * @param camper camper to be added
+     * @return True iff camper was placed in a cabin
      */
-    public void addCamper(Camper camper) {
-        //should this automatically add the camper to a cabin?
+    public boolean addCamper(Camper camper) {
+        int age = camper.getAge();
+        for (Cabin cabin : cabins) {
+            if (age >= cabin.getMinAge() && age <= cabin.getMaxAge()) {
+                // Camper is eligible, so try adding them
+                if (cabin.addCamper(camper))
+                    // It worked!
+                    return true;
+                else
+                    // Cabin was full, so keep trying
+                    continue;
+            } else
+                // Not a suitable age, so keep trying
+                continue;
+        }
+        // We didn't find a suitable cabin, so return false
+        return false;
     }
 
     /***
