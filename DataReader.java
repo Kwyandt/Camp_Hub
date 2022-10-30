@@ -241,7 +241,7 @@ public class DataReader extends DataConstants {
 
     private static Date fromFormattedDateTime(Object dateString) {
         try {
-            return new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a").parse((String)dateString);
+            return new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss").parse((String)dateString);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
