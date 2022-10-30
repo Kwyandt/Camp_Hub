@@ -21,7 +21,7 @@ public class Main {
 
         int director = 0;
         User user0 = users.get(director);
-        
+
         System.out.println("~~~~PRINTING DIRECTOR~~~~");
         System.out.println(user0.getUserType() + "\n"
         + user0.getUuid() + "\n"
@@ -83,7 +83,25 @@ public class Main {
 
         System.out.println("~~~~CAMP TESTING~~~~");
         Camp camp = DataReader.getCamp();
-        //System.out.println(camp.toString());
+        System.out.println(camp.getName() + "\n"
+        + camp.getFAQs() + "\n"
+        + camp.getSecurityQuestions() + "\n"
+        + camp.getActivities() + "\n"
+        + camp.getOfficePhone() + "\n"
+        + camp.getPackingList() + "\n");
+        System.out.println("~~~~END MASSIVE CAMP PRINTOUT~~~~");
+
+        System.out.println("~~~~CAMP ADD/REMOVE TEST~~~~");
+        Activity activity = new Activity("test activity", "test description", "test location");
+        camp.addActivity(activity);
+        for(int i = 0; i < camp.getActivities().size(); i++) {
+            System.out.println(camp.getActivities().get(i));
+        }
+        System.out.println("\n~~~~CAMP TEST ACTIVITY ADDED, REMOVING...~~~~\n");
+        camp.removeActivity(camp.getActivities().size()-1);
+        for(int i = 0; i < camp.getActivities().size(); i++) {
+            System.out.println(camp.getActivities().get(i));
+        }
     }
 
 }
