@@ -134,7 +134,10 @@ public class CampManager{
         return false;
     }
     public boolean removeSession(int index){
-        return false;
+        if(!checkPermissions("d"))
+            return false;
+        //SessionList.getInstance().removeSession(null);
+        return true;
     }
     public boolean setDiscount(Parent parent, double discount){
         return false;
@@ -157,6 +160,8 @@ public class CampManager{
      * @param question
      */
     public boolean removeFAQ(String question){
+        if(!checkPermissions("d"))
+            return false;
         camp.removeFAQ(question);
         return true;
     }
@@ -178,10 +183,15 @@ public class CampManager{
 
 
     //counselor specific
-    public boolean registerCounselor(Counselor counselor, Session session){
-        return false;
+    public boolean registerCounselor(Session session){
+        if(!checkPermissions("c"))
+            return false;
+        session.addCounselor(((Counselor)currentUser));
+        return true;
     }
-    public boolean unregisterCounselor(Counselor counselor, Session session){ 
+    public boolean unregisterCounselor(Session session){ 
+        if(!checkPermissions("c"))
+            return false;
         return false;
     }
     public boolean addNote(String note){
@@ -243,11 +253,11 @@ public class CampManager{
     }
     
     public String getAboutPage(){
-        String info = "Camp Information:\n"+camp.getName()+"\nFAQ:";
+        String info = "Camp Information:\n"+camp.getName()+"\n\nFAQ:\n";
         for(Entry<String, String> entry : camp.getFAQs().entrySet()){
             info += String.format("Q: %s%nA: %s%n", entry.getKey(), entry.getValue());
         }
-        info += "\nSuggested Packing List:";
+        info += "\nSuggested Packing List\n";
         for(int i = 0; i < camp.getPackingList().size(); i++){
             info += String.format("%d. %s%n", i+1, camp.getPackingList().get(i));
         }
@@ -257,8 +267,8 @@ public class CampManager{
     public boolean setEmail(String email) {
         if(users.getUser(email)!=null)
             return false;
-        // TODO: waiting for setters
-        return false;
+        currentUser.setEmail(email);
+        return true;
     }
 
     public boolean setPass(String oldPass, String newPass){
@@ -266,8 +276,8 @@ public class CampManager{
     }    
 
     public boolean setPhone(String phone) {
-        // TODO: waiting for setters
-        return false;
+        currentUser.setPhone(phone);
+        return true;
 	}
 
 
@@ -288,6 +298,9 @@ public class CampManager{
     }
     public UserType getType(){
         return currentUser.getUserType();
+    }
+    public ArrayList<Session> getSessions(){
+        return SessionList.getInstance().getAllSessions();
     }
 
 	
