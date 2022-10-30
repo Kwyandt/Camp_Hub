@@ -4,19 +4,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * @author Jackson
@@ -238,12 +231,12 @@ public class Schedule {
         return activitiesToReturn;
     }
 
-    public static void main(String[] args) throws ParseException {
+    /*public static void main(String[] args) throws ParseException {
         DataReader.getCamp();
         Date start = new SimpleDateFormat("dd-MMM-yyyy").parse("18-Jun-2023");
         Date end = new SimpleDateFormat("dd-MMM-yyyy").parse("24-Jun-2023");
         Schedule schedule = SessionList.getInstance().getSession(start).getCabin(2).getSchedule();
-        //schedule.randomlyPopulate(start, end);
+        schedule.randomlyPopulate(start, end);
         System.out.println(schedule.displayOrderedSchedule(1, 2));
-    }
+    }*/
 }
