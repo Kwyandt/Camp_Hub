@@ -18,6 +18,7 @@ public abstract class DataConstants {
 	protected static final String ACTIVITY_LOCATION = "location";
 	protected static final String SESSION_PRICE = "price";
 	protected static final String SESSION_THEME = "theme";
+	protected static final String SESSION_DESCRIPTION = "description";
 	protected static final String SESSION_CABINS = "cabins";
 	protected static final String SESSION_PRIORITY_DEADLINE = "priorityDeadline";
 	protected static final String SESSION_REGULAR_DEADLINE = "regularDeadline";

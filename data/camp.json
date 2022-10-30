@@ -4,6 +4,7 @@
         {
             "price":1000.00,
             "theme":"Splash Week",
+            "description":"Have fun in the water!",
             "cabins":[
                 {
                     "cabinNumber":1,
@@ -98,6 +99,7 @@
         {
             "price":1050.00,
             "theme":"Nature",
+            "description":"Get lost!",
             "cabins":[
                 {
                     "cabinNumber":1,

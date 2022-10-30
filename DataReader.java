@@ -171,6 +171,7 @@ public class DataReader extends DataConstants {
                 JSONObject sessionJSON = (JSONObject)sessionsJSON.get(s);
                 double price = (double)sessionJSON.get(SESSION_PRICE);
                 String theme = (String)sessionJSON.get(SESSION_THEME);
+                String description = (String)sessionJSON.get(SESSION_DESCRIPTION);
                 ArrayList<Cabin> cabins = new ArrayList<Cabin>();
                 JSONArray cabinsJSON = (JSONArray)sessionJSON.get(SESSION_CABINS);
                 for (int c = 0; c < cabinsJSON.size(); c++) {
@@ -209,7 +210,7 @@ public class DataReader extends DataConstants {
                 Date regularDeadline = fromFormattedDate(sessionJSON.get(SESSION_REGULAR_DEADLINE));
                 Date startDate = fromFormattedDate(sessionJSON.get(SESSION_START_DATE));
                 Date endDate = fromFormattedDate(sessionJSON.get(SESSION_END_DATE));
-                sessions.addSession(new Session(price, theme, cabins, priorityDeadline, regularDeadline, startDate, endDate));
+                sessions.addSession(new Session(price, theme, description, cabins, priorityDeadline, regularDeadline, startDate, endDate));
             }
             Map<String, String> faqs = new HashMap<String, String>();
             JSONObject faqsJSON = (JSONObject)campJSON.get(CAMP_FAQS);

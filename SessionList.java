@@ -30,13 +30,14 @@ public class SessionList {
     /** 
      * Adds a session with the given parameters.
      * @param theme
+     * @param description
      * @param priorityDeadline
      * @param regularDeadline
      * @param start
      * @param end
      */
-    public void addSession(String theme, Date priorityDeadline, Date regularDeadline, Date start, Date end) { 
-        sessions.add(new Session(theme, priorityDeadline, regularDeadline, start, end));
+    public void addSession(String theme, String description, Date priorityDeadline, Date regularDeadline, Date start, Date end) { 
+        sessions.add(new Session(theme, description, priorityDeadline, regularDeadline, start, end));
     }
 
     /**
