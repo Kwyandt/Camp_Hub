@@ -259,7 +259,7 @@ public class DataWriter extends DataConstants {
     }
 
     private static String toFormattedDateTime(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
         return sdf.format(date);
     }
 }
