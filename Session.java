@@ -77,11 +77,19 @@ public class Session {
     /***
      * Adds a counselor to a cabin if there is space
      * @param counselor counselor to be added
+     * @return true if counselor was added, false otherwise
      */
-    public void addCounselor(Counselor counselor) {
+    public boolean addCounselor(Counselor counselor) {
         //should this automatically add counselor to a session?
         //does this need to check if there is already a counselor assigned?
-        
+        for(Cabin cab: cabins) {
+            if(cab.getCounselor() == null) {
+                cab.setCounselor(counselor);
+                return true;
+            }
+        }
+        // All cabins already have counselors assigned
+        return false;
     }
 
     /***
