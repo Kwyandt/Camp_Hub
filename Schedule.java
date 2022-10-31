@@ -231,12 +231,9 @@ public class Schedule {
         return activitiesToReturn;
     }
 
-    /*public static void main(String[] args) throws ParseException {
+    /*public static void main(String[] args) {
         DataReader.getCamp();
-        Date start = new SimpleDateFormat("dd-MMM-yyyy").parse("18-Jun-2023");
-        Date end = new SimpleDateFormat("dd-MMM-yyyy").parse("24-Jun-2023");
-        Schedule schedule = SessionList.getInstance().getSession(start).getCabin(2).getSchedule();
-        schedule.randomlyPopulate(start, end);
-        System.out.println(schedule.displayOrderedSchedule(1, 2));
+        System.out.println(UserList.getInstance().getCamperByUUID(UUID.fromString("3f8913bb-b642-4e08-948c-cb36c07493c5")).getAge());
     }*/
+
 }
