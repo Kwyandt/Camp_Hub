@@ -189,7 +189,6 @@ public class DataWriter extends DataConstants {
             allergyArray.add(allergy);
         }
         counselorDetails.put(COUNSELOR_ALLERGIES, allergyArray);
-        //TODO: change this to JSONObject
         JSONObject contactObject = new JSONObject();
         //HashMap<Relationship, EmergencyContact> contacts = camper.getEmergencyContact();
         for(Relationship relation : counselor.getEmergenctContacts().keySet()) {
