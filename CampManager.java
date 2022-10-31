@@ -167,7 +167,10 @@ public class CampManager{
     
     /**
      * For directors, removes a given faq question.
-     * @param question
+     * @param question question being removed
+     * @return boolean true or false if removed or not
+     * 
+     * NOTE: for the return it should also account for the fact that the question may not exist in the FAQ and thereore can't be removed
      */
     public boolean removeFAQ(String question){
         if(!checkPermissions("d"))
