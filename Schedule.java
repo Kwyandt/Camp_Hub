@@ -4,19 +4,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * @author Jackson
@@ -96,7 +89,7 @@ public class Schedule {
                 str += dashes + ldt.getDayOfWeek() + ", " + ldt.getMonth() + " " + ldt.getDayOfMonth() + dashes + "\n";
                 days[dayToNumber(ldt.getDayOfWeek())] = true;
             }
-            str += ldt.getHour() + ":" + ldt.getMinute() + " - " + activities.get(d).getName() + " at " + activities.get(d).getLocation() + "\n";
+            str += convertFromMilTime(ldt.getHour()) + ":" + getMinutesString(ldt.getMinute()) + " " + amPmFormat(ldt.getHour()) + " - " + activities.get(d).getName() + " at " + activities.get(d).getLocation() + "\n";
         }
         return str;
     }
@@ -174,6 +167,7 @@ public class Schedule {
         this.activities.put(Date.from(breakfastEnd.atZone(ZoneId.systemDefault()).toInstant()), mealActivities[0]);
     }
 
+    // Helper method to convert DayOfWeek enum to number
     private int dayToNumber(DayOfWeek day) {
         switch(day) {
             case SUNDAY:
@@ -192,6 +186,28 @@ public class Schedule {
                 return 6;
         }
         return -1;
+    }
+
+    // Helper method to revert from 24-hour time
+    private String convertFromMilTime(int hour) {
+
+        return Integer.toString(hour % 12);
+    }
+
+    // Helper method for printing minutes in time format
+    private String getMinutesString(int minutes) {
+        if(minutes < 10) {
+            return "0" + Integer.toString(minutes);
+        }
+        return Integer.toString(minutes);
+    }
+
+    // Helper method for checking if hour is AM or PM
+    private String amPmFormat(int hour) {
+        if(hour < 12) {
+            return "AM";
+        }
+        return "PM";
     }
 
     // Returns k random non-meal activities from Camp.Activities. If there are
@@ -215,12 +231,9 @@ public class Schedule {
         return activitiesToReturn;
     }
 
-    /*public static void main(String[] args) throws ParseException {
+    /*public static void main(String[] args) {
         DataReader.getCamp();
-        Date start = new SimpleDateFormat("dd-MMM-yyyy").parse("18-Jun-2023");
-        Date end = new SimpleDateFormat("dd-MMM-yyyy").parse("24-Jun-2023");
-        Schedule schedule = SessionList.getInstance().getSession(start).getCabin(2).getSchedule();
-        schedule.randomlyPopulate(start, end);
-        System.out.println(schedule.displayOrderedSchedule(1, 2));
+        System.out.println(UserList.getInstance().getCamperByUUID(UUID.fromString("3f8913bb-b642-4e08-948c-cb36c07493c5")).getAge());
     }*/
+
 }

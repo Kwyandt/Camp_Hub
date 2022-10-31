@@ -1,10 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 
 import Users.*;
 
-/***
+/**
  * @author Jackson
  */
 public class Cabin {
@@ -15,7 +14,7 @@ public class Cabin {
     private int minAge;
     private int maxAge;
 
-    /***
+    /**
      * Creates a new cabin
      * @param schedule schedule for the cabin
      * @param counselor counselor of the cabin
@@ -27,7 +26,7 @@ public class Cabin {
         this.maxAge = maxAge;
     }
 
-    /***
+    /**
      * Loads a previously created cabin
      * @param cabinNumber number of cabin
      * @param schedule schedule for the cabin
@@ -43,7 +42,7 @@ public class Cabin {
         this.maxAge = maxAge;
     }
 
-    /***
+    /**
      * Mutator method for counselor
      * @param counselor new counselor for cabin
      */
@@ -51,13 +50,13 @@ public class Cabin {
         this.counselor = counselor;
     }
 
-    /***
+    /**
      * Adds camper to campers if there is space
      * @param camper potential camper for cabin
      */
-    public boolean addCamper(Camper camper){
-        for(int i =0; i<campers.length; i++){
-            if(campers[i]==null){
+    public boolean addCamper(Camper camper) {
+        for (int i = 0; i < campers.length; i++) {
+            if (campers[i] == null) {
                 campers[i] = camper;
                 return true;
             }
@@ -65,24 +64,24 @@ public class Cabin {
         return false;
     }
 
-    /***
+    /**
      * Removes camper from cabin if they are present
      * @param camper camper to be removed from cabin
      */
     public boolean removeCamper(Camper camper){
-        for(int i=0; i<campers.length; i++){
-            if(campers[i].equals(camper)){
+        for (int i = 0; i < campers.length; i++) {
+            if (campers[i].equals(camper)) {
                 campers[i] = null;
-                for(int j=i; j<campers.length-1; j++)
+                for (int j = i; j < campers.length - 1; j++)
                     campers[j] = campers[j+1];
                 campers[campers.length] = null;
-                 return true;
-             }
-         }
-         return false;
+                return true;
+            }
+        }
+        return false;
     }
 
-    /***
+    /**
      * Collects all meds used in the cabin
      * @return ArrayList containing all meds used
      */
@@ -95,7 +94,7 @@ public class Cabin {
         return meds;
     }
 
-    /***
+    /**
      * Collects all allergies of cabin members
      * @return ArrayList containing all allergies
      */
@@ -108,15 +107,11 @@ public class Cabin {
         return allergies;
     }
 
-    /***
+    /**
      * Displays the schedule of the cabin
      */
-    public String viewSchedule(){
-        String toReturn = "";
-        for(int i =0; i<schedule.getActivities().size(); i++) {
-            toReturn = toReturn + "\n" + schedule.toString();
-        }
-        return toReturn;
+    public String viewSchedule(int sessionNumber) {
+        return schedule.displayOrderedSchedule(sessionNumber, this.cabinNumber);
     }
 
     /***
@@ -147,16 +142,42 @@ public class Cabin {
      * Accessor method for campers
      * @return campers of cabins
      */
-    public Camper[] getCampers(){
+    public Camper[] getCampers() {
         return campers;
     }
 
-    public int getMinAge () {
+    /**
+     * Gets INCLUSIVE min age of cabin
+     * @return Min age of cabin
+     */
+    public int getMinAge() {
         return minAge;
     }
 
-    public int getMaxAge () {
+    /**
+     * Gets INCLUSIVE max age of cabin
+     * @return Max age of cabin
+     */
+    public int getMaxAge() {
         return maxAge;
+    }
+
+    /**
+     * Sets INCLUSIVE min age of cabin (ex. if 12, campers are excluded
+     * if they are 11.99... years old or younger)
+     * @param age Min age of cabin
+     */
+    public void setMinAge(int age) {
+        this.minAge = age;
+    }
+
+    /**
+     * Sets INCLUSIVE max age of cabin (ex. if 15, campers are excluded
+     * if they are 16.0 years old or older)
+     * @param age Max of cabin
+     */
+    public void setMaxAge(int age) {
+        this.maxAge = age;
     }
 
     /**
@@ -164,7 +185,7 @@ public class Cabin {
      * @param cabin to be compared to this.cabin
      * @return boolean true or false
      */
-    public boolean equals (Cabin cabin) {
+    public boolean equals(Cabin cabin) {
         return false;
     }
 
@@ -200,6 +221,33 @@ public class Cabin {
             }
         }
         return str;
+    }
+
+    /**
+     * Checks if camper is in cabin
+     * @param c camper to check
+     * @return true if c is in cabin, false otherwise
+     */
+    public boolean camperInCabin(Camper c) {
+        if(c.getAge() < minAge || c.getAge() > maxAge) {
+            // c is outside of valid age range for this cabin
+            return false;
+        }
+        for(Camper x: campers) {
+            if(x != null && c.equals(x)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if counselor is in cabin
+     * @param c counselor to check
+     * @return true if c is cabin's counselor, false otherwise
+     */
+    public boolean counselorInCabin(Counselor c) {
+        return this.counselor != null && c.equals(counselor);
     }
 
     /***

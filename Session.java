@@ -12,6 +12,7 @@ public class Session {
 
     private double price;
     private String theme;
+    private String description;
     private ArrayList<Cabin> cabins;
     private Date priorityDeadline;
     private Date regularDeadline;
@@ -21,17 +22,21 @@ public class Session {
     /***
      * Constructor to create a new session
      * @param theme theme of session
+     * @param description description of session
      * @param priorityDeadline priority registration deadline
      * @param regularDeadline regular registration deadline
      * @param startDate start date of session
      * @param endDate end date of session
      */
-    public Session(String theme, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
+    public Session(String theme, String description, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
+        this.setPrice(1000);
         this.theme = theme;
+        this.description = description;
         this.priorityDeadline = priorityDeadline;
         this.regularDeadline = regularDeadline;
         this.startDate = startDate;
-        this.endDate = endDate;    
+        this.endDate = endDate;
+        this.cabins = new ArrayList<Cabin>();
     }
 
 
@@ -39,15 +44,17 @@ public class Session {
      * Constructor to load a pre-existing session
      * @param price price of session
      * @param theme theme of session
+     * @param description description of session
      * @param cabins cabins specific to session
      * @param priorityDeadline priority registration deadline
      * @param regularDeadline regular registration deadline
      * @param startDate start date of session
      * @param endDate end date of session
      */
-    public Session(double price, String theme, ArrayList<Cabin> cabins, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
+    public Session(double price, String theme, String description, ArrayList<Cabin> cabins, Date priorityDeadline, Date regularDeadline, Date startDate, Date endDate) {
         this.price = price;
         this.theme = theme;
+        this.description = description;
         this.cabins = cabins;
         this.priorityDeadline = priorityDeadline;
         this.regularDeadline = regularDeadline;
@@ -70,19 +77,43 @@ public class Session {
     /***
      * Adds a counselor to a cabin if there is space
      * @param counselor counselor to be added
+     * @return true if counselor was added, false otherwise
      */
-    public void addCounselor(Counselor counselor) {
+    public boolean addCounselor(Counselor counselor) {
         //should this automatically add counselor to a session?
         //does this need to check if there is already a counselor assigned?
-        
+        for(Cabin cab: cabins) {
+            if(cab.getCounselor() == null) {
+                cab.setCounselor(counselor);
+                return true;
+            }
+        }
+        // All cabins already have counselors assigned
+        return false;
     }
 
     /***
      * Adds a camper to a cabin if there is space
      * @param camper camper to be added
+     * @return True iff camper was placed in a cabin
      */
-    public void addCamper(Camper camper) {
-        //should this automatically add the camper to a cabin?
+    public boolean addCamper(Camper camper) {
+        int age = camper.getAge();
+        for (Cabin cabin : cabins) {
+            if (age >= cabin.getMinAge() && age <= cabin.getMaxAge()) {
+                // Camper is eligible, so try adding them
+                if (cabin.addCamper(camper))
+                    // It worked!
+                    return true;
+                else
+                    // Cabin was full, so keep trying
+                    continue;
+            } else
+                // Not a suitable age, so keep trying
+                continue;
+        }
+        // We didn't find a suitable cabin, so return false
+        return false;
     }
 
     /***
@@ -99,6 +130,14 @@ public class Session {
      */
     public String getTheme() {
         return theme;
+    }
+
+    /**
+     * Accessor method for description
+     * @return description of the session
+     */
+    public String getDescription() {
+        return description;
     }
 
     /***
@@ -171,6 +210,14 @@ public class Session {
         this.theme = theme;
     }
 
+    /**
+     * Mutator for description
+     * @param description new description of session
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /***
      * Mutator for priorityDeadline
      * @param priorityDeadline new priorityDeadline of session
@@ -208,6 +255,6 @@ public class Session {
      * @return String representation of session
      */
     public String toString() {
-        return "Session:\n\t" + this.price + "\n\t" + this.theme + "\n\t" + this.cabins.toString() + "\n\t" + this.priorityDeadline + "\n\t" + this.regularDeadline + "\n\t" + this.startDate + "\n\t" + this.endDate;
+        return theme + " " + price + " " + startDate + " - " + endDate;
     }
 }

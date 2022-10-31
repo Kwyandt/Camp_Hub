@@ -73,6 +73,7 @@ public class DataWriter extends DataConstants {
             JSONObject sessionDetails = new JSONObject();
             sessionDetails.put(SESSION_PRICE, s.getPrice());
             sessionDetails.put(SESSION_THEME, s.getTheme());
+            sessionDetails.put(SESSION_DESCRIPTION, s.getDescription());
             JSONArray cabinArray = new JSONArray();
             for(Cabin cab: s.getCabins()) {
                 JSONObject cabinDetails = new JSONObject();
@@ -259,7 +260,7 @@ public class DataWriter extends DataConstants {
     }
 
     private static String toFormattedDateTime(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
         return sdf.format(date);
     }
 }

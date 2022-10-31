@@ -291,7 +291,7 @@ public class CampUI {
             clearScreen();
             System.out.println("Viewing Camper:\n");
             System.out.printf("%-10s%s %s%n","Name: ", camper.getFirst(),camper.getLast());
-            System.out.printf("%-10s%s (Age: %d)%n","Birth: ", formatter.format(camper.getBirth()),camper.getAge(camper.getBirth()));
+            System.out.printf("%-10s%s (Age: %d)%n","Birth: ", formatter.format(camper.getBirth()),camper.getAge());
             System.out.printf("%-10s%s%n","Tshirt: ",camper.getTShirt());
             System.out.println("Allergies:");
             for(int i = 0;  i < camper.getAllergy().size(); i++){

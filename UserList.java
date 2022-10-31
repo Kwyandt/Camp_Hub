@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import Users.Camper;

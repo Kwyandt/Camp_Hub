@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import Users.*;
+
 public class SessionList {
     
     private ArrayList<Session> sessions;
@@ -28,13 +30,14 @@ public class SessionList {
     /** 
      * Adds a session with the given parameters.
      * @param theme
+     * @param description
      * @param priorityDeadline
      * @param regularDeadline
      * @param start
      * @param end
      */
-    public void addSession(String theme, Date priorityDeadline, Date regularDeadline, Date start, Date end) { 
-        sessions.add(new Session(theme, priorityDeadline, regularDeadline, start, end));
+    public void addSession(String theme, String description, Date priorityDeadline, Date regularDeadline, Date start, Date end) { 
+        sessions.add(new Session(theme, description, priorityDeadline, regularDeadline, start, end));
     }
 
     /**
@@ -135,6 +138,40 @@ public class SessionList {
      */
     public ArrayList<Session> getAllSessions() {
         return sessions;
+    }
+
+    /**
+     * Provides an ArrayList of sessions containing specified camper
+     * @param c camper to get all sessions for
+     * @return all sessions containing camper
+     */
+    public ArrayList<Session> getCamperSessions(Camper c) {
+        ArrayList<Session> ret = new ArrayList<Session>();
+        for(Session s: sessions) {
+            for(Cabin cab: s.getCabins()) {
+                if(cab.camperInCabin(c)) {
+                    ret.add(s);
+                }
+            }
+        }
+        return ret;
+    }
+    
+     /**
+     * Provides an ArrayList of sessions containing specified counselor
+     * @param c counselor to get all sessions for
+     * @return all sessions containing counselor
+     */
+    public ArrayList<Session> getCounselorSessions(Counselor c) {
+        ArrayList<Session> ret = new ArrayList<Session>();
+        for(Session s: sessions) {
+            for(Cabin cab: s.getCabins()) {
+                if(cab.counselorInCabin(c)) {
+                    ret.add(s);
+                }
+            }
+        }
+        return ret;
     }
 
     /**
