@@ -43,7 +43,11 @@ public class CampUI {
         "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n"+
         "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n",
         // The manage session for director menu (12)
-        "Please select:\n0. Go back\n1. Update theme\n2. Add Activity\n3. Remove Activity\n4. Manage cabin assignments\n"
+        "Please select:\n0. Go back\n1. Update theme\n2. Update description\n3. Add Activity\n4. Remove Activity\n5. Manage cabin assignments\n",
+        // the manage activites for directors menu (13)
+        "Please select:\n0. Go back\n1. Add activity\n2. Remove activity\n",
+        // the manage cabins for directors menu (14)
+        "Please select:\n0. Go back\n1. Move Counselor\n2. Move Camper\n"
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
@@ -360,10 +364,6 @@ public class CampUI {
                 System.out.printf("%-20s%s%n",key+" location:", contacts.get(key).getLocation());
             }
 
-            //"Please select:\n0. Go back\n1. Add allergy\n2. Remove allergy"+
-            //"\n3. Add diet restriction\n4. Remove diet restriction\n5. Add medication\n6. Remove medication\n"+
-            //"7. Update guardian\n8. Update doctor\n9. Update dentist\n"
-
             System.out.println("\n"+menus[MENU]);
 
             selection = promptInt(0,9);
@@ -435,43 +435,117 @@ public class CampUI {
 
     //These are accessible only by directors
     public void manageSession(int index){
-        clearScreen();
-        System.out.println("This is the session edit menu. I don't do anything yet");
-        prompt(true);
-        /* int selection = 0;
+        int selection = 0;
         final int MENU = 12;
         do{
             clearScreen();
             System.out.println("Managing session:\n\n");
             Session session = campManager.getSessions().get(index);
             System.out.printf("%-20s%s%n", "Theme:", session.getTheme());
+            System.out.printf("%-20s%s%n", "Description:", session.getDescription());
             System.out.printf("%-20s%s - %s%n", "Dates:", formatDate(session.getStartDate()),
                                 formatDate(session.getEndDate()));
             System.out.printf("%-20s%s%n", "Priority deadline:", formatDate(session.getPriorityDeadline()));
             System.out.printf("%-20s%s%n", "Regular deadline:", formatDate(session.getRegularDeadline()));
             System.out.printf("%-20s$%.02f%n", "Price:", session.getPrice());
-            System.out.println("\n Activities:");
-            for(int i=0;i<session.
+            System.out.println("Activities:");
+            //for(int i=0;i<session.
 
-            System.out.println(menus[MENU]);
+            System.out.println("\n"+menus[MENU]);
+
+            selection = promptInt(0, 5);
+            switch(selection){
+                case 0: break;
+                case 1:
+                    System.out.println("Please enter new theme:");
+                    session.setTheme(prompt());
+                    break;
+                case 2:
+                    System.out.println("Please enter new description:");
+                    session.setDescription(prompt());
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    manageCabins(session);
+                    break;
+                default: System.out.println("Something went wrong");
+            }
             
-        }while(selection!=0); */
+        }while(selection!=0);
     }
     
     public void addSession(){
         clearScreen();
-        System.out.println("This is the add session form. I don't do anything yet");
+        System.out.println("Creating session:\n\n");
+        System.out.println("Please enter a theme:");
+        String theme = prompt();
+        System.out.println("Please enter a description:");
+        String description = prompt();
+        System.out.println("Please enter a start date for session (dd-MMM-yyyy):");
+        Date start = promptDate();
+        System.out.println("Please enter a end date for session (dd-MMM-yyyy):");
+        Date end = promptDate();
+        System.out.println("Please enter a deadline for priority registration (dd-MMM-yyyy):");
+        Date priority = promptDate();
+        System.out.println("Please enter a deadline for regular registration (dd-MMM-yyyy):");
+        Date regular = promptDate();
+        
+        if(campManager.addSession(theme, description, priority, regular, start, end)){
+            System.out.println("\nSession created successfully!");
+        }
+        else{
+            System.out.println("\nSession creation failed... try again?");
+        }
         prompt(true);
     }
 
     public void manageActivities(){
-        clearScreen();
-        System.out.println("This is the manage activities menu. I don't do anything yet");
-        prompt(true);
+        final int MENU = 13;
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Manage Activities:\n\nCurrent Activities:");
+            ArrayList<Activity> activities = campManager.getActivities();
+            for(int i=0;i<activities.size();i++){
+                System.out.printf("%-10.00f%s | %s | %s%n",(float) (i+1), activities.get(i).getName(),
+                                        activities.get(i).getDescription(), activities.get(i).getLocation());
+            }
+
+            System.out.println("\n\n"+menus[MENU]);
+            selection = promptInt(0,2);
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: 
+                    System.out.println("Please enter activity name:");
+                    String name = prompt();
+                    System.out.println("Please enter activity description:");
+                    String description = prompt();
+                    System.out.println("Please enter activity location:");
+                    String location = prompt();
+                    if(!campManager.addActivity(name, description, location)){
+                        System.out.println("Add activity was unsuccessful... try again?");
+                        prompt(true);
+                    }
+                break;
+                case 2:
+                    System.out.println("Please enter a number to remove (0 to cancel)");
+                    int input = promptInt(0, activities.size());
+                    if(input == 0) 
+                        break;
+                    if(!campManager.removeActivity(input-1)){
+                        System.out.println("Remove activity was unsuccessful... try again?");
+                        prompt(true);
+                    }
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
 
     public void manageFAQ(){
-        clearScreen();
         final int MENU = 10;
         int selection = 0;
         do{
@@ -481,7 +555,7 @@ public class CampUI {
             String[] questions = new String[faqs.size()];
             int index = 0;
             for(String key : faqs.keySet()){
-                System.out.printf("%d. Q: %s%n      A: %s", index, key, faqs.get(key));
+                System.out.printf("%d. Q: %s%n   A: %s%n", index+1, key, faqs.get(key));
                 questions[index] = key;
                 index++;
             }
@@ -503,7 +577,7 @@ public class CampUI {
                     int input = promptInt(0, questions.length);
                     if(input == 0) 
                         break;
-                    campManager.removeFAQ(questions[input]);
+                    campManager.removeFAQ(questions[input-1]);
                 default: System.out.println("Something went wrong!");
             }
         }while(selection!=0);
@@ -515,10 +589,62 @@ public class CampUI {
         prompt(true);
     }
 
-    public void manageCabins(){
-        clearScreen();
-        System.out.println("This is the manage cabins menu. I don't do anything yet");
-        prompt(true);
+    public void manageCabins(Session session){
+        final int MENU = 14;
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Manage Cabin Assignments:\n\nCurrent cabins:\n");
+            ArrayList<Cabin> cabins = campManager.getCabins(session);
+            for(int i=0;i<cabins.size();i++){
+                System.out.printf("Cabin %d:%n",i+1);
+                System.out.printf("    Counselor: %s %s%n",
+                                cabins.get(i).getCounselor().getFirstName(),
+                                cabins.get(i).getCounselor().getLastName());
+                System.out.printf("    Campers: %n");
+                Camper[] campers = cabins.get(i).getCampers();
+                for(int j=0;j<campers.length;j++){
+                    if(campers[j]!=null)
+                        System.out.printf("          %-5d%s %s%n",8*i+j+1,
+                                        campers[j].getFirst(),campers[j].getLast());
+                    else
+                        System.out.printf("          %d%n",8*i+j+1);
+                }
+            }
+            System.out.println("\n"+menus[MENU]);
+            selection = promptInt(0,2);
+            int input1=0;
+            int input2=0;
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: 
+                    System.out.println("Please enter first counselor to swap (enter cabin #):");
+                    input1 = promptInt(0,cabins.size());
+                    if(input1==0)
+                        break;
+                    System.out.println("Please enter second counselor to swap (enter cabin #):");
+                    input2 = promptInt(0,cabins.size());
+                    if(input2==0)
+                        break;
+                    if(!campManager.swapCounselor(session, input1-1, input2-1)){
+                        System.out.println("Assignment unsuccessful... try again?");
+                        prompt(true);
+                    }
+                break;
+                case 2: 
+                    System.out.println("Please enter first kid to swap (enter #):");
+                    input1 = promptInt(1,cabins.size()*8);
+                    System.out.println("Please enter second kid to swap (enter #):");
+                    input2 = promptInt(1,cabins.size()*8);
+                    if(!campManager.swapCamper(session, input1-1, input2-1)){
+                        System.out.println("Assignment unsuccessful... try again?");
+                        prompt(true);
+                    }
+                break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
 
     //These are accessible only by counselors
@@ -612,10 +738,12 @@ public class CampUI {
                 break;
             switch(campManager.getUser().getUserType()){
                 case DIRECTOR:
-                    if(selection==sessions.size()+1)
+                    if(selection==sessions.size()+1){
                         addSession();
-                    else
+                    }
+                    else{
                         manageSession(selection-1);
+                    }
                     break;
                 case PARENT:
                 case COUNSELOR:
@@ -678,9 +806,37 @@ public class CampUI {
 
     //This method is accessible to counselors and parents
     public void viewRegistrations(){
-        clearScreen();
-        System.out.println("This is the view current registrations menu. I don't do anything yet");
-        prompt(true);
+        switch(campManager.getType()){
+            case PARENT:
+                ArrayList<Camper> kids = campManager.getChildren();
+                int input = 0;
+                do{
+                    clearScreen();
+                    System.out.println("Viewing Registrations:\n");
+                    if(kids==null || kids.size()==0){
+                        System.out.println("No campers added yet, go to main user page and add some first...");
+                        prompt(true);
+                        break;
+                    }
+                    System.out.println("Please select a camper to view registration info of:\n0. Go back");
+                    for(int i = 0; i<kids.size();i++){
+                        System.out.printf("%d. %s %s%n",i+1,kids.get(i).getFirst(),kids.get(i).getLast());
+                    }
+                    input = promptInt(0, kids.size());
+                    if(input>0){
+                        System.out.println(campManager.getRegistrationsView(kids.get(input-1)));
+                        prompt(true);
+                    }
+                }while(input!=0);
+            break;
+            case COUNSELOR:
+                clearScreen();
+                System.out.println("Viewing Registrations:\n");
+                System.out.println(campManager.getRegistrationsView());
+                prompt(true);
+            break;
+            default: System.out.println("Something went wrong");
+        }   
     }
 
     //These methods are accessible to any logged in user

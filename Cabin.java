@@ -220,10 +220,10 @@ public class Cabin {
      * @return true if c is in cabin, false otherwise
      */
     public boolean camperInCabin(Camper c) {
-        if(c.getAge() < minAge || c.getAge() > maxAge) {
+        /* if(c.getAge() < minAge || c.getAge() > maxAge) {
             // c is outside of valid age range for this cabin
             return false;
-        }
+        } */
         for(Camper x: campers) {
             if(x != null && c.equals(x)) {
                 return true;

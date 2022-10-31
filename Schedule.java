@@ -126,13 +126,14 @@ public class Schedule {
      * @param end End date of the session
      */
     public void randomlyPopulate(Date start, Date end) {
+        Camp camp = Camp.getInstance();
         // Deletes old activities
         this.activities = new TreeMap<Date, Activity>();
         // Set up constants: meals are in order breakfast, lunch, dinner
         Activity[] mealActivities = {
-            Camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
-            Camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
-            Camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
+            camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
+            camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
+            camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
         };
         int[] mealTimes = {8,13,18};
         int[] activityTimes = {9,10,15,16};
@@ -214,12 +215,13 @@ public class Schedule {
     // fewer than k activities, the whole list is returned.
     // Precondition: Camp.activities is not null
     private Activity[] chooseKRandomActivities(int k) {
-        ArrayList<Activity> activities = Camp.getActivities();
+        Camp camp = Camp.getInstance();
+        ArrayList<Activity> activities = camp.getActivities();
         // Remove meal activities from list of options
         Activity[] mealActivities = {
-            Camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
-            Camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
-            Camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
+            camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
+            camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
+            camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
         };
         for (int i = 0; i < mealActivities.length; i++)
             activities.remove(mealActivities[i]);

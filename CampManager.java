@@ -1,35 +1,31 @@
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Map.Entry;
 
 import Users.*;
 
 public class CampManager{
-    private Camp camp;
     private User currentUser;
-    private UserList users;
 
     public CampManager(){
-        camp = DataReader.getCamp();
-        users = UserList.getInstance();
     }
 
     public boolean createUser(UserType type, String email,  String pass, 
                         String first, String last, String phone, Date birth, 
                         Map<String, String> securityQuestion){
         
-        if(users.getUser(email)!=null)
+        if(UserList.getInstance().getUser(email)!=null)
             //Can't create account because one with that email already exists!
             return false;
         //Creates the account
         switch(type){
             case PARENT:
-                users.addUser(new Parent(email, pass, first, last, phone, birth, securityQuestion));
+                UserList.getInstance().addUser(new Parent(email, pass, first, last, phone, birth, securityQuestion));
             break;
             case DIRECTOR:
-                users.addUser(new Director(email, pass, first, last, phone, birth, securityQuestion));
+                UserList.getInstance().addUser(new Director(email, pass, first, last, phone, birth, securityQuestion));
             break;
             case COUNSELOR:
-                users.addUser(new Counselor(email, pass, first, last, phone, birth, securityQuestion));
+                UserList.getInstance().addUser(new Counselor(email, pass, first, last, phone, birth, securityQuestion));
             break;
         }
         //Return that this operation was successful
@@ -44,7 +40,7 @@ public class CampManager{
      * @return boolean Whether the login was successful
      */
     public boolean loginUser(String email, String pass){
-        User user = users.getUser(email);
+        User user = UserList.getInstance().getUser(email);
         if(user!=null && user.getPassword().equals(pass)){
             this.currentUser = user;
             return true;
@@ -66,9 +62,6 @@ public class CampManager{
         return true;
     }
 
-
-    //I DONT THINK THIS IS NEEDED ANYMORE, SINCE THE UI FLOW TECHINCALLY HANDLES THIS
-    //(maybe keep it for "security" sake in case we ever decide to make a new UI?)
     /**
      * Verifies that the current user actually has the ability to perfom the action.
      * Each utility method in the manager will first check using this method that the currentUser's type is correct.
@@ -111,12 +104,17 @@ public class CampManager{
         return true;
     }
     public boolean registerCamper(Camper camper, Session session){
+        if(!checkPermissions("p"))
+            return false;
         session.addCamper(camper);
         return true;
     }
     public boolean unregisterCamper(Camper camper, Session session){
+        if(!checkPermissions("p"))
+            return false;
         return false;
     }
+
     /**
      * For parents, returns a list of the current user's campers
      * @return ArrayList<String> The list of children
@@ -124,7 +122,6 @@ public class CampManager{
     public ArrayList<Camper> getChildren(){
         if(!checkPermissions("p"))
             return null;
-        
         return ((Parent) currentUser).getChildren();
     }
 
@@ -132,11 +129,23 @@ public class CampManager{
 
     //director specific
     public boolean addActivity(String name, String description, String location){
-        return false;
+        if(!checkPermissions("d"))
+            return false;
+        Camp.getInstance().addActivity(new Activity(name, description, location));
+        return true;
     }
     public boolean removeActivity(int index){
-        return false;
+        if(!checkPermissions("d"))
+            return false;
+        return Camp.getInstance().removeActivity(index);
     }
+
+    public ArrayList<Activity> getActivities(){
+        if(!checkPermissions("d"))
+            return null;
+        return Camp.getInstance().getActivities();
+    }
+
     public boolean addSession(String theme, String description, Date priorityDate, Date regularDate, Date startDate, Date endDate){
         if(!checkPermissions("d"))
             return false;
@@ -146,11 +155,44 @@ public class CampManager{
     public boolean removeSession(int index){
         if(!checkPermissions("d"))
             return false;
-        SessionList.getInstance().removeSession(index);
-        return true;
+        return SessionList.getInstance().removeSession(index);
     }
+
+    public ArrayList<Session> getSessions(){
+        if(!checkPermissions("dcp"))
+            return null;
+        return SessionList.getInstance().getAllSessions();
+    }
+
     public boolean setDiscount(Parent parent, double discount){
         return false;
+    }
+
+    public ArrayList<Cabin> getCabins(Session session){
+        if(!checkPermissions("d"))
+            return null;
+        return session.getCabins();
+    }
+
+    public boolean swapCounselor(Session session, int cabin1, int cabin2){
+        if(!checkPermissions("d"))
+            return false;
+        Counselor temp = session.getCabin(cabin1).getCounselor();
+        session.getCabin(cabin1).setCounselor(session.getCabin(cabin2).getCounselor());
+        session.getCabin(cabin2).setCounselor(temp);
+        return true;
+    }
+
+    public boolean swapCamper(Session session, int camper1, int camper2){
+        if(!checkPermissions("d"))
+            return false;
+        
+        Cabin cabin1 = session.getCabin(camper1 / 8);
+        Cabin cabin2 = session.getCabin(camper2 / 8);
+        Camper temp = cabin1.getCampers()[camper1 % 8];
+        cabin1.getCampers()[camper1 % 8] = cabin2.getCampers()[camper2 % 8];
+        cabin2.getCampers()[camper2 % 8] = temp;
+        return true;
     }
     
     /**
@@ -161,7 +203,7 @@ public class CampManager{
     public boolean addFAQ(String question, String answer){
         if(!checkPermissions("d"))
             return false;
-        camp.addFAQ(question, answer);
+        Camp.getInstance().addFAQ(question, answer);
         return true;
     }
     
@@ -175,20 +217,20 @@ public class CampManager{
     public boolean removeFAQ(String question){
         if(!checkPermissions("d"))
             return false;
-        camp.removeFAQ(question);
+        Camp.getInstance().removeFAQ(question);
         return true;
     }
 
     public boolean addPackingItem(String item){
         if(!checkPermissions("d"))
             return false;
-        camp.addPackingItem(item);
+        Camp.getInstance().addPackingItem(item);
         return true;
     }
     public boolean removePackingItem(int index){
         if(!checkPermissions("d"))
             return false;
-        return camp.removePackingItem(index);
+        return Camp.getInstance().removePackingItem(index);
     }
     public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin){
         return false;
@@ -198,6 +240,66 @@ public class CampManager{
     }
 
     
+    public String getRegistrationsView(){
+        if(!checkPermissions("c"))
+            return null;
+        Counselor c = (Counselor)currentUser;
+            String ret = "You are currently registered for ";
+
+        ArrayList<Session> list = SessionList.getInstance().getCounselorSessions(c);
+        ret += list.size() + " camps.\n";
+
+        if(list.size() == 0){
+            return ret+"No registrations! Go to the main user page to register.";
+        }
+
+        ret+="\n";
+        for(int i = 0; i  <  list.size(); i++){
+            Session s = list.get(i);
+            ret += String.format("%-20s%s%n", "Theme:", s.getTheme());
+            ret += String.format("%-20s%s - %s%n", "Dates:", formatDate(s.getStartDate()),
+                                formatDate(s.getEndDate()));
+            //ret += String.format("%-20s%s%n", "Priority deadline:", formatDate(s.getPriorityDeadline()));
+            //ret += String.format("%-20s%s%n", "Regular deadline:", formatDate(s.getRegularDeadline()));
+            //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
+            for(Cabin cab : s.getCabins()){
+                if(cab.counselorInCabin(c))
+                    ret+=cab.toString();
+            }
+            ret+="\n";
+        }
+       return ret;
+    }
+
+    public String getRegistrationsView(Camper c){
+        if(!checkPermissions("p"))
+            return null;
+        String ret = c.getFirst()+" is currently registered for ";
+
+        ArrayList<Session> list = SessionList.getInstance().getCamperSessions(c);
+        ret += list.size() + " camps.\n";
+
+        if(list.size() == 0){
+            return ret+"No registrations! Go to the main user page to register.";
+        }
+
+        ret+="\n";
+        for(int i = 0; i  <  list.size(); i++){
+            Session s = list.get(i);
+            ret += String.format("%-20s%s%n", "Theme:", s.getTheme());
+            ret += String.format("%-20s%s - %s%n", "Dates:", formatDate(s.getStartDate()),
+                                formatDate(s.getEndDate()));
+            //ret += String.format("%-20s%s%n", "Priority deadline:", formatDate(s.getPriorityDeadline()));
+            //ret += String.format("%-20s%s%n", "Regular deadline:", formatDate(s.getRegularDeadline()));
+            //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
+            for(Cabin cab : s.getCabins()){
+                if(cab.camperInCabin(c))
+                    ret+=cab.toString();
+            }
+            ret+="\n";
+        }
+       return ret;
+    }
 
 
     //counselor specific
@@ -265,35 +367,37 @@ public class CampManager{
             return ((Director)currentUser).getBio();
         }
     }
-
-    public String viewRegistrations(){
-        return null;
-    }
     
     public String getAboutPage(){
-        String info = "Camp Information:\n"+camp.getName()+"\n\nFAQ:\n";
-        for(Entry<String, String> entry : camp.getFAQs().entrySet()){
-            info += String.format("Q: %s%nA: %s%n", entry.getKey(), entry.getValue());
+        String info = "Camp Information:\n"+Camp.getInstance().getName()+"\n\nFAQ:\n";
+        for(String key : Camp.getInstance().getFAQs().keySet()){
+            info += String.format("Q: %s%nA: %s%n", key, Camp.getInstance().getFAQs().get(key));
         }
         info += "\nSuggested Packing List\n";
-        for(int i = 0; i < camp.getPackingList().size(); i++){
-            info += String.format("%d. %s%n", i+1, camp.getPackingList().get(i));
+        for(int i = 0; i < Camp.getInstance().getPackingList().size(); i++){
+            info += String.format("%d. %s%n", i+1, Camp.getInstance().getPackingList().get(i));
         }
         return info;
     }
 
     public boolean setEmail(String email) {
-        if(users.getUser(email)!=null)
+        if(currentUser==null)
+            return false;
+        if(UserList.getInstance().getUser(email)!=null)
             return false;
         currentUser.setEmail(email);
         return true;
     }
 
     public boolean setPass(String oldPass, String newPass){
+        if(currentUser==null)
+            return false;
         return currentUser.changePassword(oldPass, newPass);
     }    
 
     public boolean setPhone(String phone) {
+        if(currentUser==null)
+            return false;
         currentUser.setPhone(phone);
         return true;
 	}
@@ -309,7 +413,10 @@ public class CampManager{
 
     // Getters..?
     public Camp getCamp(){
-        return camp;
+        return Camp.getInstance();
+    }
+    public UserList getUserList(){
+        return UserList.getInstance();
     }
     public User getUser(){
         return currentUser;
@@ -317,9 +424,9 @@ public class CampManager{
     public UserType getType(){
         return currentUser.getUserType();
     }
-    public ArrayList<Session> getSessions(){
-        return SessionList.getInstance().getAllSessions();
-    }
 
-	
+    private String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        return sdf.format(date);
+    }
 }

@@ -8,13 +8,25 @@ import java.util.UUID;
  * @author Kat, Jackson, Nathan
  */
 public class Camp {
+
+    private static Camp campInstance;
     
     private String name;
     private Map<String, String> faqs;
     private ArrayList<String> securityQuestions;
-    private static ArrayList<Activity> activities;
+    private ArrayList<Activity> activities;
     private String officePhone;
     private ArrayList<String> packingList;
+
+    /**
+     * 
+     * @return
+     */
+    public static Camp getInstance(){
+        if(campInstance==null)
+            campInstance = DataReader.getCamp();
+        return campInstance;
+    }
 
     /**
      * Constructor for creating a new camp object
@@ -25,7 +37,7 @@ public class Camp {
         this.setName(name);
         this.faqs = new HashMap<String, String>();
         this.securityQuestions = new ArrayList<String>();
-        Camp.activities = new ArrayList<Activity>();
+        this.activities = new ArrayList<Activity>();
         this.setOfficePhone(officePhone);
         this.packingList = new ArrayList<String>();
     }
@@ -45,7 +57,7 @@ public class Camp {
         this.setName(name);
         this.faqs = faqs;
         this.securityQuestions = securityQuestions;
-        Camp.activities = activities;
+        this.activities = activities;
         this.setOfficePhone(officePhone);
         this.packingList = packingList;
     }
@@ -55,7 +67,7 @@ public class Camp {
      * @param id Gets a particular activity by UUID
      * @return Activity with given UUID, or null if not found
      */
-    public static Activity getActivityByUUID(UUID id) {
+    public Activity getActivityByUUID(UUID id) {
         for (Activity activity : activities)
             if (activity.getId().equals(id))
                 return activity;
@@ -66,8 +78,8 @@ public class Camp {
      * Adds activity to activities ArrayList 
      * @param activity activity to be added
      */
-    public static void addActivity(Activity activity) {
-        Camp.activities.add(activity);
+    public void addActivity(Activity activity) {
+        activities.add(activity);
     }
 
     /** 
@@ -75,11 +87,11 @@ public class Camp {
      * @param id UUID of activity to be removed
      * @return True iff removal was sucesssful
      */
-    public static boolean removeActivity(UUID id) {
+    public boolean removeActivity(UUID id) {
         Activity toRemove = getActivityByUUID(id);
         if (toRemove == null)
             return false;
-        Camp.activities.remove(toRemove);
+        activities.remove(toRemove);
         return true;
     }
 
@@ -88,9 +100,9 @@ public class Camp {
      * @param index index of activity to be removed
      * @return True iff removal was successful
      */
-    public static boolean removeActivity(int index) {
+    public boolean removeActivity(int index) {
         try {
-            Camp.activities.remove(index);
+            activities.remove(index);
             return true;
         } catch (Exception e) {
             return false;
@@ -186,7 +198,7 @@ public class Camp {
      * Accessor method for activities
      * @return activities of the camp
      */
-    public static ArrayList<Activity> getActivities() {
+    public ArrayList<Activity> getActivities() {
         return activities;
     }
 
@@ -233,7 +245,7 @@ public class Camp {
      */
     public String toString() {
         return this.name + "\n" + this.faqs + "\n" + this.securityQuestions 
-        + "\n" + Camp.activities + "\n" + this.officePhone 
+        + "\n" + activities + "\n" + this.officePhone 
         + "\n" + this.packingList;
     }
 }
