@@ -364,10 +364,6 @@ public class CampUI {
                 System.out.printf("%-20s%s%n",key+" location:", contacts.get(key).getLocation());
             }
 
-            //"Please select:\n0. Go back\n1. Add allergy\n2. Remove allergy"+
-            //"\n3. Add diet restriction\n4. Remove diet restriction\n5. Add medication\n6. Remove medication\n"+
-            //"7. Update guardian\n8. Update doctor\n9. Update dentist\n"
-
             System.out.println("\n"+menus[MENU]);
 
             selection = promptInt(0,9);
@@ -810,9 +806,37 @@ public class CampUI {
 
     //This method is accessible to counselors and parents
     public void viewRegistrations(){
-        clearScreen();
-        System.out.println("This is the view current registrations menu. I don't do anything yet");
-        prompt(true);
+        switch(campManager.getType()){
+            case PARENT:
+                ArrayList<Camper> kids = campManager.getChildren();
+                int input = 0;
+                do{
+                    clearScreen();
+                    System.out.println("Viewing Registrations:\n");
+                    if(kids.size()==0){
+                        System.out.println("No campers added yet, go to main user page and add some first...");
+                        prompt(true);
+                        break;
+                    }
+                    System.out.println("Please select a camper to view registration info of:\n0. Go back");
+                    for(int i = 0; i<kids.size();i++){
+                        System.out.printf("%d. %s %s%n",i+1,kids.get(i).getFirst(),kids.get(i).getLast());
+                    }
+                    input = promptInt(0, kids.size());
+                    if(input>0){
+                        System.out.println(campManager.getRegistrationsView(kids.get(input-1)));
+                        prompt(true);
+                    }
+                }while(input!=0);
+            break;
+            case COUNSELOR:
+                clearScreen();
+                System.out.println("Viewing Registrations:\n");
+                System.out.println(campManager.getRegistrationsView());
+                prompt(true);
+            break;
+            default: System.out.println("Something went wrong");
+        }   
     }
 
     //These methods are accessible to any logged in user

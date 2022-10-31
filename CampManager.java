@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import Users.*;
@@ -113,7 +114,7 @@ public class CampManager{
             return false;
         return false;
     }
-    
+
     /**
      * For parents, returns a list of the current user's campers
      * @return ArrayList<String> The list of children
@@ -236,6 +237,66 @@ public class CampManager{
     }
 
     
+    public String getRegistrationsView(){
+        if(!checkPermissions("c"))
+            return null;
+        Counselor c = (Counselor)currentUser;
+            String ret = "You are currently registered for ";
+
+        ArrayList<Session> list = SessionList.getInstance().getCounselorSessions(c);
+        ret += list.size() + " camps.\n";
+
+        if(list.size() == 0){
+            return ret+"No registrations! Go to the main user page to register.";
+        }
+
+        ret+="\n";
+        for(int i = 0; i  <  list.size(); i++){
+            Session s = list.get(i);
+            ret += String.format("%-20s%s%n", "Theme:", s.getTheme());
+            ret += String.format("%-20s%s - %s%n", "Dates:", formatDate(s.getStartDate()),
+                                formatDate(s.getEndDate()));
+            //ret += String.format("%-20s%s%n", "Priority deadline:", formatDate(s.getPriorityDeadline()));
+            //ret += String.format("%-20s%s%n", "Regular deadline:", formatDate(s.getRegularDeadline()));
+            //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
+            for(Cabin cab : s.getCabins()){
+                if(cab.counselorInCabin(c))
+                    ret+=cab.toString();
+            }
+            ret+="\n";
+        }
+       return ret;
+    }
+
+    public String getRegistrationsView(Camper c){
+        if(!checkPermissions("p"))
+            return null;
+        String ret = c.getFirst()+" is currently registered for ";
+
+        ArrayList<Session> list = SessionList.getInstance().getCamperSessions(c);
+        ret += list.size() + " camps.\n";
+
+        if(list.size() == 0){
+            return ret+"No registrations! Go to the main user page to register.";
+        }
+
+        ret+="\n";
+        for(int i = 0; i  <  list.size(); i++){
+            Session s = list.get(i);
+            ret += String.format("%-20s%s%n", "Theme:", s.getTheme());
+            ret += String.format("%-20s%s - %s%n", "Dates:", formatDate(s.getStartDate()),
+                                formatDate(s.getEndDate()));
+            //ret += String.format("%-20s%s%n", "Priority deadline:", formatDate(s.getPriorityDeadline()));
+            //ret += String.format("%-20s%s%n", "Regular deadline:", formatDate(s.getRegularDeadline()));
+            //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
+            for(Cabin cab : s.getCabins()){
+                if(cab.camperInCabin(c))
+                    ret+=cab.toString();
+            }
+            ret+="\n";
+        }
+       return ret;
+    }
 
 
     //counselor specific
@@ -363,5 +424,10 @@ public class CampManager{
     }
     public UserType getType(){
         return currentUser.getUserType();
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        return sdf.format(date);
     }
 }
