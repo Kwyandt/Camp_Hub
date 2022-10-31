@@ -92,20 +92,27 @@ public class CampManager{
     
 
     //Parent-specific methods
-    public boolean addCamper(Parent parent, String first, String last, Date birth, 
-                        String[] guardianContact, String[] doctorContact, String[] dentistContact,
+    public boolean addCamper(String first, String last, Date birth, 
+                        String[] guardian, String[] doctor, String[] dentist,
                         String tshirt){
         if(!checkPermissions("p")){
             //The current user isn't allowed here, return false to indicate the operation failed
             return false; 
         }
+
+        Map<Relationship, EmergencyContact> contacts = new TreeMap<Relationship, EmergencyContact>();
+        contacts.put(Relationship.DENTIST, new EmergencyContact(dentist[0], dentist[1], dentist[2], dentist[3]));
+        contacts.put(Relationship.GUARDIAN, new EmergencyContact(guardian[0], guardian[1], guardian[2], guardian[3]));
+        contacts.put(Relationship.DOCTOR, new EmergencyContact(doctor[0], doctor[1], doctor[2], doctor[3]));
+
         //Tell the appropriate classes to add a camper object
-        
+        ((Parent)currentUser).createCamper(new Camper(first, last, birth, contacts, tshirt));
         //Return true since the operation was successful
         return true;
     }
     public boolean registerCamper(Camper camper, Session session){
-        return false;
+        session.addCamper(camper);
+        return true;
     }
     public boolean unregisterCamper(Camper camper, Session session){
         return false;
@@ -130,13 +137,16 @@ public class CampManager{
     public boolean removeActivity(int index){
         return false;
     }
-    public boolean addSession(String theme, Date priorityDate, Date regularDate, Date startDate){
-        return false;
+    public boolean addSession(String theme, Date priorityDate, Date regularDate, Date startDate, Date endDate){
+        if(!checkPermissions("d"))
+            return false;
+        SessionList.getInstance().addSession(new Session(theme, priorityDate, regularDate, startDate, endDate));
+        return true;
     }
     public boolean removeSession(int index){
         if(!checkPermissions("d"))
             return false;
-        //SessionList.getInstance().removeSession(null);
+        SessionList.getInstance().removeSession(index);
         return true;
     }
     public boolean setDiscount(Parent parent, double discount){
@@ -167,10 +177,15 @@ public class CampManager{
     }
 
     public boolean addPackingItem(String item){
-        return false;
+        if(!checkPermissions("d"))
+            return false;
+        camp.addPackingItem(item);
+        return true;
     }
     public boolean removePackingItem(int index){
-        return false;
+        if(!checkPermissions("d"))
+            return false;
+        return camp.removePackingItem(index);
     }
     public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin){
         return false;
