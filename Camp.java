@@ -215,6 +215,19 @@ public class Camp {
     }
 
     /**
+     * equals method for camp
+     * @param aCamp to be compared to this.camp
+     * @return boolean true or false
+     */
+    public boolean equals(Camp aCamp) {
+        return aCamp != null &&
+        this.faqs.equals(aCamp.getFAQs()) &&
+        this.name.equals(aCamp.getName()) &&
+        this.officePhone.equals(aCamp.getOfficePhone()) &&
+        this.packingList.equals(aCamp.getPackingList()) &&
+        this.securityQuestions.equals(aCamp.getSecurityQuestions());
+    }
+    /**
      * Provides a String representation of the camp
      * @return String representation of the camp
      */

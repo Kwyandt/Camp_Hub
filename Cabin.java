@@ -181,15 +181,6 @@ public class Cabin {
     }
 
     /**
-     * Equals method for cabin
-     * @param cabin to be compared to this.cabin
-     * @return boolean true or false
-     */
-    public boolean equals(Cabin cabin) {
-        return false;
-    }
-
-    /**
      * Shows all vital info about each camper
      * @return formatted String detailing camper vitals
      */
@@ -248,6 +239,21 @@ public class Cabin {
      */
     public boolean counselorInCabin(Counselor c) {
         return this.counselor != null && c.equals(counselor);
+    }
+
+    /**
+     * Equals method for cabin
+     * @param cabin to be compared to this.cabin
+     * @return boolean true or false
+     */
+    public boolean equals(Cabin aCabin) {
+        return aCabin != null &&
+            this.cabinNumber == aCabin.getCabinNumber() &&
+            this.campers.equals(aCabin.getCampers()) &&
+            this.counselor.equals(aCabin.getCounselor()) &&
+            this.maxAge == aCabin.getMaxAge() &&
+            this.minAge == aCabin.getMinAge() &&
+            this.schedule.equals(aCabin.getSchedule());
     }
 
     /***

@@ -191,13 +191,19 @@ import java.util.*;
       //String strDate = dateFormat.format(date);
     }
 
+    /**
+     * equals method for camper
+     * @param aCamper to be compared to this.camper
+     * @return boolean true or false
+     */
     public boolean equals (Camper aCamper) {
       return aCamper != null&&
-        this.firstName == aCamper.getFirst()&&
-        this.lastName == aCamper.getLast () &&
-        this.birthDate == aCamper.getBirth() &&
-        this.emergencyContacts == aCamper.getEmergencyContact()&&
-        this.tShirt == aCamper.getTShirt();
+        this.firstName.equals(aCamper.getFirst())&&
+        this.lastName.equals(aCamper.getLast ()) &&
+        this.birthDate.equals(aCamper.getBirth()) &&
+        this.emergencyContacts.equals(aCamper.getEmergencyContact())&&
+        this.dietaryRestrictions.equals(aCamper.getDietaryRestrictions()) &&
+        this.tShirt.equals(aCamper.getTShirt());
     }
 
     public String toString() {

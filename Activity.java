@@ -92,6 +92,18 @@ public class Activity {
         this.location = location;
     }
 
+    /**
+     * equals method for activity class
+     * @param anActivity to be comapred to this.activity
+     * @return boolean true or fasle
+     */
+    public boolean equals (Activity anActivity) {
+        return anActivity != null &&
+            this.name.equals(anActivity.getName()) &&
+            this.description.equals(anActivity.getDescription()) &&
+            this.location.equals(anActivity.getLocation());
+    }
+
     /***
      * toString for Activity
      * @return String representation of Activity

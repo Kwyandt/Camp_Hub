@@ -41,6 +41,24 @@ import java.util.*;
       return location;
     }
 
+    /**
+     * equals method for emergency contact
+     * @param aContact to e compred to this.contact
+     * @return boolean true or false
+     */
+    public boolean equals(EmergencyContact aContact) {
+      return aContact != null &&
+      this.firstName.equals(aContact.getFirst()) &&
+      this.lastName.equals(aContact.getLast()) &&
+      this.phoneNumber.equals(aContact.getPhone()) &&
+      this.location.equals(aContact.getLocation());
+    }
+
+
+    /**
+     * provides string to represent emergency contact
+     * @ return string to represent emergency contact
+     */
     public String toString() {
       return firstName + " " + lastName + " - " + phoneNumber + "-" + location;
     }

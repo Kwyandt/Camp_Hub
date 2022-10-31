@@ -89,12 +89,27 @@ public class Director extends User{
         return this.bio;
     }
 
-    //Print or return the list?
     public ArrayList<String> getNotes() {
         return this.notes;
     }
 
+    /**
+     * equals method for director
+     * @param aDirector to be compared to this.director
+     * @return boolean true or falseS
+     */
+    public boolean equals (Director aDirector) {
+        return aDirector != null &&
+        this.bio.equals(aDirector.getBio()) &&
+        this.notes.equals(aDirector.getNotes()) &&
+        super.equals(aDirector);
+    }
+
+    /**
+     * Provites string to represent director
+     * @return String to represent director
+     */
     public String toString() {
-        return "director";
+        return "Director:" + super.toString() + "\n\t" + bio.toString() + "\n\t" + notes.toString();
     }
 }

@@ -250,6 +250,22 @@ public class Session {
         this.endDate = endDate;
     }
 
+    /**
+     * equals method for session class
+     * @param aSession to be compared to session
+     * @return boolean true or false
+     */
+    public boolean equals(Session aSession) {
+        return aSession != null &&
+        this.price == aSession.getPrice() &&
+        this.theme.equals(aSession.getTheme()) &&
+        this.description.equals(aSession.getDescription()) &&
+        this.cabins.equals(aSession.getCabins()) &&
+        this.priorityDeadline.equals(aSession.getPriorityDeadline()) &&
+        this.regularDeadline.equals(aSession.getRegularDeadline()) &&
+        this.startDate.equals(aSession.getStartDate()) &&
+        this.endDate.equals(aSession.getEndDate());
+    }
     /***
      * Provides String representation of the session
      * @return String representation of session

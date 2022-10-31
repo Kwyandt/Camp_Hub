@@ -58,6 +58,12 @@ import java.util.*;
         return this.isReturning;
     }
 
+    public boolean equals(Parent aParent) {
+        return aParent != null &&
+        this.children.equals(aParent.getChildren()) &&
+        this.discount == aParent.getDiscount() &&
+        super.equals(aParent);
+    }
     public String toString() {
         return this.id.toString() + "\n" + this.type + "\n" + this.email + "\n" + this.phone + "\n" + this.password + "\n" + this.firstName + "\n" + this.lastName + "\n" + this.birthDate.toString() + "\n" + this.securityQuestions.toString() + "\n" + this.children.toString() + "\n" + this.isReturning;
     }

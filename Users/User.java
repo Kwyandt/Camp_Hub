@@ -96,6 +96,26 @@ import java.util.*;
       return securityQuestions;
     }
 
+    /**
+     * equals method for user class
+     * @param aUser object to be compared to
+     * @return boolean true or false
+     */
+    public boolean equals (User aUser) {
+      return aUser != null &&
+      this.type.equals(aUser.getUserType()) &&
+      this.email.equals(aUser.getEmail()) &&
+      this.phone.equals(aUser.getPhone()) &&
+      this.password.equals(aUser.getPassword()) &&
+      this.firstName.equals(aUser.getFirstName()) &&
+      this.lastName.equals(aUser.getLastName()) &&
+      this.birthDate.equals(aUser.getBirthDate());
+    }
+
+    /**
+     * to string method for user class
+     * @return string of user information
+     */
     public String toString() {
       return this.firstName + " " + this.lastName + "\n\t" + this.id + "\n\t" + this.email + "\n\t" + this.phone + "\n\t" + this.birthDate + "\n\t" + this.securityQuestions;
     }
