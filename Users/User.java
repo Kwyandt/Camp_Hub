@@ -36,6 +36,7 @@ import java.util.*;
       this.phone = phone;
       this.birthDate = birthDate;
       this.securityQuestions = securityQuestions;
+      id = UUID.randomUUID();
     }
 
     /**
