@@ -9,7 +9,7 @@ public class CampManager{
     private UserList users;
 
     public CampManager(){
-        camp = DataReader.getCamp();
+        camp = Camp.getInstance();
         users = UserList.getInstance();
     }
 
@@ -124,7 +124,6 @@ public class CampManager{
     public ArrayList<Camper> getChildren(){
         if(!checkPermissions("p"))
             return null;
-        
         return ((Parent) currentUser).getChildren();
     }
 
@@ -132,11 +131,23 @@ public class CampManager{
 
     //director specific
     public boolean addActivity(String name, String description, String location){
+        if(!checkPermissions("d"))
+            return false;
+        camp.addActivity(new Activity(name, description, location));
         return false;
     }
     public boolean removeActivity(int index){
-        return false;
+        if(!checkPermissions("d"))
+            return false;
+        return camp.removeActivity(index);
     }
+
+    public ArrayList<Activity> getActivities(){
+        if(!checkPermissions("d"))
+            return null;
+        return Camp.getInstance().getActivities();
+    }
+
     public boolean addSession(String theme, String description, Date priorityDate, Date regularDate, Date startDate, Date endDate){
         if(!checkPermissions("d"))
             return false;
@@ -149,6 +160,13 @@ public class CampManager{
         SessionList.getInstance().removeSession(index);
         return true;
     }
+
+    public ArrayList<Session> getSessions(){
+        if(!checkPermissions("d"))
+            return null;
+        return SessionList.getInstance().getAllSessions();
+    }
+
     public boolean setDiscount(Parent parent, double discount){
         return false;
     }
@@ -314,9 +332,7 @@ public class CampManager{
     public UserType getType(){
         return currentUser.getUserType();
     }
-    public ArrayList<Session> getSessions(){
-        return SessionList.getInstance().getAllSessions();
-    }
+    
 
 	
 }
