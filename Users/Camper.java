@@ -31,6 +31,7 @@ import java.util.*;
       this.birthDate = birthDate;
       this.emergencyContacts = emergencyContacts;
       this.tShirt = tShirt;
+      id = UUID.randomUUID();
       allergies = new ArrayList<String>();
       meds = new ArrayList<String>();
       dietaryRestrictions = new ArrayList<String>();
