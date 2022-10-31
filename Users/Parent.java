@@ -23,6 +23,7 @@ import java.util.*;
      */
     public Parent (String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question) {
         super(email, pass, first, last, phone, birthDate, question);
+        children = new ArrayList<Camper>();
     }
 
     public Parent(UUID id, String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question, ArrayList<Camper> children, boolean isReturning) {
