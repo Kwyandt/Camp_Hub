@@ -159,7 +159,7 @@ public class CampManager{
     }
 
     public ArrayList<Session> getSessions(){
-        if(!checkPermissions("d"))
+        if(!checkPermissions("dcp"))
             return null;
         return SessionList.getInstance().getAllSessions();
     }

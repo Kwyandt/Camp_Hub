@@ -813,7 +813,7 @@ public class CampUI {
                 do{
                     clearScreen();
                     System.out.println("Viewing Registrations:\n");
-                    if(kids.size()==0){
+                    if(kids==null || kids.size()==0){
                         System.out.println("No campers added yet, go to main user page and add some first...");
                         prompt(true);
                         break;
