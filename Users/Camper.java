@@ -201,7 +201,7 @@ import java.util.*;
     }
 
     public String toString() {
-      return this.id + "\n" + this.firstName + "\n" + this.lastName + "\n" + this.birthDate.toString() + "\n" + this.meds.toString() + "\n" + this.allergies.toString() + "\n" + this.emergencyContacts.toString() + "\n" + this.dietaryRestrictions.toString() + "\n" + this.tShirt;
+      return this.id + "\n" + this.firstName + "\n" + this.lastName + "\n" + this.birthDate.toString() + "\n" + this.meds.toString() + "\n" + this.allergies.toString() + "\n" + this.emergencyContacts.toString() + "\n" + this.dietaryRestrictions.toString() + "\n" + this.tShirt + "\n" + getAge();
     }
 
  }
