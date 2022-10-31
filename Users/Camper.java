@@ -1,8 +1,5 @@
 package Users;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.time.temporal.ChronoUnit;
 
 /**
  * @author Katelyn Wyandt
@@ -34,6 +31,10 @@ import java.time.temporal.ChronoUnit;
       this.birthDate = birthDate;
       this.emergencyContacts = emergencyContacts;
       this.tShirt = tShirt;
+      allergies = new ArrayList<String>();
+      meds = new ArrayList<String>();
+      dietaryRestrictions = new ArrayList<String>();
+      emergencyContacts = new TreeMap<Relationship,EmergencyContact>();
     }
 
     /**
@@ -98,6 +99,19 @@ import java.time.temporal.ChronoUnit;
         return false;
       }
       this.allergies.remove(index);
+      return true;
+    }
+
+    /**
+     * Method to remove dietary restriction from list of dietary restrictions
+     * @param index index of dietary restriction to be removed
+     * @return false if index is out of range of dietary restriction, true otherwise
+     */
+    public boolean removeDietaryRestsriction(int index) {
+      if(index < 0 || index >= dietaryRestrictions.size()) {
+        return false;
+      }
+      this.dietaryRestrictions.remove(index);
       return true;
     }
 

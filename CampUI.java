@@ -3,8 +3,7 @@ import java.util.*;
 import Users.*;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 
 
 public class CampUI {
@@ -30,7 +29,7 @@ public class CampUI {
         // The register camper menu (after you select a session to register for) (5)
         "Please select a camper to register:\n0. Go back\n1. Add camper",
         // The manage account menu (6)
-        "Please select:\n0. Go back\n1. Update email\n3. Update password\n3. Update phone number\n4. Update security question\n",
+        "Please select:\n0. Go back\n1. Update email\n2. Update password\n3. Update phone number\n4. Update security question\n",
         // The manage bio menu (7)
         "Please select:\n0. Go back\n1. Update bio\n",
         // The manage notes menu (8)
@@ -40,7 +39,11 @@ public class CampUI {
         // The manage FAQs menu (10)
         "Please select:\n0. Go back\n1. Add FAQ\n2. Remove FAQ\n",
         // The camper edit menu (11)
-        "Please select:\n0. Go back\n1. Update \n2. [add more]\n"
+        "Please select:\n0.  Go back\n1.  Add allergy\n2.  Remove allergy"+
+        "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n"+
+        "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n",
+        // The manage session for director menu (12)
+        "Please select:\n0. Go back\n1. Update theme\n2. Add Activity\n3. Remove Activity\n4. Manage cabin assignments\n"
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
@@ -52,13 +55,31 @@ public class CampUI {
             "Please enter first name:",
             "Please enter last name:",
             "Please enter phone number:",
-            "Please enter birthdate (MM/DD/YYYY):",
+            "Please enter birthdate (dd-MMM-yyyy):",
             "Please select security question:\n",
             "Please answer the question you selected:",
         },
         {   // The prompts for loginUser()
             "Please enter email:",
             "Please enter password:"
+        },
+        {   // The prompts for createCamper()
+            "Please enter camper first name:",
+            "Please enter camper last name:",
+            "Please enter camper birth date (dd-MMM-yyyy):",
+            "Please enter camper tshirt size:",
+            "Please enter guardian contact first name:",
+            "Please enter guardian contact last name:",
+            "Please enter guardian contact phone:",
+            "Please enter guardian contact location (address/office):",
+            "Please enter doctor contact first name:",
+            "Please enter doctor contact last name:",
+            "Please enter doctor contact phone:",
+            "Please enter doctor contact location (address/office):",
+            "Please enter dentist contact first name:",
+            "Please enter dentist contact last name:",
+            "Please enter dentist contact phone:",
+            "Please enter dentist contact location (address/office):"
         }
     };
 
@@ -278,21 +299,47 @@ public class CampUI {
 
     public void addCamper(){
         clearScreen();
-        System.out.println("This is the Add Camper form. I don't do anything yet");
-        prompt(true);
+        final int FORM = 2;
+        System.out.println("Add Camper Form:\n");
+        String[] inputs = new String[forms[FORM].length-1];
+        Date birth = null;
+        for(int i=0;i<forms[FORM].length;i++){
+            System.out.println(forms[FORM][i]);
+            if(i==2)
+                birth = promptDate();
+            else if(i>2)
+                inputs[i-1] = prompt();
+            else
+                inputs[i] = prompt();
+        }
+        String[] guardian = new String[]{inputs[3], inputs[4],inputs[4],inputs[6]};
+        String[] doctor = new String[]{inputs[7], inputs[8],inputs[9],inputs[10]};
+        String[] dentist = new String[]{inputs[11], inputs[12],inputs[13],inputs[14]};
+        boolean  success = campManager.addCamper(inputs[0], inputs[1], birth, guardian, doctor, dentist, inputs[2]);
+        if(success){
+            System.out.println("Camper created sucessfully! Be sure to update their allergies/meds.");
+            prompt(true);
+        }
+        else{
+            System.out.println("Camper creation failed, check information and try again...");
+            prompt(true);
+        }
+        
     }
     
     public void editCamper(int index){
         final int MENU = 11;
         int selection = 0;
         Camper camper = campManager.getChildren().get(index);
-        DateFormat formatter = DateFormat.getDateInstance(DateFormat.MEDIUM);
         do{
             clearScreen();
             System.out.println("Viewing Camper:\n");
-            System.out.printf("%-10s%s %s%n","Name: ", camper.getFirst(),camper.getLast());
-            System.out.printf("%-10s%s (Age: %d)%n","Birth: ", formatter.format(camper.getBirth()),camper.getAge());
-            System.out.printf("%-10s%s%n","Tshirt: ",camper.getTShirt());
+            System.out.printf("%-10s%s %s%n","Name: ", 
+                    camper.getFirst(),camper.getLast());
+            System.out.printf("%-10s%s (Age: %d)%n","Birth: ", 
+                    formatDate(camper.getBirth()),camper.getAge());
+            System.out.printf("%-10s%s%n","Tshirt: ",
+                    camper.getTShirt());
             System.out.println("Allergies:");
             for(int i = 0;  i < camper.getAllergy().size(); i++){
                 System.out.printf("    %d. %s%n",i+1,camper.getAllergy().get(i));
@@ -305,19 +352,72 @@ public class CampUI {
             for(int i = 0;  i < camper.getMeds().size(); i++){
                 System.out.printf("    %d. %s%n",i+1,camper.getMeds().get(i));
             }
+            Map<Relationship, EmergencyContact> contacts = camper.getEmergencyContact();
+            for(Relationship key : contacts.keySet()){
+                System.out.printf("%n%-20s%s%n",key+" first:", contacts.get(key).getFirst());
+                System.out.printf("%-20s%s%n",key+" last:", contacts.get(key).getLast());
+                System.out.printf("%-20s%s%n",key+" phone:", contacts.get(key).getPhone());
+                System.out.printf("%-20s%s%n",key+" location:", contacts.get(key).getLocation());
+            }
+
+            //"Please select:\n0. Go back\n1. Add allergy\n2. Remove allergy"+
+            //"\n3. Add diet restriction\n4. Remove diet restriction\n5. Add medication\n6. Remove medication\n"+
+            //"7. Update guardian\n8. Update doctor\n9. Update dentist\n"
+
             System.out.println("\n"+menus[MENU]);
 
-            selection = promptInt(0,2);
+            selection = promptInt(0,9);
 
-
+            int input =0;
             switch(selection){
                 case 0: break;
                 case 1: 
-                    // perform whatever action here
-                break;
+                    System.out.println("Please enter allergy:");
+                    camper.addAllergy(prompt());
+                    break;
                 case 2: 
-                     
-                break;
+                    System.out.println("Please enter number to remove (0 to go back):");
+                    input = promptInt(0,camper.getAllergy().size());
+                    if(input==0) break;
+                    camper.removeAllergy(input-1);
+                    break;
+                case 3: 
+                    System.out.println("Please enter dietary restriction:");
+                    camper.addDietaryResriction(prompt());
+                    break;
+                case 4: 
+                    System.out.println("Please enter number to remove (0 to go back):");
+                    input = promptInt(0,camper.getDietaryRestrictions().size());
+                    if(input==0) break;
+                    camper.removeDietaryRestsriction(input-1);
+                    break;
+                case 5: 
+                    System.out.println("Please enter medication:");
+                    camper.addMed(prompt());
+                    break;
+                case 6: 
+                    System.out.println("Please enter number to remove (0 to go back):");
+                    input = promptInt(0,camper.getMeds().size());
+                    if(input==0) break;
+                    camper.removeMed(input-1);
+                    break;
+                case 7:
+                case 8:
+                case 9:
+                    String[] inputs = new String[4];
+                    //loop through the four prompts for emergency contact
+                    for(int i = 0; i < 4; i++){
+                        System.out.println(forms[2][(selection - 6)*4 + i]);
+                        inputs[i] = prompt();
+                    }
+                    EmergencyContact contact = new EmergencyContact(inputs[0], inputs[1], inputs[2], inputs[3]);
+                    if(selection==7)
+                        camper.addContact(Relationship.GUARDIAN, contact);
+                    else if(selection==8)
+                        camper.addContact(Relationship.DOCTOR, contact);
+                    else
+                        camper.addContact(Relationship.DENTIST, contact);
+                    break;
                 default: System.out.println("Something went wrong!");
             }
         }while(selection!=0);
@@ -336,19 +436,31 @@ public class CampUI {
     //These are accessible only by directors
     public void manageSession(int index){
         clearScreen();
-        System.out.println("This is the manage sessions menu. I don't do anything yet");
+        System.out.println("This is the session edit menu. I don't do anything yet");
         prompt(true);
+        /* int selection = 0;
+        final int MENU = 12;
+        do{
+            clearScreen();
+            System.out.println("Managing session:\n\n");
+            Session session = campManager.getSessions().get(index);
+            System.out.printf("%-20s%s%n", "Theme:", session.getTheme());
+            System.out.printf("%-20s%s - %s%n", "Dates:", formatDate(session.getStartDate()),
+                                formatDate(session.getEndDate()));
+            System.out.printf("%-20s%s%n", "Priority deadline:", formatDate(session.getPriorityDeadline()));
+            System.out.printf("%-20s%s%n", "Regular deadline:", formatDate(session.getRegularDeadline()));
+            System.out.printf("%-20s$%.02f%n", "Price:", session.getPrice());
+            System.out.println("\n Activities:");
+            for(int i=0;i<session.
+
+            System.out.println(menus[MENU]);
+            
+        }while(selection!=0); */
     }
     
     public void addSession(){
         clearScreen();
         System.out.println("This is the add session form. I don't do anything yet");
-        prompt(true);
-    }
-    
-    public void editSession(){
-        clearScreen();
-        System.out.println("This is the session edit menu. I don't do anything yet");
         prompt(true);
     }
 
@@ -484,7 +596,8 @@ public class CampUI {
             ArrayList<Session> sessions = campManager.getSessions();
             for (int i=0; i < sessions.size(); i++){
                 System.out.printf("%d. %s | %s - %s%n",i+1,sessions.get(i).getTheme(), 
-                                            sessions.get(i).getStartDate(),sessions.get(i).getEndDate());
+                                            formatDate(sessions.get(i).getStartDate()),
+                                            formatDate(sessions.get(i).getEndDate()));
             }
             if(campManager.getUser().getUserType()==UserType.DIRECTOR)
                 System.out.printf("%d. %s%n", sessions.size()+1, "Add new session...");
@@ -519,14 +632,15 @@ public class CampUI {
             System.out.println("Registering for session!\n\n");
             Session session = campManager.getSessions().get(index);
             System.out.printf("%-20s%s%n", "Theme:", session.getTheme());
-            System.out.printf("%-20s%s - %s%n", "Dates:", session.getStartDate(),session.getEndDate());
-            System.out.printf("%-20s%s%n", "Priority deadline:", session.getPriorityDeadline());
-            System.out.printf("%-20s%s%n", "Regular deadline:", session.getRegularDeadline());
+            System.out.printf("%-20s%s - %s%n", "Dates:", formatDate(session.getStartDate()),
+                                formatDate(session.getEndDate()));
+            System.out.printf("%-20s%s%n", "Priority deadline:", formatDate(session.getPriorityDeadline()));
+            System.out.printf("%-20s%s%n", "Regular deadline:", formatDate(session.getRegularDeadline()));
             System.out.printf("%-20s$%.02f%n", "Price:", session.getPrice());
 
             switch(campManager.getUser().getUserType()){
                 case COUNSELOR:
-                    System.out.println("Please Select:\n0. Go back\n1. Register for session");
+                    System.out.println("\nPlease Select:\n0. Go back\n1. Register for session");
                     selection = promptInt(0,1);
                     if(selection==1){
                         boolean success = campManager.registerCounselor(session);
@@ -538,13 +652,13 @@ public class CampUI {
                     }
                     break;
                 case PARENT:
-                    System.out.println("Please select a camper to register:\n0. Go back");
+                    System.out.println("\nPlease select a camper to register:\n0. Go back");
                     int size = campManager.getChildren().size();
                     for(int i=0; i < size; i++){
                         Camper c = campManager.getChildren().get(i);
                         System.out.printf("%d. %s %s%n",i+1,c.getFirst(),c.getLast());
                     }
-                    System.out.printf("%d. Add a camper...%n", size+1);
+                    System.out.printf("%d. Add a camper...%n%n", size+1);
                     selection = promptInt(0, size+1);
                     if(selection==size+1)
                         addCamper();
@@ -573,7 +687,6 @@ public class CampUI {
     public void manageAccount(){
         final int MENU = 6;
         int selection = 0;
-        DateFormat formatter = DateFormat.getDateInstance();
         User user = campManager.getUser();
         String format = "%-10s%s%n";
         
@@ -585,7 +698,7 @@ public class CampUI {
             System.out.printf(format,"email:",user.getEmail());
             System.out.printf(format,"phone:",user.getPhone());
             //currently null errors for some reason
-            System.out.printf(format,"birth:",formatter.format(user.getBirthDate()));
+            System.out.printf(format,"birth:",formatDate(user.getBirthDate()));
 
             System.out.println("\n"+menus[MENU]);
             selection = promptInt(0,4);
@@ -613,7 +726,11 @@ public class CampUI {
                     prompt(true);
                     break;
                 case 3:
-                    // Prompt to update phone
+                    System.out.println("Please enter new phone: "); 
+                    if(!campManager.setPhone(prompt())){
+                        System.out.println("Phone change unsuccessful...");
+                        prompt(true);
+                    }
                     break;
                 case 4:
                     // Prompt to update question and answer
@@ -652,15 +769,14 @@ public class CampUI {
      * @return The Date the user inputted
      */
     private Date promptDate() {
-        DateFormat parser = DateFormat.getDateInstance(DateFormat.SHORT);
-        ParsePosition pos = new ParsePosition(0);
         System.out.print("> ");
         String input = scan.nextLine();
-        while(parser.parse(input,pos)==null){
+        while(getDate(input)==null){
             System.out.print("Invalid input, please try again: \n> ");
             input = scan.nextLine();
         }
-        return parser.parse(input, pos);
+        System.out.println(formatDate(getDate(input)));
+        return getDate(input);
     }
 
     /**
@@ -696,6 +812,18 @@ public class CampUI {
         } catch (IOException | InterruptedException ex) {}
     }
 
+    private Date getDate(String str) {
+        try {
+            return new SimpleDateFormat("dd-MMM-yyyy").parse(str);
+        } catch (Exception e) {
+            return null;
+        } 
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        return sdf.format(date);
+    }
 
 
     public static void main(String[] args){
