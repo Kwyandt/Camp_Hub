@@ -61,9 +61,6 @@ public class CampManager{
         return true;
     }
 
-
-    //I DONT THINK THIS IS NEEDED ANYMORE, SINCE THE UI FLOW TECHINCALLY HANDLES THIS
-    //(maybe keep it for "security" sake in case we ever decide to make a new UI?)
     /**
      * Verifies that the current user actually has the ability to perfom the action.
      * Each utility method in the manager will first check using this method that the currentUser's type is correct.
@@ -106,12 +103,17 @@ public class CampManager{
         return true;
     }
     public boolean registerCamper(Camper camper, Session session){
+        if(!checkPermissions("p"))
+            return false;
         session.addCamper(camper);
         return true;
     }
     public boolean unregisterCamper(Camper camper, Session session){
+        if(!checkPermissions("p"))
+            return false;
         return false;
     }
+    
     /**
      * For parents, returns a list of the current user's campers
      * @return ArrayList<String> The list of children
@@ -163,6 +165,33 @@ public class CampManager{
 
     public boolean setDiscount(Parent parent, double discount){
         return false;
+    }
+
+    public ArrayList<Cabin> getCabins(Session session){
+        if(!checkPermissions("d"))
+            return null;
+        return session.getCabins();
+    }
+
+    public boolean swapCounselor(Session session, int cabin1, int cabin2){
+        if(!checkPermissions("d"))
+            return false;
+        Counselor temp = session.getCabin(cabin1).getCounselor();
+        session.getCabin(cabin1).setCounselor(session.getCabin(cabin2).getCounselor());
+        session.getCabin(cabin2).setCounselor(temp);
+        return true;
+    }
+
+    public boolean swapCamper(Session session, int camper1, int camper2){
+        if(!checkPermissions("d"))
+            return false;
+        
+        Cabin cabin1 = session.getCabin(camper1 / 8);
+        Cabin cabin2 = session.getCabin(camper2 / 8);
+        Camper temp = cabin1.getCampers()[camper1 % 8];
+        cabin1.getCampers()[camper1 % 8] = cabin2.getCampers()[camper2 % 8];
+        cabin2.getCampers()[camper2 % 8] = temp;
+        return true;
     }
     
     /**

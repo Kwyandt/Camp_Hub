@@ -1,5 +1,4 @@
 import java.util.Date;
-import java.util.NoSuchElementException;
 import java.util.ArrayList;
 
 import Users.*;
@@ -150,16 +149,21 @@ public class Session {
 
     /**
      * Accessor for cabin of a specific number
-     * @param number Number of desired Cabin
-     * @return Cabin with desired number (if it exists)
-     * @throws NoSuchElementException If cabin is not found
+     * @param index Index of desired Cabin
+     * @return Cabin at desired position or null if it doesnt exist
      */
-    public Cabin getCabin(int number) throws NoSuchElementException {
-        for (Cabin cabin : cabins)
+    public Cabin getCabin(int index)  {
+        try{
+            return cabins.get(index);
+        }
+        catch(Exception e){
+            return null;
+        }
+        /* for (Cabin cabin : cabins)
             if (cabin.getCabinNumber() == number)
                 return cabin;
         // We didn't find the cabin
-        throw new NoSuchElementException();
+        throw new NoSuchElementException(); */
     }
 
     /***
