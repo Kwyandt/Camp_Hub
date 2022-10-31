@@ -137,10 +137,10 @@ public class CampManager{
     public boolean removeActivity(int index){
         return false;
     }
-    public boolean addSession(String theme, Date priorityDate, Date regularDate, Date startDate, Date endDate){
+    public boolean addSession(String theme, String description, Date priorityDate, Date regularDate, Date startDate, Date endDate){
         if(!checkPermissions("d"))
             return false;
-        SessionList.getInstance().addSession(new Session(theme, priorityDate, regularDate, startDate, endDate));
+        SessionList.getInstance().addSession(new Session(theme, description, priorityDate, regularDate, startDate, endDate));
         return true;
     }
     public boolean removeSession(int index){
