@@ -3,8 +3,6 @@ import java.util.*;
 import Users.*;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 
 
@@ -31,7 +29,7 @@ public class CampUI {
         // The register camper menu (after you select a session to register for) (5)
         "Please select a camper to register:\n0. Go back\n1. Add camper",
         // The manage account menu (6)
-        "Please select:\n0. Go back\n1. Update email\n3. Update password\n3. Update phone number\n4. Update security question\n",
+        "Please select:\n0. Go back\n1. Update email\n2. Update password\n3. Update phone number\n4. Update security question\n",
         // The manage bio menu (7)
         "Please select:\n0. Go back\n1. Update bio\n",
         // The manage notes menu (8)
@@ -43,7 +41,9 @@ public class CampUI {
         // The camper edit menu (11)
         "Please select:\n0.  Go back\n1.  Add allergy\n2.  Remove allergy"+
         "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n"+
-        "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n"
+        "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n",
+        // The manage session for director menu (12)
+        "Please select:\n0. Go back\n1. Update theme\n2. Add Activity\n3. Remove Activity\n4. Manage cabin assignments\n"
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
@@ -354,7 +354,7 @@ public class CampUI {
             }
             Map<Relationship, EmergencyContact> contacts = camper.getEmergencyContact();
             for(Relationship key : contacts.keySet()){
-                System.out.printf("%-20s%s%n",key+" first:", contacts.get(key).getFirst());
+                System.out.printf("%n%-20s%s%n",key+" first:", contacts.get(key).getFirst());
                 System.out.printf("%-20s%s%n",key+" last:", contacts.get(key).getLast());
                 System.out.printf("%-20s%s%n",key+" phone:", contacts.get(key).getPhone());
                 System.out.printf("%-20s%s%n",key+" location:", contacts.get(key).getLocation());
@@ -436,19 +436,31 @@ public class CampUI {
     //These are accessible only by directors
     public void manageSession(int index){
         clearScreen();
-        System.out.println("This is the manage sessions menu. I don't do anything yet");
+        System.out.println("This is the session edit menu. I don't do anything yet");
         prompt(true);
+        /* int selection = 0;
+        final int MENU = 12;
+        do{
+            clearScreen();
+            System.out.println("Managing session:\n\n");
+            Session session = campManager.getSessions().get(index);
+            System.out.printf("%-20s%s%n", "Theme:", session.getTheme());
+            System.out.printf("%-20s%s - %s%n", "Dates:", formatDate(session.getStartDate()),
+                                formatDate(session.getEndDate()));
+            System.out.printf("%-20s%s%n", "Priority deadline:", formatDate(session.getPriorityDeadline()));
+            System.out.printf("%-20s%s%n", "Regular deadline:", formatDate(session.getRegularDeadline()));
+            System.out.printf("%-20s$%.02f%n", "Price:", session.getPrice());
+            System.out.println("\n Activities:");
+            for(int i=0;i<session.
+
+            System.out.println(menus[MENU]);
+            
+        }while(selection!=0); */
     }
     
     public void addSession(){
         clearScreen();
         System.out.println("This is the add session form. I don't do anything yet");
-        prompt(true);
-    }
-    
-    public void editSession(){
-        clearScreen();
-        System.out.println("This is the session edit menu. I don't do anything yet");
         prompt(true);
     }
 
@@ -628,7 +640,7 @@ public class CampUI {
 
             switch(campManager.getUser().getUserType()){
                 case COUNSELOR:
-                    System.out.println("Please Select:\n0. Go back\n1. Register for session");
+                    System.out.println("\nPlease Select:\n0. Go back\n1. Register for session");
                     selection = promptInt(0,1);
                     if(selection==1){
                         boolean success = campManager.registerCounselor(session);
@@ -640,13 +652,13 @@ public class CampUI {
                     }
                     break;
                 case PARENT:
-                    System.out.println("Please select a camper to register:\n0. Go back");
+                    System.out.println("\nPlease select a camper to register:\n0. Go back");
                     int size = campManager.getChildren().size();
                     for(int i=0; i < size; i++){
                         Camper c = campManager.getChildren().get(i);
                         System.out.printf("%d. %s %s%n",i+1,c.getFirst(),c.getLast());
                     }
-                    System.out.printf("%d. Add a camper...%n", size+1);
+                    System.out.printf("%d. Add a camper...%n%n", size+1);
                     selection = promptInt(0, size+1);
                     if(selection==size+1)
                         addCamper();
@@ -714,7 +726,11 @@ public class CampUI {
                     prompt(true);
                     break;
                 case 3:
-                    // Prompt to update phone
+                    System.out.println("Please enter new phone: "); 
+                    if(!campManager.setPhone(prompt())){
+                        System.out.println("Phone change unsuccessful...");
+                        prompt(true);
+                    }
                     break;
                 case 4:
                     // Prompt to update question and answer
