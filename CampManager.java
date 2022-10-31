@@ -7,6 +7,7 @@ public class CampManager{
     private User currentUser;
 
     public CampManager(){
+        currentUser = null;
     }
 
     public boolean createUser(UserType type, String email,  String pass, 
@@ -56,6 +57,8 @@ public class CampManager{
             //Logout wasn't successful, return false
             return false;
 
+        DataWriter.saveAllUsers(UserList.getInstance().getAllUsers());
+        DataWriter.saveCamp(Camp.getInstance());
         // Insert save user info here?
         currentUser=null;
         //Logout was successful, return true

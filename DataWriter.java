@@ -95,6 +95,8 @@ public class DataWriter extends DataConstants {
                     camperArray.add(cam.getUuid().toString());
                 }
                 cabinDetails.put(CABIN_CAMPERS, camperArray);
+                cabinDetails.put(CABIN_MIN_AGE, cab.getMinAge());
+                cabinDetails.put(CABIN_MAX_AGE, cab.getMaxAge());
                 cabinArray.add(cabinDetails);
             }
             sessionDetails.put(SESSION_CABINS, cabinArray);
