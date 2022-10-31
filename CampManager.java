@@ -364,10 +364,6 @@ public class CampManager{
             return ((Director)currentUser).getBio();
         }
     }
-
-    public String viewRegistrations(){
-        return null;
-    }
     
     public String getAboutPage(){
         String info = "Camp Information:\n"+Camp.getInstance().getName()+"\n\nFAQ:\n";
