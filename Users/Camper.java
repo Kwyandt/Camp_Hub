@@ -180,7 +180,7 @@ import java.util.*;
       Calendar current = Calendar.getInstance();
       current.setTime(today);
       Calendar birth = Calendar.getInstance();
-      current.setTime(birthDate);
+      birth.setTime(birthDate);
       //check the year, month, then day 
       int age = current.get(Calendar.YEAR) - birth.get(Calendar.YEAR) -1;
       if(birth.get(Calendar.MONTH) <= current.get(Calendar.MONTH) && birth.get(Calendar.DAY_OF_MONTH) <= current.get(Calendar.DAY_OF_MONTH))
