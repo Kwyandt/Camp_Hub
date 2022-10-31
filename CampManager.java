@@ -1,35 +1,30 @@
 import java.util.*;
-import java.util.Map.Entry;
 
 import Users.*;
 
 public class CampManager{
-    private Camp camp;
     private User currentUser;
-    private UserList users;
 
     public CampManager(){
-        camp = Camp.getInstance();
-        users = UserList.getInstance();
     }
 
     public boolean createUser(UserType type, String email,  String pass, 
                         String first, String last, String phone, Date birth, 
                         Map<String, String> securityQuestion){
         
-        if(users.getUser(email)!=null)
+        if(UserList.getInstance().getUser(email)!=null)
             //Can't create account because one with that email already exists!
             return false;
         //Creates the account
         switch(type){
             case PARENT:
-                users.addUser(new Parent(email, pass, first, last, phone, birth, securityQuestion));
+                UserList.getInstance().addUser(new Parent(email, pass, first, last, phone, birth, securityQuestion));
             break;
             case DIRECTOR:
-                users.addUser(new Director(email, pass, first, last, phone, birth, securityQuestion));
+                UserList.getInstance().addUser(new Director(email, pass, first, last, phone, birth, securityQuestion));
             break;
             case COUNSELOR:
-                users.addUser(new Counselor(email, pass, first, last, phone, birth, securityQuestion));
+                UserList.getInstance().addUser(new Counselor(email, pass, first, last, phone, birth, securityQuestion));
             break;
         }
         //Return that this operation was successful
@@ -44,7 +39,7 @@ public class CampManager{
      * @return boolean Whether the login was successful
      */
     public boolean loginUser(String email, String pass){
-        User user = users.getUser(email);
+        User user = UserList.getInstance().getUser(email);
         if(user!=null && user.getPassword().equals(pass)){
             this.currentUser = user;
             return true;
@@ -133,13 +128,13 @@ public class CampManager{
     public boolean addActivity(String name, String description, String location){
         if(!checkPermissions("d"))
             return false;
-        camp.addActivity(new Activity(name, description, location));
-        return false;
+        Camp.getInstance().addActivity(new Activity(name, description, location));
+        return true;
     }
     public boolean removeActivity(int index){
         if(!checkPermissions("d"))
             return false;
-        return camp.removeActivity(index);
+        return Camp.getInstance().removeActivity(index);
     }
 
     public ArrayList<Activity> getActivities(){
@@ -157,8 +152,7 @@ public class CampManager{
     public boolean removeSession(int index){
         if(!checkPermissions("d"))
             return false;
-        SessionList.getInstance().removeSession(index);
-        return true;
+        return SessionList.getInstance().removeSession(index);
     }
 
     public ArrayList<Session> getSessions(){
@@ -179,7 +173,7 @@ public class CampManager{
     public boolean addFAQ(String question, String answer){
         if(!checkPermissions("d"))
             return false;
-        camp.addFAQ(question, answer);
+        Camp.getInstance().addFAQ(question, answer);
         return true;
     }
     
@@ -190,20 +184,20 @@ public class CampManager{
     public boolean removeFAQ(String question){
         if(!checkPermissions("d"))
             return false;
-        camp.removeFAQ(question);
+        Camp.getInstance().removeFAQ(question);
         return true;
     }
 
     public boolean addPackingItem(String item){
         if(!checkPermissions("d"))
             return false;
-        camp.addPackingItem(item);
+        Camp.getInstance().addPackingItem(item);
         return true;
     }
     public boolean removePackingItem(int index){
         if(!checkPermissions("d"))
             return false;
-        return camp.removePackingItem(index);
+        return Camp.getInstance().removePackingItem(index);
     }
     public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin){
         return false;
@@ -286,29 +280,35 @@ public class CampManager{
     }
     
     public String getAboutPage(){
-        String info = "Camp Information:\n"+camp.getName()+"\n\nFAQ:\n";
-        for(Entry<String, String> entry : camp.getFAQs().entrySet()){
-            info += String.format("Q: %s%nA: %s%n", entry.getKey(), entry.getValue());
+        String info = "Camp Information:\n"+Camp.getInstance().getName()+"\n\nFAQ:\n";
+        for(String key : Camp.getInstance().getFAQs().keySet()){
+            info += String.format("Q: %s%nA: %s%n", key, Camp.getInstance().getFAQs().get(key));
         }
         info += "\nSuggested Packing List\n";
-        for(int i = 0; i < camp.getPackingList().size(); i++){
-            info += String.format("%d. %s%n", i+1, camp.getPackingList().get(i));
+        for(int i = 0; i < Camp.getInstance().getPackingList().size(); i++){
+            info += String.format("%d. %s%n", i+1, Camp.getInstance().getPackingList().get(i));
         }
         return info;
     }
 
     public boolean setEmail(String email) {
-        if(users.getUser(email)!=null)
+        if(currentUser==null)
+            return false;
+        if(UserList.getInstance().getUser(email)!=null)
             return false;
         currentUser.setEmail(email);
         return true;
     }
 
     public boolean setPass(String oldPass, String newPass){
+        if(currentUser==null)
+            return false;
         return currentUser.changePassword(oldPass, newPass);
     }    
 
     public boolean setPhone(String phone) {
+        if(currentUser==null)
+            return false;
         currentUser.setPhone(phone);
         return true;
 	}
@@ -324,7 +324,10 @@ public class CampManager{
 
     // Getters..?
     public Camp getCamp(){
-        return camp;
+        return Camp.getInstance();
+    }
+    public UserList getUserList(){
+        return UserList.getInstance();
     }
     public User getUser(){
         return currentUser;
@@ -332,7 +335,4 @@ public class CampManager{
     public UserType getType(){
         return currentUser.getUserType();
     }
-    
-
-	
 }

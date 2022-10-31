@@ -43,7 +43,9 @@ public class CampUI {
         "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n"+
         "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n",
         // The manage session for director menu (12)
-        "Please select:\n0. Go back\n1. Update theme\n2. Add Activity\n3. Remove Activity\n4. Manage cabin assignments\n"
+        "Please select:\n0. Go back\n1. Update theme\n2. Add Activity\n3. Remove Activity\n4. Manage cabin assignments\n",
+        // the manage activites for directors menu (13)
+        "Please select:\n0. Go back\n1. Add activity\n2. Remove activity\n"
     };
 
     // A massive list of 'forms', which are just arrays of prompts (strings)
@@ -465,13 +467,46 @@ public class CampUI {
     }
 
     public void manageActivities(){
-        clearScreen();
-        System.out.println("This is the manage activities menu. I don't do anything yet");
-        prompt(true);
+        final int MENU = 13;
+        int selection = 0;
+        do{
+            clearScreen();
+            System.out.println("Manage Activities:\n\nCurrent Activities:");
+            ArrayList<Activity> activities = campManager.getActivities();
+            for(int i=0;i<activities.size();i++){
+                System.out.printf("%-10.00f%s | %s | %s%n",(float) (i+1), activities.get(i).getName(),
+                                        activities.get(i).getDescription(), activities.get(i).getLocation());
+            }
+
+            System.out.println("\n\n"+menus[MENU]);
+            selection = promptInt(0,2);
+
+            switch(selection){
+                case 0: exit(); break;
+                case 1: 
+                    System.out.println("Please enter activity name:");
+                    String name = prompt();
+                    System.out.println("Please enter activity description:");
+                    String description = prompt();
+                    System.out.println("Please enter activity location:");
+                    String location = prompt();
+                    if(!campManager.addActivity(name, description, location)){
+                        System.out.println("Add activity was unsuccessful... try again?");
+                        prompt(true);
+                    }
+                break;
+                case 2:
+                    System.out.println("Please enter a number to remove (0 to cancel)");
+                    int input = promptInt(0, activities.size());
+                    if(input == 0) 
+                        break;
+                    campManager.removeActivity(input);
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
 
     public void manageFAQ(){
-        clearScreen();
         final int MENU = 10;
         int selection = 0;
         do{
