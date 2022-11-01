@@ -38,7 +38,9 @@ public class Session {
         this.cabins = new ArrayList<Cabin>();
         // creates empty cabins to be filled
         for(int i = 7; i <= 17; i += 2) {
-            Cabin cab = new Cabin(null, null, i, i+1);
+            Schedule sch = new Schedule();
+            sch.randomlyPopulate(startDate, endDate);
+            Cabin cab = new Cabin(sch, null, i, i+1);
             cabins.add(cab);
         }
     }
