@@ -64,6 +64,66 @@ public class DataWriter extends DataConstants {
         return true;
     }
 
+    /**
+     * Saves cabin roster to txt file named after theme and cabin number
+     * @param roster formatted roster string to be saved
+     * @param theme session theme for file name
+     * @param num cabin number for file name
+     * @return if roster was successfully saved
+     */
+    public static boolean writeCabinRoster(String roster, String theme, int num) {
+        String filePath = "./data/" + theme + "Cabin" + num + "roster";
+        try(FileWriter file = new FileWriter(filePath)) {
+            file.write(roster);
+            file.flush();
+        }
+        catch(IOException e) {
+            System.out.println("The roster did not properly save");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Saves cabin vitals to txt file named after theme and cabin number
+     * @param vitals formatted vitals string to be saved
+     * @param theme session theme for file name
+     * @param num cabin number for file name
+     * @return if vitals were successfully saved
+     */
+    public static boolean writeCabinVitals(String vitals, String theme, int num) {
+        String filePath = "./data/" + theme + "Cabin" + num + "vitals";
+        try(FileWriter file = new FileWriter(filePath)) {
+            file.write(vitals);
+            file.flush();
+        }
+        catch(IOException e) {
+            System.out.println("The vitals did not properly save");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Saves cabin schedule to txt file named after theme and cabin number
+     * @param schedule formatted schedule string to be saved
+     * @param theme session theme for file name
+     * @param num cabin number for file name
+     * @return if schedule were successfully saved
+     */
+    public static boolean writeCabinSchedule(String schedule, String theme, int num) {
+        String filePath = "./data/" + theme + "Cabin" + num + "schedule";
+        try(FileWriter file = new FileWriter(filePath)) {
+            file.write(schedule);
+            file.flush();
+        }
+        catch(IOException e) {
+            System.out.println("The schedule did not properly save");
+            return false;
+        }
+        return true;
+    }
+
     private static JSONObject getCampJSON(Camp camp) {
         JSONObject campDetails = new JSONObject();
         campDetails.put(CAMP_NAME, camp.getName());
