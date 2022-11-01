@@ -129,6 +129,7 @@ public class CampManager{
 
 
 
+
     //director specific
     public boolean addActivity(String name, String description, String location) {
         if(!checkPermissions("d"))
@@ -164,10 +165,6 @@ public class CampManager{
         if(!checkPermissions("dcp"))
             return null;
         return SessionList.getInstance().getAllSessions();
-    }
-
-    public boolean setDiscount(Parent parent, double discount) {
-        return false;
     }
 
     public ArrayList<Cabin> getCabins(Session session) {
@@ -259,6 +256,10 @@ public class CampManager{
         return true;
     }
 
+    public double getPricing(Session session, Parent parent) {
+        return session.getPrice() *  parent.getDiscount();
+    }
+
     public boolean addPackingItem(String item) {
         if(!checkPermissions("d"))
             return false;
@@ -270,14 +271,7 @@ public class CampManager{
             return false;
         return Camp.getInstance().removePackingItem(index);
     }
-    public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin) {
-        return false;
-    }
-    public boolean assignCamper(Session session, Camper camper, Cabin cabin) {
-        return false;
-    }
 
-    
     public String getRegistrationsView() {
         if(!checkPermissions("c"))
             return null;
