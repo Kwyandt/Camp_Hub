@@ -86,7 +86,12 @@ public class DataWriter extends DataConstants {
                 JSONObject activities = new JSONObject();
                 activities.put(SCHEDULE_ACTIVITIES, scheduleDetails);
                 cabinDetails.put(CABIN_SCHEDULE, activities);
-                cabinDetails.put(CABIN_COUNSELOR, cab.getCounselor().getUuid().toString());
+                if(cab.getCounselor() != null) {
+                    cabinDetails.put(CABIN_COUNSELOR, cab.getCounselor().getUuid().toString());
+                }
+                else {
+                    cabinDetails.put(CABIN_COUNSELOR, null);
+                }
                 JSONArray camperArray = new JSONArray();
                 for(Camper cam: cab.getCampers()) {
                     if(cam == null) {
