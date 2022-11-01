@@ -47,7 +47,7 @@ import java.util.*;
      * method to calculate the discount for parent
      * @return value of discount for parent, not lower than 20% off
      */
-    private double getDiscount() {
+    public double getDiscount() {
         double discount = 1.0;
         if(children.size() == 0)
             return discount;

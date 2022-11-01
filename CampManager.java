@@ -130,6 +130,7 @@ public class CampManager{
 
 
 
+
     //director specific
     public boolean addActivity(String name, String description, String location) {
         if(!checkPermissions("d"))
@@ -254,6 +255,10 @@ public class CampManager{
             return false;
         Camp.getInstance().setPricing(session, price);
         return true;
+    }
+
+    public double getPricing(Session session, Parent parent) {
+        return session.getPrice() *  parent.getDiscount();
     }
 
     public boolean addPackingItem(String item) {
