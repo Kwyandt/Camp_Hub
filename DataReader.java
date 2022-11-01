@@ -196,7 +196,7 @@ public class DataReader extends DataConstants {
                         schedule.addEvent(scheduleActivity, scheduleDate);
                     }
                     Counselor counselor;
-                    if ((String)cabinJSON.get(CABIN_COUNSELOR) == null)
+                    if (cabinJSON.get(CABIN_COUNSELOR) == null)
                         counselor = null;
                     else
                         counselor = (Counselor)userList.getUserByUUID(UUID.fromString((String)cabinJSON.get(CABIN_COUNSELOR)));
