@@ -36,6 +36,7 @@ public class Session {
         this.startDate = startDate;
         this.endDate = endDate;
         this.cabins = new ArrayList<Cabin>();
+        // creates empty cabins
         for(int i = 7; i <= 17; i += 2) {
             Cabin cab = new Cabin(null, null, i, i+1);
             cabins.add(cab);
