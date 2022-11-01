@@ -147,21 +147,21 @@ public class Schedule {
         for (int day = 1; day < numDays; day++) {
             // Generate activities
             LocalDateTime dayLDT = startLDT.plusDays(day);
-            LocalDateTime[] meals = new LocalDateTime[mealTimes.length];
-            for (int meal = 0; meal < meals.length; meal++)
-                meals[meal] = dayLDT.withHour(mealTimes[meal]);
-            LocalDateTime[] activities = new LocalDateTime[activityTimes.length];
-            for (int activity = 0; activity < activities.length; activity++)
-                activities[activity] = dayLDT.withHour(activityTimes[activity]);
-            Activity[] randomActivities = chooseKRandomActivities(activities.length);
+            LocalDateTime[] mealLDTs = new LocalDateTime[mealTimes.length];
+            for (int meal = 0; meal < mealLDTs.length; meal++)
+                mealLDTs[meal] = dayLDT.withHour(mealTimes[meal]);
+            LocalDateTime[] activityLDTs = new LocalDateTime[activityTimes.length];
+            for (int activity = 0; activity < activityLDTs.length; activity++)
+                activityLDTs[activity] = dayLDT.withHour(activityTimes[activity]);
+            Activity[] randomActivities = chooseKRandomActivities(activityLDTs.length);
             // Add in activities
-            this.activities.put(Date.from(meals[0].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[0]);
-            this.activities.put(Date.from(activities[0].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[0]);
-            this.activities.put(Date.from(activities[1].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[1]);
-            this.activities.put(Date.from(meals[1].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[1]);
-            this.activities.put(Date.from(activities[2].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[2]);
-            this.activities.put(Date.from(activities[3].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[3]);
-            this.activities.put(Date.from(meals[2].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[2]);
+            this.activities.put(Date.from(mealLDTs[0].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[0]);
+            this.activities.put(Date.from(activityLDTs[0].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[0]);
+            this.activities.put(Date.from(activityLDTs[1].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[1]);
+            this.activities.put(Date.from(mealLDTs[1].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[1]);
+            this.activities.put(Date.from(activityLDTs[2].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[2]);
+            this.activities.put(Date.from(activityLDTs[3].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[3]);
+            this.activities.put(Date.from(mealLDTs[2].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[2]);
         }
         // Breakfast morning before leaving
         LocalDateTime breakfastEnd = endLDT.withHour(mealTimes[0]);
