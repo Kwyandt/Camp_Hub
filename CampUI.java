@@ -598,9 +598,14 @@ public class CampUI {
             ArrayList<Cabin> cabins = campManager.getCabins(session);
             for(int i=0;i<cabins.size();i++){
                 System.out.printf("Cabin %d:%n",i+1);
-                System.out.printf("    Counselor: %s %s%n",
+                if(cabins.get(i).getCounselor() != null) {
+                    System.out.printf("    Counselor: %s %s%n",
                                 cabins.get(i).getCounselor().getFirstName(),
                                 cabins.get(i).getCounselor().getLastName());
+                }
+                else {
+                    System.out.println("Counselor not yet assigned");
+                }
                 System.out.printf("    Campers: %n");
                 Camper[] campers = cabins.get(i).getCampers();
                 for(int j=0;j<campers.length;j++){
