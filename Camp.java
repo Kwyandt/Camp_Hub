@@ -20,8 +20,8 @@ public class Camp {
     private ArrayList<String> packingList;
 
     /**
-     * 
-     * @return
+     * Singleton constructor 
+     * @return Instance of camp or make one if it's not there
      */
     public static Camp getInstance(){
         if(campInstance==null)
@@ -243,8 +243,8 @@ public class Camp {
      * @param activity activity being removes
      * @param date time of activity
      */
-    public void removeScheduleActivity(Schedule schedule, Activity activity, Date date) {
-        schedule.removeEvent(activity, date);
+    public boolean removeScheduleActivity(Schedule schedule, Activity activity, Date date) {
+        return schedule.removeEvent(activity, date);
     }
 
     /**

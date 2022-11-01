@@ -45,9 +45,15 @@ public class Schedule {
      * remove activity from schedule at specific time
      * @param activity activity being removed
      * @param date time of activity being removed
+     * @return True iff removal was sucessful
      */
-    public void removeEvent(Activity activity, Date date) {
-        activities.remove(date, activity);
+    public boolean removeEvent(Activity activity, Date date) {
+        try {
+            activities.remove(date, activity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -242,12 +248,12 @@ public class Schedule {
         return activitiesToReturn;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         DataReader.getCamp();
         Session session = SessionList.getInstance().getSession(0);
         Schedule schedule = session.getCabin(0).getSchedule();
         schedule.randomlyPopulate(session.getStartDate(), session.getEndDate());
         System.out.println(schedule.displayOrderedSchedule(0, 0));
-    }
+    }*/
 
 }
