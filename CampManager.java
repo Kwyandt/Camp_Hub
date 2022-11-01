@@ -224,6 +224,42 @@ public class CampManager{
         return true;
     }
 
+    /**
+     * for directors, adds activity to specific schedule
+     * @param schedule schedule being edited
+     * @param activity activity being added
+     * @param date date of actitit
+     * @return yes or no for permission to edit schedule
+     */
+    public boolean addScheduleActivity(Schedule schedule, Activity activity, Date date) {
+        if(!checkPermissions("d"))
+            return false;
+        Camp.getInstance().addScheduleActivity(schedule, activity, date);
+        return true;
+    }
+
+    /**
+     * for directors, removes activity from specifit schedule
+     * @param schedule schedule being edited
+     * @param activity activity being removes
+     * @param date date of activity
+     * @return yes or no for permission to edit schedule
+     */
+    public boolean removeScheduleActivity(Schedule schedule, Activity activity, Date date) {
+        if(!checkPermissions("d"))
+            return false;
+        Camp.getInstance().removeScheduleActivity(schedule, activity, date);
+        return true;
+    }
+
+    //set pricing
+    public boolean setPricing(Session session, double price) {
+        if(!checkPermissions("d"))
+            return false;
+        Camp.getInstance().setPricing(session, price);
+        return true;
+    }
+
     public boolean addPackingItem(String item) {
         if(!checkPermissions("d"))
             return false;

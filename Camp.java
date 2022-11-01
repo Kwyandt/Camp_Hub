@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -224,6 +225,36 @@ public class Camp {
      */
     public ArrayList<String> getPackingList() {
         return packingList;
+    }
+
+    /**
+     * add activity to specific schedules
+     * @param schedule schedule being edited
+     * @param activity activity being added
+     * @param date date of activity
+     */
+    public void addScheduleActivity(Schedule schedule, Activity activity, Date date) {
+        schedule.addEvent(activity, date);
+    }
+
+    /**
+     * remove activity from specific shceudle
+     * @param schedule schedule being edited
+     * @param activity activity being removes
+     * @param date time of activity
+     */
+    public void removeScheduleActivity(Schedule schedule, Activity activity, Date date) {
+        schedule.removeEvent(activity, date);
+    }
+
+    /**
+     * sets teh price of a specific session, not accounting for discounts
+     * @param session the session price being set
+     * @param price the price of the session
+     */
+    //TODO do I need to change the constructor of session to accomodate for this?
+    public void setPricing(Session session, double price) {
+        session.setPrice(price);
     }
 
     /**
