@@ -181,6 +181,22 @@ public class Cabin {
     }
 
     /**
+     * Provides a formatted String of the names of people in the cabin
+     * @return formatted String of names of people in the cabin
+     */
+    public String getCabinRoster() {
+        String str = "";
+        str += "Counselor: " + counselor.getFirstName() + " " + counselor.getLastName() + "\n";
+        str += "Campers";
+        for(Camper c: campers) {
+            if(c != null) {
+                str += c.getFirst() + " " + c.getLast() + "\n";
+            }
+        }
+        return str;
+    }
+
+    /**
      * Shows all vital info about each camper
      * @return formatted String detailing camper vitals
      */
@@ -261,7 +277,7 @@ public class Cabin {
      * @return String representation of Cabin
      */
     public String toString(){
-        return "Cabin:\n\t" + this.cabinNumber + "\n\t" + this.schedule + "\n\t" + this.counselor + "\n\t" + Arrays.toString(this.campers);
+        return "Cabin: " + this.cabinNumber + " with ages " + minAge + "-" + maxAge;
     }
 }
 
