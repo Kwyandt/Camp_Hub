@@ -155,6 +155,37 @@ import java.util.*;
     }
 
     /**
+     * Method to remove dietary restriction from list of dietary restrictions
+     * @param index index of dietary restriction to be removed
+     * @return false if index is out of range of dietary restriction, true otherwise
+     */
+    public boolean removeDietaryRestsriction(int index) {
+        if(index < 0 || index >= dietaryRestrictions.size()) {
+          return false;
+        }
+        this.dietaryRestrictions.remove(index);
+        return true;
+      }
+  
+      /**
+       * Method to add dietary restriction fo to list
+       * @param dietaryRestriction restriction of camper
+       */
+      public void addDietaryResriction (String dietaryRestriction) {
+        this.dietaryRestrictions.add(dietaryRestriction);
+      }
+  
+      //add for emergency contacts
+      public void addContact (Relationship type, EmergencyContact name) {
+        this.emergencyContacts.put(type, name);
+      }
+  
+      //remove emergency contacts
+      public void removeContact (Relationship type) {
+        this.emergencyContacts.remove(type);
+      }
+
+    /**
      * equals method for counselor
      * @param aCounselor to be compared to this.counselor
      * @return boolean true or false
