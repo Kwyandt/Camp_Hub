@@ -40,8 +40,8 @@ public class CampUI {
         "Please select:\n0. Go back\n1. Add FAQ\n2. Remove FAQ\n",
         // The camper edit menu (11)
         "Please select:\n0.  Go back\n1.  Add allergy\n2.  Remove allergy"+
-        "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n"+
-        "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n10. Update other\n",
+        "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n7.  Update tshirt\n"+
+        "8.  Update guardian contact\n9.  Update doctorcontact\n10. Update dentist contact\n11. Update other contact\n",
         // The manage session for director menu (12)
         "Please select:\n0. Go back\n1. Update theme\n2. Update description\n3. Add Activity\n4. Remove Activity\n5. Manage cabin assignments\n",
         // the manage activites for directors menu (13)
@@ -84,10 +84,10 @@ public class CampUI {
             "Please enter dentist contact last name:",
             "Please enter dentist contact phone:",
             "Please enter dentist contact location (address/office):",
-            "Please enter dentist contact first name:",
-            "Please enter dentist contact last name:",
-            "Please enter dentist contact phone:",
-            "Please enter dentist contact location (address/office):"
+            "Please enter other contact first name:",
+            "Please enter other contact last name:",
+            "Please enter other contact phone:",
+            "Please enter other contact location (address/office):"
         }
     };
 
@@ -371,7 +371,7 @@ public class CampUI {
 
             System.out.println("\n"+menus[MENU]);
 
-            selection = promptInt(0,9);
+            selection = promptInt(0,11);
 
             int input =0;
             switch(selection){
@@ -421,11 +421,11 @@ public class CampUI {
                         inputs[i] = prompt();
                     }
                     EmergencyContact contact = new EmergencyContact(inputs[0], inputs[1], inputs[2], inputs[3]);
-                    if(selection==7)
+                    if(selection==8)
                         counselor.addContact(Relationship.GUARDIAN, contact);
-                    else if(selection==8)
-                        counselor.addContact(Relationship.DOCTOR, contact);
                     else if(selection==9)
+                        counselor.addContact(Relationship.DOCTOR, contact);
+                    else if(selection==10)
                         counselor.addContact(Relationship.DENTIST, contact);
                     else 
                         counselor.addContact(Relationship.OTHER, contact);
@@ -470,7 +470,7 @@ public class CampUI {
 
             System.out.println("\n"+menus[MENU]);
 
-            selection = promptInt(0,9);
+            selection = promptInt(0,11);
 
             int input =0;
             switch(selection){
@@ -520,11 +520,11 @@ public class CampUI {
                         inputs[i] = prompt();
                     }
                     EmergencyContact contact = new EmergencyContact(inputs[0], inputs[1], inputs[2], inputs[3]);
-                    if(selection==7)
+                    if(selection==8)
                         camper.addContact(Relationship.GUARDIAN, contact);
-                    else if(selection==8)
-                        camper.addContact(Relationship.DOCTOR, contact);
                     else if(selection==9)
+                        camper.addContact(Relationship.DOCTOR, contact);
+                    else if(selection==10)
                         camper.addContact(Relationship.DENTIST, contact);
                     else 
                         camper.addContact(Relationship.OTHER, contact);
