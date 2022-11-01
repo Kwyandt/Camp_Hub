@@ -120,18 +120,27 @@ import java.util.*;
      * Method to add dietary restriction fo to list
      * @param dietaryRestriction restriction of camper
      */
-    public void addDietaryResriction (String dietaryRestriction) {
+    public void addDietaryResriction(String dietaryRestriction) {
       this.dietaryRestrictions.add(dietaryRestriction);
     }
 
-    //add for emergency contacts
-    public void addContact (Relationship type, EmergencyContact name) {
+    /**
+     * Set contact of type as contact
+     * @param type Relationship to user
+     * @param name Contact information
+     */
+    public void addContact(Relationship type, EmergencyContact name) {
       this.emergencyContacts.put(type, name);
     }
 
     //remove emergency contacts
-    public void removeContact (Relationship type) {
-      this.emergencyContacts.remove(type);
+    public boolean removeContact(Relationship type) {
+      try {
+        this.emergencyContacts.remove(type);
+        return true;
+      } catch (Exception e) {
+        return false;
+      }
     }
 
     //getters for all variables

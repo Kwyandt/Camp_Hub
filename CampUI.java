@@ -388,7 +388,7 @@ public class CampUI {
                     break;
                 case 3: 
                     System.out.println("Please enter dietary restriction:");
-                    counselor.addDietaryResriction(prompt());
+                    counselor.addDietaryRestriction(prompt());
                     break;
                 case 4: 
                     System.out.println("Please enter number to remove (0 to go back):");
