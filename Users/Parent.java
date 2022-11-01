@@ -8,7 +8,6 @@ import java.util.*;
 
  public class Parent extends User{
     private ArrayList<Camper> children;
-    private double discount;
     private boolean isReturning = true;
     
     /**
@@ -44,6 +43,21 @@ import java.util.*;
         return this.children;
     }
 
+    /**
+     * method to calculate the discount for parent
+     * @return value of discount for parent, not lower than 20% off
+     */
+    private double getDiscount() {
+        double discount = 1.0;
+        if(children.size() == 0)
+            return discount;
+        if(isReturning)
+            discount -= 0.1;
+        discount-=(children.size()-1)*0.05;
+        return Math.max(0.8, discount);
+        
+    }
+
     public UserType getUserType() {
         return UserType.PARENT;
     }
@@ -52,9 +66,6 @@ import java.util.*;
         return children;
     }
 
-    public double getDiscount (){
-        return this.discount;
-    }
     public boolean getIsReturning () {
         return this.isReturning;
     }
@@ -62,7 +73,6 @@ import java.util.*;
     public boolean equals(Parent aParent) {
         return aParent != null &&
         this.children.equals(aParent.getChildren()) &&
-        this.discount == aParent.getDiscount() &&
         super.equals(aParent);
     }
     public String toString() {

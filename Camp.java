@@ -257,6 +257,7 @@ public class Camp {
         session.setPrice(price);
     }
 
+
     /**
      * equals method for camp
      * @param aCamp to be compared to this.camp
