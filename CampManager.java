@@ -256,6 +256,10 @@ public class CampManager{
         return true;
     }
 
+    public String getSchedule(int sessionIndex, int cabinIndex){
+        return getSessions().get(sessionIndex).getCabin(cabinIndex).viewSchedule(sessionIndex+1);
+    }
+
     public double getPricing(Session session, Parent parent) {
         return session.getPrice() *  parent.getDiscount();
     }

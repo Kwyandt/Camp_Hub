@@ -41,6 +41,7 @@ public class Session {
             Schedule sch = new Schedule();
             sch.randomlyPopulate(startDate, endDate);
             Cabin cab = new Cabin(sch, null, i, i+1);
+            cab.setCabinNumber((i - 7) / 2 + 1);
             cabins.add(cab);
         }
     }
@@ -75,7 +76,7 @@ public class Session {
         //iteratre through all cabins for the session
         String toReturn = "";
         for(Cabin cabin: cabins) {
-            toReturn = toReturn + cabin.toString();
+            toReturn += cabin.toString()+"\n";
         }
         return toReturn;
     }

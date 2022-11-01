@@ -49,6 +49,10 @@ public class Cabin {
         this.counselor = counselor;
     }
 
+    public void setCabinNumber(int number){
+        this.cabinNumber = number;
+    }
+
     /**
      * Adds camper to campers if there is space
      * @param camper potential camper for cabin
@@ -186,7 +190,7 @@ public class Cabin {
     public String getCabinRoster() {
         String str = "";
         str += "Counselor: " + counselor.getFirstName() + " " + counselor.getLastName() + "\n";
-        str += "Campers";
+        str += "Campers:\n";
         for(Camper c: campers) {
             if(c != null) {
                 str += c.getFirst() + " " + c.getLast() + "\n";

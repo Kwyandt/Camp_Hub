@@ -43,7 +43,7 @@ public class CampUI {
         "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n7.  Update tshirt\n"+
         "8.  Update guardian contact\n9.  Update doctorcontact\n10. Update dentist contact\n11. Update other contact\n",
         // The manage session for director menu (12)
-        "Please select:\n0. Go back\n1. Update theme\n2. Update description\n3. Add Activity\n4. Remove Activity\n5. Manage cabin assignments\n",
+        "Please select:\n0. Go back\n1. Update theme\n2. Update description\n3. Set Price\n4. View cabin schedule\n5. Manage cabin assignments\n",
         // the manage activites for directors menu (13)
         "Please select:\n0. Go back\n1. Add activity\n2. Remove activity\n",
         // the manage cabins for directors menu (14)
@@ -559,8 +559,8 @@ public class CampUI {
             System.out.printf("%-20s%s%n", "Priority deadline:", formatDate(session.getPriorityDeadline()));
             System.out.printf("%-20s%s%n", "Regular deadline:", formatDate(session.getRegularDeadline()));
             System.out.printf("%-20s$%.02f%n", "Price:", session.getPrice());
-            System.out.println("Activities:");
-            //for(int i=0;i<session.
+            System.out.println("\nCabin overview:\n");
+            System.out.println(session.viewAllParticipants());
 
             System.out.println("\n"+menus[MENU]);
 
@@ -576,8 +576,15 @@ public class CampUI {
                     session.setDescription(prompt());
                     break;
                 case 3:
+                    System.out.println("Please enter new price:");
+                    campManager.setPricing(session, promptDouble());
                     break;
                 case 4:
+                    System.out.println("Please enter cabin number to print the schedule of (0 to cancel):");
+                    int input = promptInt(0, session.getCabins().size());
+                    if(input==0) break;
+                    System.out.println("\n" + campManager.getSchedule(index, input-1)+"\n");
+                    prompt(true);
                     break;
                 case 5:
                     manageCabins(session);
@@ -1063,12 +1070,31 @@ public class CampUI {
         String input = scan.nextLine();
         //This is a regular expression designed to match a positive or negative number
         //(idk why we would allow negative numbers, but just in case i guess)
-        String filter = "-?\\d+";
+        String filter = "-?\\d*.?+";
         while(!input.matches(filter) || Integer.parseInt(input)<min || Integer.parseInt(input)>max){
             System.out.print("Invalid input, please try again: \n> ");
             input = scan.nextLine();
         }
         return Integer.parseInt(input);
+    }
+
+    /**
+     * Prompts the user for an integer input, repeatedly asking until the user gives a 
+     * String that can be parsed as an int, and that is between the given bounds
+     * @param min The minimum allowed integer
+     * @param max The maximum allowed integer
+     * @return The int that the user inputted
+     */
+    private double promptDouble(){
+        System.out.print("> ");
+        String input = scan.nextLine();
+        //This is a regular expression designed to match a double
+        String filter = "\\d*\\.?\\d*";
+        while(!input.matches(filter)){
+            System.out.print("Invalid input, please try again: \n> ");
+            input = scan.nextLine();
+        }
+        return Double.parseDouble(input);
     }
 
     /**
