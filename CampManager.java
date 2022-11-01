@@ -167,10 +167,6 @@ public class CampManager{
         return SessionList.getInstance().getAllSessions();
     }
 
-    public boolean setDiscount(Parent parent, double discount) {
-        return false;
-    }
-
     public ArrayList<Cabin> getCabins(Session session) {
         if(!checkPermissions("d"))
             return null;
@@ -271,14 +267,7 @@ public class CampManager{
             return false;
         return Camp.getInstance().removePackingItem(index);
     }
-    public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin) {
-        return false;
-    }
-    public boolean assignCamper(Session session, Camper camper, Cabin cabin) {
-        return false;
-    }
 
-    
     public String getRegistrationsView() {
         if(!checkPermissions("c"))
             return null;
