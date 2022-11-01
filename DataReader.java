@@ -120,6 +120,9 @@ public class DataReader extends DataConstants {
                             case "GUARDIAN":
                                 relationship = Relationship.GUARDIAN;
                                 break;
+                            case "OTHER":
+                                relationship = Relationship.OTHER;
+                                break;
                         }
                         JSONObject contactJSON = (JSONObject)contactsJSON.get(relationshipString);
                         String ECfirstName = (String)contactJSON.get(EMERGENCY_CONTACT_FIRST_NAME);

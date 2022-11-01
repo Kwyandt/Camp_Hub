@@ -250,7 +250,7 @@ public class CampManager{
             String ret = "You are currently registered for ";
 
         ArrayList<Session> list = SessionList.getInstance().getCounselorSessions(c);
-        ret += list.size() + " camps.\n";
+        ret += list.size() + " sessions.\n";
 
         if(list.size() == 0){
             return ret+"No registrations! Go to the main user page to register.";
@@ -280,7 +280,7 @@ public class CampManager{
         String ret = c.getFirst()+" is currently registered for ";
 
         ArrayList<Session> list = SessionList.getInstance().getCamperSessions(c);
-        ret += list.size() + " camps.\n";
+        ret += list.size() + " sessions.\n";
 
         if(list.size() == 0){
             return ret+"No registrations! Go to the main user page to register.";
