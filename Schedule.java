@@ -42,6 +42,15 @@ public class Schedule {
     }
 
     /**
+     * remove activity from schedule at specific time
+     * @param activity activity being removed
+     * @param date time of activity being removed
+     */
+    public void removeEvent(Activity activity, Date date) {
+        activities.remove(date, activity);
+    }
+
+    /**
      * View all activities occurring on the specified day
      */
     public ArrayList<Activity> getEventsOfDay(Date date) {

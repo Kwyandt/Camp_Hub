@@ -964,7 +964,7 @@ public class CampUI {
      * This clears the console screen according to this post:
      * https://stackoverflow.com/questions/2979383/how-to-clear-the-console
      */
-    private void clearScreen(){
+    private void clearScreen() {
         try {
             if (System.getProperty("os.name").contains("Windows"))
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -987,7 +987,7 @@ public class CampUI {
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         (new CampUI()).start();
     }
 }

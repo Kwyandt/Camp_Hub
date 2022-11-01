@@ -6,13 +6,13 @@ import Users.*;
 public class CampManager{
     private User currentUser;
 
-    public CampManager(){
+    public CampManager() {
         currentUser = null;
     }
 
     public boolean createUser(UserType type, String email,  String pass, 
                         String first, String last, String phone, Date birth, 
-                        Map<String, String> securityQuestion){
+                        Map<String, String> securityQuestion) {
         
         if(UserList.getInstance().getUser(email)!=null)
             //Can't create account because one with that email already exists!
@@ -40,7 +40,7 @@ public class CampManager{
      * @param pass The password
      * @return boolean Whether the login was successful
      */
-    public boolean loginUser(String email, String pass){
+    public boolean loginUser(String email, String pass) {
         User user = UserList.getInstance().getUser(email);
         if(user!=null && user.getPassword().equals(pass)){
             this.currentUser = user;
@@ -52,7 +52,7 @@ public class CampManager{
     /**
      * Does whatever processes are necessary to 
      */
-    public boolean logoutUser(){
+    public boolean logoutUser() {
         if (currentUser==null)
             //Logout wasn't successful, return false
             return false;
@@ -72,7 +72,7 @@ public class CampManager{
      * @param userTypes A String representing the allowed users. 'c' means counselors, 'p' parents, and 'd' directors
      * @return True if the currentUser's type matches one of the characters in the userType string
      */
-    private boolean checkPermissions(String userTypes){
+    private boolean checkPermissions(String userTypes) {
         switch(currentUser.getUserType()){
             case COUNSELOR:
                 return userTypes.contains("c");
@@ -90,8 +90,8 @@ public class CampManager{
     //Parent-specific methods
     public boolean addCamper(String first, String last, Date birth, 
                         String[] guardian, String[] doctor, String[] dentist,
-                        String tshirt){
-        if(!checkPermissions("p")){
+                        String tshirt) {
+        if(!checkPermissions("p")) {
             //The current user isn't allowed here, return false to indicate the operation failed
             return false; 
         }
@@ -106,13 +106,13 @@ public class CampManager{
         //Return true since the operation was successful
         return true;
     }
-    public boolean registerCamper(Camper camper, Session session){
+    public boolean registerCamper(Camper camper, Session session) {
         if(!checkPermissions("p"))
             return false;
         session.addCamper(camper);
         return true;
     }
-    public boolean unregisterCamper(Camper camper, Session session){
+    public boolean unregisterCamper(Camper camper, Session session) {
         if(!checkPermissions("p"))
             return false;
         return false;
@@ -131,53 +131,53 @@ public class CampManager{
 
 
     //director specific
-    public boolean addActivity(String name, String description, String location){
+    public boolean addActivity(String name, String description, String location) {
         if(!checkPermissions("d"))
             return false;
         Camp.getInstance().addActivity(new Activity(name, description, location));
         return true;
     }
-    public boolean removeActivity(int index){
+    public boolean removeActivity(int index) {
         if(!checkPermissions("d"))
             return false;
         return Camp.getInstance().removeActivity(index);
     }
 
-    public ArrayList<Activity> getActivities(){
+    public ArrayList<Activity> getActivities() {
         if(!checkPermissions("d"))
             return null;
         return Camp.getInstance().getActivities();
     }
 
-    public boolean addSession(String theme, String description, Date priorityDate, Date regularDate, Date startDate, Date endDate){
+    public boolean addSession(String theme, String description, Date priorityDate, Date regularDate, Date startDate, Date endDate) {
         if(!checkPermissions("d"))
             return false;
         SessionList.getInstance().addSession(new Session(theme, description, priorityDate, regularDate, startDate, endDate));
         return true;
     }
-    public boolean removeSession(int index){
+    public boolean removeSession(int index) {
         if(!checkPermissions("d"))
             return false;
         return SessionList.getInstance().removeSession(index);
     }
 
-    public ArrayList<Session> getSessions(){
+    public ArrayList<Session> getSessions() {
         if(!checkPermissions("dcp"))
             return null;
         return SessionList.getInstance().getAllSessions();
     }
 
-    public boolean setDiscount(Parent parent, double discount){
+    public boolean setDiscount(Parent parent, double discount) {
         return false;
     }
 
-    public ArrayList<Cabin> getCabins(Session session){
+    public ArrayList<Cabin> getCabins(Session session) {
         if(!checkPermissions("d"))
             return null;
         return session.getCabins();
     }
 
-    public boolean swapCounselor(Session session, int cabin1, int cabin2){
+    public boolean swapCounselor(Session session, int cabin1, int cabin2) {
         if(!checkPermissions("d"))
             return false;
         Counselor temp = session.getCabin(cabin1).getCounselor();
@@ -186,7 +186,7 @@ public class CampManager{
         return true;
     }
 
-    public boolean swapCamper(Session session, int camper1, int camper2){
+    public boolean swapCamper(Session session, int camper1, int camper2) {
         if(!checkPermissions("d"))
             return false;
         
@@ -203,7 +203,7 @@ public class CampManager{
      * @param q String the question to add
      * @param a String the answer to add
      */
-    public boolean addFAQ(String question, String answer){
+    public boolean addFAQ(String question, String answer) {
         if(!checkPermissions("d"))
             return false;
         Camp.getInstance().addFAQ(question, answer);
@@ -217,33 +217,69 @@ public class CampManager{
      * 
      * NOTE: for the return it should also account for the fact that the question may not exist in the FAQ and thereore can't be removed
      */
-    public boolean removeFAQ(String question){
+    public boolean removeFAQ(String question) {
         if(!checkPermissions("d"))
             return false;
         Camp.getInstance().removeFAQ(question);
         return true;
     }
 
-    public boolean addPackingItem(String item){
+    /**
+     * for directors, adds activity to specific schedule
+     * @param schedule schedule being edited
+     * @param activity activity being added
+     * @param date date of actitit
+     * @return yes or no for permission to edit schedule
+     */
+    public boolean addScheduleActivity(Schedule schedule, Activity activity, Date date) {
+        if(!checkPermissions("d"))
+            return false;
+        Camp.getInstance().addScheduleActivity(schedule, activity, date);
+        return true;
+    }
+
+    /**
+     * for directors, removes activity from specifit schedule
+     * @param schedule schedule being edited
+     * @param activity activity being removes
+     * @param date date of activity
+     * @return yes or no for permission to edit schedule
+     */
+    public boolean removeScheduleActivity(Schedule schedule, Activity activity, Date date) {
+        if(!checkPermissions("d"))
+            return false;
+        Camp.getInstance().removeScheduleActivity(schedule, activity, date);
+        return true;
+    }
+
+    //set pricing
+    public boolean setPricing(Session session, double price) {
+        if(!checkPermissions("d"))
+            return false;
+        Camp.getInstance().setPricing(session, price);
+        return true;
+    }
+
+    public boolean addPackingItem(String item) {
         if(!checkPermissions("d"))
             return false;
         Camp.getInstance().addPackingItem(item);
         return true;
     }
-    public boolean removePackingItem(int index){
+    public boolean removePackingItem(int index) {
         if(!checkPermissions("d"))
             return false;
         return Camp.getInstance().removePackingItem(index);
     }
-    public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin){
+    public boolean assignCounselor(Session session, Counselor counselor, Cabin cabin) {
         return false;
     }
-    public boolean assignCamper(Session session, Camper camper, Cabin cabin){
+    public boolean assignCamper(Session session, Camper camper, Cabin cabin) {
         return false;
     }
 
     
-    public String getRegistrationsView(){
+    public String getRegistrationsView() {
         if(!checkPermissions("c"))
             return null;
         Counselor c = (Counselor)currentUser;
@@ -252,12 +288,12 @@ public class CampManager{
         ArrayList<Session> list = SessionList.getInstance().getCounselorSessions(c);
         ret += list.size() + " sessions.\n";
 
-        if(list.size() == 0){
+        if(list.size() == 0) {
             return ret+"No registrations! Go to the main user page to register.";
         }
 
         ret+="\n";
-        for(int i = 0; i  <  list.size(); i++){
+        for(int i = 0; i  <  list.size(); i++) {
             Session s = list.get(i);
             ret += String.format("%-20s%s%n", "Theme:", s.getTheme());
             ret += String.format("%-20s%s - %s%n", "Dates:", formatDate(s.getStartDate()),
@@ -265,7 +301,7 @@ public class CampManager{
             //ret += String.format("%-20s%s%n", "Priority deadline:", formatDate(s.getPriorityDeadline()));
             //ret += String.format("%-20s%s%n", "Regular deadline:", formatDate(s.getRegularDeadline()));
             //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
-            for(Cabin cab : s.getCabins()){
+            for(Cabin cab : s.getCabins()) {
                 if(cab.counselorInCabin(c))
                     ret+=cab.toString();
             }
@@ -274,7 +310,7 @@ public class CampManager{
        return ret;
     }
 
-    public String getRegistrationsView(Camper c){
+    public String getRegistrationsView(Camper c) {
         if(!checkPermissions("p"))
             return null;
         String ret = c.getFirst()+" is currently registered for ";
@@ -306,30 +342,30 @@ public class CampManager{
 
 
     //counselor specific
-    public boolean registerCounselor(Session session){
+    public boolean registerCounselor(Session session) {
         if(!checkPermissions("c"))
             return false;
         session.addCounselor(((Counselor)currentUser));
         return true;
     }
-    public boolean unregisterCounselor(Session session){ 
+    public boolean unregisterCounselor(Session session) { 
         if(!checkPermissions("c"))
             return false;
         return false;
     }
-    public boolean addNote(String note){
+    public boolean addNote(String note) {
         if(!checkPermissions("c")) 
             return false;
         ((Counselor) currentUser).addNote(note);
         return true;
     }
-    public boolean removeNote(int index){
+    public boolean removeNote(int index) {
         if(!checkPermissions("c")) 
             return false;
         ((Counselor) currentUser).removeNote(index);
         return true;
     }
-    public ArrayList<String> getNotes(){
+    public ArrayList<String> getNotes() {
         if(!checkPermissions("c")) 
             return null;
         return ((Counselor) currentUser).getNotes();
@@ -341,7 +377,7 @@ public class CampManager{
      * @param bio String the bio to set
      * @return boolean indicating if the operation was successful
      */
-    public boolean setBio(String bio){
+    public boolean setBio(String bio) {
         if(!checkPermissions("dc")) 
             return false;
         if(currentUser.getUserType()==UserType.COUNSELOR)
@@ -356,7 +392,7 @@ public class CampManager{
      * and an empty string if the user has not set thier bio
      * @return String the bio of the current user
      */
-    public String getBio(){
+    public String getBio() {
         if(!checkPermissions("dc")) 
             return null;
         if(currentUser.getUserType()==UserType.COUNSELOR){
@@ -371,7 +407,7 @@ public class CampManager{
         }
     }
     
-    public String getAboutPage(){
+    public String getAboutPage() {
         String info = "Camp Information:\n"+Camp.getInstance().getName()+"\n\nFAQ:\n";
         for(String key : Camp.getInstance().getFAQs().keySet()){
             info += String.format("Q: %s%nA: %s%n", key, Camp.getInstance().getFAQs().get(key));
@@ -392,7 +428,7 @@ public class CampManager{
         return true;
     }
 
-    public boolean setPass(String oldPass, String newPass){
+    public boolean setPass(String oldPass, String newPass) {
         if(currentUser==null)
             return false;
         return currentUser.changePassword(oldPass, newPass);
@@ -407,24 +443,24 @@ public class CampManager{
 
 
     // These methods may or may not actually be in the final version
-    public void notifyParents(String message){}
-    public void notifyCounselors(String message){}
-    public void viewSessionInfo(Session session){}
-    public void viewAllUsers(){}
-    public void fillScheduleRandomly(){}
+    public void notifyParents(String message) {}
+    public void notifyCounselors(String message) {}
+    public void viewSessionInfo(Session session) {}
+    public void viewAllUsers() {}
+    public void fillScheduleRandomly() {}
 
 
     // Getters..?
-    public Camp getCamp(){
+    public Camp getCamp() {
         return Camp.getInstance();
     }
-    public UserList getUserList(){
+    public UserList getUserList() {
         return UserList.getInstance();
     }
-    public User getUser(){
+    public User getUser() {
         return currentUser;
     }
-    public UserType getType(){
+    public UserType getType() {
         return currentUser.getUserType();
     }
 
