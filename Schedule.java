@@ -216,7 +216,7 @@ public class Schedule {
     // Precondition: Camp.activities is not null
     private Activity[] chooseKRandomActivities(int k) {
         Camp camp = Camp.getInstance();
-        ArrayList<Activity> activities = camp.getActivities();
+        ArrayList<Activity> campActivities = (ArrayList<Activity>)camp.getActivities().clone();
         // Remove meal activities from list of options
         Activity[] mealActivities = {
             camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
@@ -224,18 +224,21 @@ public class Schedule {
             camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
         };
         for (int i = 0; i < mealActivities.length; i++)
-            activities.remove(mealActivities[i]);
-        if (k >= activities.size())
-            return activities.toArray(new Activity[activities.size()]);
+            campActivities.remove(mealActivities[i]);
+        if (k >= campActivities.size())
+            return campActivities.toArray(new Activity[activities.size()]);
         Activity[] activitiesToReturn = new Activity[k];
         for (int i = 0; i < k; i++)
-            activitiesToReturn[i] = activities.remove((int)(Math.random()*activities.size()));
+            activitiesToReturn[i] = campActivities.remove((int)(Math.random()*campActivities.size()));
         return activitiesToReturn;
     }
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         DataReader.getCamp();
-        System.out.println(UserList.getInstance().getCamperByUUID(UUID.fromString("3f8913bb-b642-4e08-948c-cb36c07493c5")).getAge());
-    }*/
+        Session session = SessionList.getInstance().getSession(0);
+        Schedule schedule = session.getCabin(0).getSchedule();
+        schedule.randomlyPopulate(session.getStartDate(), session.getEndDate());
+        System.out.println(schedule.displayOrderedSchedule(0, 0));
+    }
 
 }
