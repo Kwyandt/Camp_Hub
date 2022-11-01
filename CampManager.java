@@ -109,8 +109,7 @@ public class CampManager{
     public boolean registerCamper(Camper camper, Session session) {
         if(!checkPermissions("p"))
             return false;
-        session.addCamper(camper);
-        return true;
+        return session.addCamper(camper);
     }
     public boolean unregisterCamper(Camper camper, Session session) {
         if(!checkPermissions("p"))
@@ -288,22 +287,21 @@ public class CampManager{
         ArrayList<Session> list = SessionList.getInstance().getCounselorSessions(c);
         ret += list.size() + " sessions.\n";
 
-        if(list.size() == 0) {
+        if(list.size() == 0)
             return ret+"No registrations! Go to the main user page to register.";
-        }
 
         ret+="\n";
         for(int i = 0; i  <  list.size(); i++) {
             Session s = list.get(i);
             ret += String.format("%-20s%s%n", "Theme:", s.getTheme());
-            ret += String.format("%-20s%s - %s%n", "Dates:", formatDate(s.getStartDate()),
+            ret += String.format("%-20s%s - %s%n%n", "Dates:", formatDate(s.getStartDate()),
                                 formatDate(s.getEndDate()));
             //ret += String.format("%-20s%s%n", "Priority deadline:", formatDate(s.getPriorityDeadline()));
             //ret += String.format("%-20s%s%n", "Regular deadline:", formatDate(s.getRegularDeadline()));
             //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
             for(Cabin cab : s.getCabins()) {
                 if(cab.counselorInCabin(c))
-                    ret+=cab.toString();
+                    ret+=cab.getCabinRoster() + "\n";
             }
             ret+="\n";
         }
@@ -318,9 +316,8 @@ public class CampManager{
         ArrayList<Session> list = SessionList.getInstance().getCamperSessions(c);
         ret += list.size() + " sessions.\n";
 
-        if(list.size() == 0){
+        if(list.size() == 0)
             return ret+"No registrations! Go to the main user page to register.";
-        }
 
         ret+="\n";
         for(int i = 0; i  <  list.size(); i++){
@@ -333,7 +330,7 @@ public class CampManager{
             //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
             for(Cabin cab : s.getCabins()){
                 if(cab.camperInCabin(c))
-                    ret+=cab.toString();
+                    ret+=cab.getCabinRoster() + "\n";
             }
             ret+="\n";
         }

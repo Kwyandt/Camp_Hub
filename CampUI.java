@@ -20,7 +20,7 @@ public class CampUI {
         "3. Manage children\n4. Contact/FAQ\n5. Manage account\n",
         // The counselor user menu (2)
         "Please select:\n0. Sign out\n1. Register for camp!\n2. View registrations\n"+
-        "3. Manage Notes\n4. Manage Bio\n5. Manage account\n",
+        "3. Manage Notes\n4. Manage Bio\n5. Manage account\n6. Edit medical information",
         // The director user menu (3)
         "Please select:\n0. Sign out\n1. Manage camp sessions\n2. Manage camp activities\n"+
         "3. Manage camp FAQ\n4. Manage bio\n5. Manage account\n",
@@ -41,7 +41,7 @@ public class CampUI {
         // The camper edit menu (11)
         "Please select:\n0.  Go back\n1.  Add allergy\n2.  Remove allergy"+
         "\n3.  Add diet restriction\n4.  Remove diet restriction\n5.  Add medication\n6.  Remove medication\n"+
-        "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n",
+        "7.  Update guardian\n8.  Update doctor\n9.  Update dentist\n10. Update other\n",
         // The manage session for director menu (12)
         "Please select:\n0. Go back\n1. Update theme\n2. Update description\n3. Add Activity\n4. Remove Activity\n5. Manage cabin assignments\n",
         // the manage activites for directors menu (13)
@@ -80,6 +80,10 @@ public class CampUI {
             "Please enter doctor contact last name:",
             "Please enter doctor contact phone:",
             "Please enter doctor contact location (address/office):",
+            "Please enter dentist contact first name:",
+            "Please enter dentist contact last name:",
+            "Please enter dentist contact phone:",
+            "Please enter dentist contact location (address/office):",
             "Please enter dentist contact first name:",
             "Please enter dentist contact last name:",
             "Please enter dentist contact phone:",
@@ -239,7 +243,7 @@ public class CampUI {
                 break;
                 case COUNSELOR:
                     System.out.println(menus[2]);
-                    selection = promptInt(0,5);
+                    selection = promptInt(0,6);
                     switch(selection){
                         case 0: logoutUser(); break;
                         case 1: viewSessions(); break;
@@ -247,6 +251,7 @@ public class CampUI {
                         case 3: manageNotes(); break;
                         case 4: manageBio(); break;
                         case 5: manageAccount(); break;
+                        case 6: editCounselor(); break;
                     }
                 break;
                 case PARENT:
@@ -307,7 +312,7 @@ public class CampUI {
         System.out.println("Add Camper Form:\n");
         String[] inputs = new String[forms[FORM].length-1];
         Date birth = null;
-        for(int i=0;i<forms[FORM].length;i++){
+        for(int i=0; i < forms[FORM].length - 4; i++){
             System.out.println(forms[FORM][i]);
             if(i==2)
                 birth = promptDate();
@@ -329,6 +334,105 @@ public class CampUI {
             prompt(true);
         }
         
+    }
+
+    public void editCounselor(){
+        final int MENU = 11;
+        int selection = 0;
+        Counselor counselor = (Counselor)campManager.getUser();
+        do{
+            clearScreen();
+            System.out.println("Viewing medical information:\n");
+            System.out.printf("%-10s%s %s%n","Name: ", 
+                counselor.getFirstName(), counselor.getLastName());
+            System.out.printf("%-10s%s (Age: %d)%n","Birth: ", 
+                    formatDate(counselor.getBirthDate()), counselor.getAge());
+            System.out.printf("%-10s%s%n","Tshirt: ",
+                counselor.getTShirt());
+            System.out.println("Allergies:");
+            for(int i = 0;  i < counselor.getAllergies().size(); i++) {
+                System.out.printf("    %d. %s%n", i + 1, counselor.getAllergies().get(i));
+            }
+            System.out.println("Dietary Restrictions:");
+            for(int i = 0;  i < counselor.getDietaryRestrictions().size(); i++){
+                System.out.printf("    %d. %s%n",i+1,counselor.getDietaryRestrictions().get(i));
+            }
+            System.out.println("Medications:");
+            for(int i = 0;  i < counselor.getMeds().size(); i++){
+                System.out.printf("    %d. %s%n",i+1,counselor.getMeds().get(i));
+            }
+            Map<Relationship, EmergencyContact> contacts = counselor.getEmergencyContact();
+            for(Relationship key : contacts.keySet()){
+                System.out.printf("%n%-20s%s%n",key+" first:", contacts.get(key).getFirst());
+                System.out.printf("%-20s%s%n",key+" last:", contacts.get(key).getLast());
+                System.out.printf("%-20s%s%n",key+" phone:", contacts.get(key).getPhone());
+                System.out.printf("%-20s%s%n",key+" location:", contacts.get(key).getLocation());
+            }
+
+            System.out.println("\n"+menus[MENU]);
+
+            selection = promptInt(0,9);
+
+            int input =0;
+            switch(selection){
+                case 0: break;
+                case 1: 
+                    System.out.println("Please enter allergy:");
+                    counselor.addAllergy(prompt());
+                    break;
+                case 2: 
+                    System.out.println("Please enter number to remove (0 to go back):");
+                    input = promptInt(0,counselor.getAllergies().size());
+                    if(input==0) break;
+                    counselor.removeAllergy(input-1);
+                    break;
+                case 3: 
+                    System.out.println("Please enter dietary restriction:");
+                    counselor.addDietaryResriction(prompt());
+                    break;
+                case 4: 
+                    System.out.println("Please enter number to remove (0 to go back):");
+                    input = promptInt(0,counselor.getDietaryRestrictions().size());
+                    if(input==0) break;
+                    counselor.removeDietaryRestsriction(input-1);
+                    break;
+                case 5: 
+                    System.out.println("Please enter medication:");
+                    counselor.addMed(prompt());
+                    break;
+                case 6: 
+                    System.out.println("Please enter number to remove (0 to go back):");
+                    input = promptInt(0,counselor.getMeds().size());
+                    if(input==0) break;
+                    counselor.removeMed(input-1);
+                    break;
+                case 7:
+                    System.out.println("Please enter tshirt size:");
+                    counselor.setTShirt(prompt());
+                    break;    
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                    String[] inputs = new String[4];
+                    //loop through the four prompts for emergency contact
+                    for(int i = 0; i < 4; i++){
+                        System.out.println(forms[2][(selection - 7)*4 + i]);
+                        inputs[i] = prompt();
+                    }
+                    EmergencyContact contact = new EmergencyContact(inputs[0], inputs[1], inputs[2], inputs[3]);
+                    if(selection==7)
+                        counselor.addContact(Relationship.GUARDIAN, contact);
+                    else if(selection==8)
+                        counselor.addContact(Relationship.DOCTOR, contact);
+                    else if(selection==9)
+                        counselor.addContact(Relationship.DENTIST, contact);
+                    else 
+                        counselor.addContact(Relationship.OTHER, contact);
+                    break;
+                default: System.out.println("Something went wrong!");
+            }
+        }while(selection!=0);
     }
     
     public void editCamper(int index){
@@ -402,12 +506,17 @@ public class CampUI {
                     camper.removeMed(input-1);
                     break;
                 case 7:
+                    System.out.println("Please enter tshirt size:");
+                    camper.setTShirt(prompt());
+                    break;    
                 case 8:
                 case 9:
+                case 10:
+                case 11:
                     String[] inputs = new String[4];
                     //loop through the four prompts for emergency contact
                     for(int i = 0; i < 4; i++){
-                        System.out.println(forms[2][(selection - 6)*4 + i]);
+                        System.out.println(forms[2][(selection - 7)*4 + i]);
                         inputs[i] = prompt();
                     }
                     EmergencyContact contact = new EmergencyContact(inputs[0], inputs[1], inputs[2], inputs[3]);
@@ -415,8 +524,10 @@ public class CampUI {
                         camper.addContact(Relationship.GUARDIAN, contact);
                     else if(selection==8)
                         camper.addContact(Relationship.DOCTOR, contact);
-                    else
+                    else if(selection==9)
                         camper.addContact(Relationship.DENTIST, contact);
+                    else 
+                        camper.addContact(Relationship.OTHER, contact);
                     break;
                 default: System.out.println("Something went wrong!");
             }
@@ -769,7 +880,7 @@ public class CampUI {
                                 formatDate(session.getEndDate()));
             System.out.printf("%-20s%s%n", "Priority deadline:", formatDate(session.getPriorityDeadline()));
             System.out.printf("%-20s%s%n", "Regular deadline:", formatDate(session.getRegularDeadline()));
-            System.out.printf("%-20s$%.02f%n", "Price:", session.getPrice());
+            System.out.printf("%-20s$%.02f", "Price:", session.getPrice());
 
             switch(campManager.getUser().getUserType()){
                 case COUNSELOR:
@@ -936,7 +1047,7 @@ public class CampUI {
             System.out.print("Invalid input, please try again: \n> ");
             input = scan.nextLine();
         }
-        System.out.println(formatDate(getDate(input)));
+        //System.out.println(formatDate(getDate(input)));
         return getDate(input);
     }
 

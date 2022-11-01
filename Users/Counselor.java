@@ -105,6 +105,9 @@ import java.util.*;
     public String getTShirt () {
         return tShirt;
     }
+    public void setTShirt(String tshirt){
+        this.tShirt = tshirt;
+    }
     public String getBio() {
         return bio;
     }
@@ -209,4 +212,25 @@ import java.util.*;
     public String toString() {
         return "Counselor: " + super.toString() + "\n\t" + meds.toString() + "\n\t" + allergies.toString() + "\n\t" + emergencyContacts.toString() + "\n\t" + dietaryRestrictions.toString() + "\n\t" + tShirt + "\n\t" + bio + "\n\t" + notes.toString();
     }
+
+	public int getAge() {
+        //get current date
+        Date today = new Date();
+        Calendar current = Calendar.getInstance();
+        current.setTime(today);
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(this.birthDate);
+        //check the year, month, then day 
+        int age = current.get(Calendar.YEAR) - birth.get(Calendar.YEAR) -1;
+        if(birth.get(Calendar.MONTH) <= current.get(Calendar.MONTH) && birth.get(Calendar.DAY_OF_MONTH) <= current.get(Calendar.DAY_OF_MONTH))
+          age++;
+        return age;
+        //for formatting/printing
+        //DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");  
+        //String strDate = dateFormat.format(date);
+      }
+
+	public Map<Relationship, EmergencyContact> getEmergencyContact() {
+		return emergencyContacts;
+	}
  }

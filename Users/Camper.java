@@ -175,6 +175,10 @@ import java.util.*;
       return tShirt;
     }
 
+    public void setTShirt(String tshirt){
+      this.tShirt = tshirt;
+  }
+
     public int getAge() {
       //get current date
       Date today = new Date();
