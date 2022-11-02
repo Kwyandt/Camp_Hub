@@ -260,6 +260,14 @@ public class CampManager{
         return getSessions().get(sessionIndex).getCabin(cabinIndex).viewSchedule(sessionIndex+1);
     }
 
+    public void writeFiles(int sessionIndex, int cabinIndex){
+        Session session = SessionList.getInstance().getSession(sessionIndex);
+        Cabin c = session.getCabin(cabinIndex);
+        DataWriter.writeCabinRoster(c.getCabinRoster(), session.getTheme(), sessionIndex+1);
+        DataWriter.writeCabinSchedule(c.getSchedule().displayOrderedSchedule(sessionIndex, cabinIndex), session.getTheme(), sessionIndex+1);
+        DataWriter.writeCabinVitals(c.getAllCampersInfo(), session.getTheme(), sessionIndex+1);
+    }
+
     public double getPricing(Session session, Parent parent) {
         return session.getPrice() *  parent.getDiscount();
     }
@@ -297,9 +305,15 @@ public class CampManager{
             //ret += String.format("%-20s%s%n", "Priority deadline:", formatDate(s.getPriorityDeadline()));
             //ret += String.format("%-20s%s%n", "Regular deadline:", formatDate(s.getRegularDeadline()));
             //ret += String.format("%-20s$%.02f%n", "Price:", s.getPrice());
-            for(Cabin cab : s.getCabins()) {
-                if(cab.counselorInCabin(c))
+
+            for(int j=0;j<s.getCabins().size();j++) {
+                Cabin cab = s.getCabin(j);
+                if(cab.counselorInCabin(c)){
+                    writeFiles(2, j);
                     ret+=cab.getCabinRoster() + "\n";
+                    ret+="Information has been written to a txt file\n";
+
+                }
             }
             ret+="\n";
         }
