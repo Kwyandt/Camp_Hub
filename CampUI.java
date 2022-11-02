@@ -1070,8 +1070,8 @@ public class CampUI {
         String input = scan.nextLine();
         //This is a regular expression designed to match a positive or negative number
         //(idk why we would allow negative numbers, but just in case i guess)
-        String filter = "-?\\d*.?+";
-        while(!input.matches(filter) || Integer.parseInt(input)<min || Integer.parseInt(input)>max){
+        String filter = "-?\\d*";
+        while(input.equals("") || !input.matches(filter) || Integer.parseInt(input)<min || Integer.parseInt(input)>max){
             System.out.print("Invalid input, please try again: \n> ");
             input = scan.nextLine();
         }

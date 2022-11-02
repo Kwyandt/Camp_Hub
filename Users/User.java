@@ -9,7 +9,6 @@ import java.util.*;
 
  public abstract class User {
     protected UUID id;
-    protected UserType type;
     protected String email;
     protected String phone;
     protected String password;
@@ -104,7 +103,7 @@ import java.util.*;
      */
     public boolean equals (User aUser) {
       return aUser != null &&
-      this.type.equals(aUser.getUserType()) &&
+      this.getUserType().equals(aUser.getUserType()) &&
       this.email.equals(aUser.getEmail()) &&
       this.phone.equals(aUser.getPhone()) &&
       this.password.equals(aUser.getPassword()) &&

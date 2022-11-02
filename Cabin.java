@@ -189,7 +189,10 @@ public class Cabin {
      */
     public String getCabinRoster() {
         String str = "";
-        str += "Counselor: " + counselor.getFirstName() + " " + counselor.getLastName() + "\n";
+        if(counselor == null)
+            str += "Counselor: " + "No counselor currently assigned" + "\n";
+        else 
+            str += "Counselor: " + counselor.getFirstName() + " " + counselor.getLastName() + "\n";
         str += "Campers:\n";
         for(Camper c: campers) {
             if(c != null) {
@@ -227,7 +230,7 @@ public class Cabin {
             str += "Emergency contacts: ";
             for(Relationship r: c.getEmergencyContact().keySet()) {
                 EmergencyContact ec = c.getEmergencyContact().get(r);
-                str += r.toString().toLowerCase() + ": " + ec.getFirst() + " " + ec.getLast() + ", " + ec.getLocation() + ", " + ec.getPhone() + "\n";
+                str += r + ": " + ec.getFirst() + " " + ec.getLast() + ", " + ec.getLocation() + ", " + ec.getPhone() + "\n";
             }
         }
         return str;

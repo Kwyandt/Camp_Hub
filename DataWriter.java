@@ -72,7 +72,7 @@ public class DataWriter extends DataConstants {
      * @return if roster was successfully saved
      */
     public static boolean writeCabinRoster(String roster, String theme, int num) {
-        String filePath = "./data/" + theme + "Cabin" + num + "roster";
+        String filePath = "./data/" + theme + "Cabin" + num + "roster.txt";
         try(FileWriter file = new FileWriter(filePath)) {
             file.write(roster);
             file.flush();
@@ -92,7 +92,7 @@ public class DataWriter extends DataConstants {
      * @return if vitals were successfully saved
      */
     public static boolean writeCabinVitals(String vitals, String theme, int num) {
-        String filePath = "./data/" + theme + "Cabin" + num + "vitals";
+        String filePath = "./data/" + theme + "Cabin" + num + "vitals.txt";
         try(FileWriter file = new FileWriter(filePath)) {
             file.write(vitals);
             file.flush();
@@ -112,7 +112,7 @@ public class DataWriter extends DataConstants {
      * @return if schedule were successfully saved
      */
     public static boolean writeCabinSchedule(String schedule, String theme, int num) {
-        String filePath = "./data/" + theme + "Cabin" + num + "schedule";
+        String filePath = "./data/" + theme + "Cabin" + num + "schedule.txt";
         try(FileWriter file = new FileWriter(filePath)) {
             file.write(schedule);
             file.flush();

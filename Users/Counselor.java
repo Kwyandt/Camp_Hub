@@ -27,13 +27,19 @@ import java.util.*;
      */
     public Counselor (String email, String password, String firstName, String lastName, String phone, Date birthDate, Map<String, String> question) {
         super(email, password, firstName, lastName, phone, birthDate, question);
+        this.meds = new ArrayList<String>();
+        this.emergencyContacts = new TreeMap<Relationship, EmergencyContact>();
+        this.allergies = new ArrayList<String>();
+        this.dietaryRestrictions = new ArrayList<String>();
+        this.notes = new ArrayList<String>();
+        this.tShirt = "";
+        this.bio = "";
     }
 
     public Counselor(UUID id, String email, String phone, String password, String firstName, String lastName, Date birthDate, Map<String, String> securityQuestions,
                      ArrayList<String> meds, ArrayList<String> allergies, Map<Relationship, EmergencyContact> emergencyContacts, ArrayList<String> dietaryRestrictions, String tShirt, String bio, ArrayList<String> notes) {
         super(email, password, firstName, lastName, phone, birthDate, securityQuestions);
         this.id = id;
-        this.type = UserType.COUNSELOR;
         this.meds = meds;
         this.allergies = allergies;
         this.emergencyContacts = emergencyContacts;
