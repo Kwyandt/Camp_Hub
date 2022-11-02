@@ -252,7 +252,6 @@ public class Camp {
      * @param session the session price being set
      * @param price the price of the session
      */
-    //TODO do I need to change the constructor of session to accomodate for this?
     public void setPricing(Session session, double price) {
         session.setPrice(price);
     }

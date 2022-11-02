@@ -173,6 +173,13 @@ public class CampManager{
         return session.getCabins();
     }
 
+    /**
+     * Switches counselor of cabin1 and cabin2
+     * @param session session with cabin1 and cabin2
+     * @param cabin1 first cabin
+     * @param cabin2 second cabin
+     * @return if swap was successfully completed
+     */
     public boolean swapCounselor(Session session, int cabin1, int cabin2) {
         if(!checkPermissions("d"))
             return false;
@@ -182,6 +189,13 @@ public class CampManager{
         return true;
     }
 
+    /**
+     * Swaps cabin assignment of camper1 and camper2
+     * @param session session containing camper1 and camper2
+     * @param camper1 session-wide index of camper1
+     * @param camper2 session-wide index of camper2
+     * @return if swap was succesfully completed
+     */
     public boolean swapCamper(Session session, int camper1, int camper2) {
         if(!checkPermissions("d"))
             return false;
@@ -284,6 +298,10 @@ public class CampManager{
         return Camp.getInstance().removePackingItem(index);
     }
 
+    /**
+     * Shows all sessions a counselor is registered for
+     * @return formatted String containing all of the currently logged in counselor's registrations
+     */
     public String getRegistrationsView() {
         if(!checkPermissions("c"))
             return null;
@@ -320,6 +338,11 @@ public class CampManager{
        return ret;
     }
 
+    /**
+     * Shows all sessions a camper is registered for
+     * @param c Camper to view registrations of
+     * @return formatted String containing all of the camper's registrations
+     */
     public String getRegistrationsView(Camper c) {
         if(!checkPermissions("p"))
             return null;
@@ -450,16 +473,7 @@ public class CampManager{
         return true;
 	}
 
-
-    // These methods may or may not actually be in the final version
-    public void notifyParents(String message) {}
-    public void notifyCounselors(String message) {}
-    public void viewSessionInfo(Session session) {}
-    public void viewAllUsers() {}
-    public void fillScheduleRandomly() {}
-
-
-    // Getters..?
+    // Accessors
     public Camp getCamp() {
         return Camp.getInstance();
     }

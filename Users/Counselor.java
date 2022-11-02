@@ -95,7 +95,7 @@ import java.util.*;
         return UserType.COUNSELOR;
     }
 
-    // For these do we want to return the list or print out the list?
+    // Accessors for Counselor-specific variables
     public ArrayList<String> getMeds() {
         return meds;
     }

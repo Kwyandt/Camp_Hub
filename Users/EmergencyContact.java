@@ -55,7 +55,7 @@ package Users;
 
     /**
      * provides string to represent emergency contact
-     * @ return string to represent emergency contact
+     * @return string to represent emergency contact
      */
     public String toString() {
       return firstName + " " + lastName + " - " + phoneNumber + "-" + location;
