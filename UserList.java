@@ -127,4 +127,8 @@ public class UserList {
         return DataWriter.saveAllUsers(users);
     }
 
+    public static void clear() {
+        userList = new UserList();
+    }
+
 }
