@@ -168,13 +168,16 @@ public class CampManagerTest {
     }
 
     // Luna
+    // Currently not fucntioning, do we need to saveAllUsers
+    // and saveCamp for logout?
     @Test
     public void testLogout() {
         Director validDirector = this.createBasicUser();
         UserList.getInstance().addUser(validDirector);
-        .loginUser(validDirector.getEmail(),
+        campManager.loginUser(validDirector.getEmail(),
             validDirector.getPassword());
-        boolea
+        boolean logoutTest = campManager.logoutUser();
+        assertTrue(logoutTest, "No logout");
     }
 
     private Date getDate(String str) {
