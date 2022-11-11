@@ -155,7 +155,15 @@ public class CampManagerTest {
         assertFalse(testLogin, "Invalid Login");
     }
 
-    
+    @Test
+    public void testInvalidLoginUserPassword() {
+        Director validDirector = this.createBasicUser();
+        UserList.getInstance().addUser(validDirector);
+        boolean testLogin = campManager.loginUser(validDirector.getEmail(),
+            "password");
+
+        assertFalse(testLogin, "Invalid Login");
+    }
 
     private Date getDate(String str) {
         try {
