@@ -30,6 +30,7 @@ public class CampManagerTest {
 		camp = Camp.getInstance();
 	}
 
+    // Nathan
     @Test
     public void testCreateUserValidCounselor() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
@@ -46,6 +47,7 @@ public class CampManagerTest {
         assertEquals(validDirector, true, "Director should be valid");
     }
     
+    // Nathan
     @Test
     public void testCreateUserDuplicateEmailDirector() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
@@ -62,6 +64,7 @@ public class CampManagerTest {
         assertEquals(validDirector, false, "Account with duplicate email should not be allowed");
     }
 
+    // Nathan
     @Test
     public void testCreateUserNullPasswordParent() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
@@ -78,6 +81,7 @@ public class CampManagerTest {
         assertEquals(invalidParent, false, "Password cannot be null");
     }
 
+    // Nathan
     @Test
     public void testCreateUserInvalidEmailParent() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
@@ -94,6 +98,7 @@ public class CampManagerTest {
         assertEquals(invalidParent, false, "Email should be in the form 'handle@url.com'");
     }
 
+    // Nathan
     @Test
     public void testCreateUserInvalidDateCounselor() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
@@ -110,6 +115,7 @@ public class CampManagerTest {
         assertEquals(invalidParent, false, "Birthdate cannot be in the future");
     }
 
+    // Nathan
     @Test
     public void testCreateUserInvalidPhoneCounselor() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
