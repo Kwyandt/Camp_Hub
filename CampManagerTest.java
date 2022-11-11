@@ -180,6 +180,7 @@ public class CampManagerTest {
         assertTrue(logoutTest, "No logout");
     }
 
+    // Luna
     @Test
     public void testValidAddActivity() {
         Director validDirector = this.createBasicUser();
@@ -189,6 +190,7 @@ public class CampManagerTest {
         assertTrue(test, "Invalid activity");
     }
 
+    // Luna
     @Test
     public void testValidAddActivityInvalidPermission() {
         boolean test = campManager.addActivity("TestName", "TestDesc", "TestLoc");
