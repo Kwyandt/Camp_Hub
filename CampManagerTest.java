@@ -189,6 +189,12 @@ public class CampManagerTest {
         assertTrue(test, "Invalid activity");
     }
 
+    @Test
+    public void testValidAddActivityInvalidPermission() {
+        boolean test = campManager.addActivity("TestName", "TestDesc", "TestLoc");
+        assertFalse(test);
+    }
+
 
     private Date getDate(String str) {
         try {
