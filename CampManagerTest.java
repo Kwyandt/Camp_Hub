@@ -145,6 +145,7 @@ public class CampManagerTest {
         assertTrue(testLogin, "Invalid Login");
     }
     
+    // Luna
     @Test
     public void testInvalidLoginUserEmail() {
         Director validDirector = this.createBasicUser();
@@ -155,6 +156,7 @@ public class CampManagerTest {
         assertFalse(testLogin, "Invalid Login");
     }
 
+    // Luna
     @Test
     public void testInvalidLoginUserPassword() {
         Director validDirector = this.createBasicUser();
@@ -163,6 +165,16 @@ public class CampManagerTest {
             "password");
 
         assertFalse(testLogin, "Invalid Login");
+    }
+
+    // Luna
+    @Test
+    public void testLogout() {
+        Director validDirector = this.createBasicUser();
+        UserList.getInstance().addUser(validDirector);
+        .loginUser(validDirector.getEmail(),
+            validDirector.getPassword());
+        boolea
     }
 
     private Date getDate(String str) {
