@@ -4,6 +4,8 @@ import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Users.Counselor;
+import Users.Director;
 import Users.UserType;
 
 import java.text.SimpleDateFormat;
@@ -132,12 +134,38 @@ public class CampManagerTest {
         assertEquals(invalidParent, false, "Invalid phone number");
     }
 
+    // Luna
+    @Test
+    public void testValidLoginUser() {
+        Director validDirector = this.createBasicUser();
+        boolean testLogin = campManager.loginUser(validDirector.getEmail(),
+            validDirector.getPassword());
+        UserList.getInstance().addUser(validDirector);
+        assertTrue(testLogin, "Invalid Login");
+        
+    }
+
     private Date getDate(String str) {
         try {
             return new SimpleDateFormat("dd-MMM-yyyy").parse(str);
         } catch (Exception e) {
             return null;
         } 
+    }
+
+    private Director createBasicUser() {
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put("What street did you grow up on?", "Pinetree Dr");
+        securityQuestion.put("What is your mother's maiden name?", "Ebersole");
+        Director validDirector = new Director( 
+        "jonathanconner@camptallrock.com", 
+        "ilovecamps", 
+        "Jonathan", 
+        "Conner", 
+        "(304) 474-4938",
+        getDate("04-Sep-1970"),
+        securityQuestion);
+        return validDirector;
     }
 
 }
