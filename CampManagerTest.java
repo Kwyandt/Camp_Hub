@@ -180,6 +180,16 @@ public class CampManagerTest {
         assertTrue(logoutTest, "No logout");
     }
 
+    @Test
+    public void testValidAddActivity() {
+        Director validDirector = this.createBasicUser();
+        UserList.getInstance().addUser(validDirector);
+        campManager.loginUser(validDirector.getEmail(), validDirector.getPassword());
+        boolean test = campManager.addActivity("TestName", "TestDesc", "TestLoc");
+        assertTrue(test, "Invalid activity");
+    }
+
+
     private Date getDate(String str) {
         try {
             return new SimpleDateFormat("dd-MMM-yyyy").parse(str);
