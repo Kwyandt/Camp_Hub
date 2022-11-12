@@ -4,15 +4,13 @@ import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Users.Counselor;
-import Users.Director;
-import Users.Parent;
-import Users.UserType;
+import Users.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Class to test CampManager
@@ -31,23 +29,25 @@ public class CampManagerTest {
     @BeforeClass
 	public static void setup() {
 		camp = Camp.getInstance();
+        UserList.getInstance().addUser(createBasicInitialUser());
+        campManager.loginUser("jonathanconner0@camptallrock.com","ilovecamps");
 	}
 
     // Nathan
     @Test
     public void testCreateUserValidCounselor() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
-        securityQuestion.put("What street did you grow up on?", "Pinetree Dr");
-        securityQuestion.put("What is your mother's maiden name?", "Ebersole");
-        boolean validDirector = campManager.createUser(UserType.DIRECTOR, 
-                                                       "jonathanconner@camptallrock.com", 
-                                                       "ilovecamps", 
-                                                       "Jonathan", 
-                                                       "Conner", 
-                                                       "(304) 474-4938",
-                                                       getDate("04-Sep-1970"),
+        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
+        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
+        boolean validCounselor = campManager.createUser(UserType.COUNSELOR, 
+                                                       "brandthony0johnson@gmail.com", 
+                                                       "67@pdpN%#o2y4FEx", 
+                                                       "Brandthony0", 
+                                                       "Johnson", 
+                                                       "(325) 234-9567",
+                                                       getDate("18-Jan-2003"),
                                                        securityQuestion);
-        assertEquals(validDirector, true, "Director should be valid");
+        assertTrue(validCounselor, "Birthdate cannot be in the future");
     }
     
     // Nathan
@@ -64,7 +64,7 @@ public class CampManagerTest {
                                                        "(304) 474-4938",
                                                        getDate("04-Sep-1970"),
                                                        securityQuestion);
-        assertEquals(validDirector, false, "Account with duplicate email should not be allowed");
+        assertFalse(validDirector, "Account with duplicate email should not be allowed");
     }
 
     // Nathan
@@ -81,7 +81,7 @@ public class CampManagerTest {
                                                         "(864) 961-5191",
                                                         getDate("12-Mar-1983"),
                                                         securityQuestion);
-        assertEquals(invalidParent, false, "Password cannot be null");
+        assertFalse(invalidParent, "Password cannot be null");
     }
 
     // Nathan
@@ -98,7 +98,7 @@ public class CampManagerTest {
                                                        "(864) 961-5191",
                                                        getDate("12-Mar-1983"),
                                                        securityQuestion);
-        assertEquals(invalidParent, false, "Email should be in the form 'handle@url.com'");
+        assertFalse(invalidParent, "Email should be in the form 'handle@url.com'");
     }
 
     // Nathan
@@ -108,14 +108,14 @@ public class CampManagerTest {
         securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
         securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
         boolean invalidParent = campManager.createUser(UserType.COUNSELOR, 
-                                                       "brandthony0johnson@gmail.com", 
+                                                       "brandthony1johnson@gmail.com", 
                                                        "67@pdpN%#o2y4FEx", 
-                                                       "Brandthony0", 
+                                                       "Brandthony1", 
                                                        "Johnson", 
                                                        "(325) 234-9567",
                                                        getDate("18-Jan-2023"),
                                                        securityQuestion);
-        assertEquals(invalidParent, false, "Birthdate cannot be in the future");
+        assertFalse(invalidParent, "Birthdate cannot be in the future");
     }
 
     // Nathan
@@ -125,20 +125,20 @@ public class CampManagerTest {
         securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
         securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
         boolean invalidParent = campManager.createUser(UserType.COUNSELOR, 
-                                                       "brandthony1johnson@gmail.com", 
+                                                       "brandthony2johnson@gmail.com", 
                                                        "67@pdpN%#o2y4FEx", 
-                                                       "Brandthony1", 
+                                                       "Brandthony2", 
                                                        "Johnson", 
                                                        "phone",
                                                        getDate("18-Jan-2003"),
                                                        securityQuestion);
-        assertEquals(invalidParent, false, "Invalid phone number");
+        assertFalse(invalidParent, "Invalid phone number");
     }
 
     // Luna
     @Test
     public void testValidLoginUser() {
-        Director validDirector = this.createBasicUser();
+        Director validDirector = createBasicUser();
         UserList.getInstance().addUser(validDirector);
         boolean testLogin = campManager.loginUser(validDirector.getEmail(),
             validDirector.getPassword());
@@ -149,7 +149,7 @@ public class CampManagerTest {
     // Luna
     @Test
     public void testInvalidLoginUserEmail() {
-        Director validDirector = this.createBasicUser();
+        Director validDirector = createBasicUser();
         UserList.getInstance().addUser(validDirector);
         boolean testLogin = campManager.loginUser("wrongemail@wrong.com",
             validDirector.getPassword());
@@ -211,8 +211,146 @@ public class CampManagerTest {
         assertFalse(test);
     }
 
+    // Nathan
+    @Test
+    public void testSetEmailValid0() {
+        String valid = "jonathan@camptallrock.com";
+        assertTrue(campManager.setEmail(valid), "This is a valid email format");
+    }
 
-    private Date getDate(String str) {
+    // Nathan
+    @Test
+    public void testSetEmailValid1() {
+        String valid = "test@test.test";
+        assertTrue(campManager.setEmail(valid), "This is a valid email format");
+    }
+
+    // Nathan
+    @Test
+    public void testSetEmailNull() {
+        String invalid = null;
+        assertFalse(campManager.setEmail(invalid), "Email cannot be null");
+    }
+
+    // Nathan
+    @Test
+    public void testSetEmailEmpty() {
+        String invalid = "";
+        assertFalse(campManager.setEmail(invalid), "Email cannot be empty");
+    }
+
+    // Nathan
+    @Test
+    public void testSetEmailWrongFormat0() {
+        String invalid = "jonathanconner";
+        assertFalse(campManager.setEmail(invalid), "Email needs a domain");
+    }
+
+    // Nathan
+    @Test
+    public void testSetEmailWrongFormat1() {
+        String invalid = "jonathanconner@camptallrock";
+        assertFalse(campManager.setEmail(invalid), "Email needs a domain url");
+    }
+
+    // Nathan
+    @Test
+    public void testSetEmailDuplicate() {
+        UserList.getInstance().addUser(createBasicParent());
+        String duplicate = UserList.getInstance().getUsersOfType(UserType.PARENT).get(0).getEmail();
+        assertFalse(campManager.setEmail(duplicate), "This email is already in the system");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneValid0() {
+        String valid = "(555) 555-5555";
+        assertTrue(campManager.setPhone(valid), "This is a valid phone format");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneValid1() {
+        String valid = "5555555555";
+        assertTrue(campManager.setPhone(valid), "This is a valid phone format");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneValid2() {
+        String valid = "555-555-5555";
+        assertTrue(campManager.setPhone(valid), "This is a valid phone format");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneNull() {
+        String invalid = null;
+        assertFalse(campManager.setPhone(invalid), "Number cannot be null");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneEmpty() {
+        String invalid = "";
+        assertFalse(campManager.setPhone(invalid), "Number cannot be empty");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneNonNumericCharacters() {
+        String invalid = "askjdfh9€htgUIDNVG09h2€)G";
+        assertFalse(campManager.setPhone(invalid), "Phone number can't have letters");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneNonNumericCharacters0() {
+        String invalid = "askjdfh9€htgUIDNVG09h2€)G";
+        assertFalse(campManager.setPhone(invalid), "Phone number can't have letters");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPhoneNonNumericCharacters1() {
+        String invalid = "5555555555LoLtHiSiSnOtAnUmBeRyOuCaNdIaLoNaFlIpPhOnE";
+        assertFalse(campManager.setPhone(invalid), "Phone numbers can't have letters");
+    }
+    
+    // Nathan
+    @Test
+    public void testGetPricingNoChildren() {
+        Parent parent = createBasicParent();
+        Session session = createBasicSession();
+        session.setPrice(1000);
+        assertEquals(campManager.getPricing(session, parent), 1000.0, "Parent with no children should pay full price");
+    }
+
+    // Nathan
+    @Test
+    public void testGetPricingOneReturningChild() {
+        Parent parent = createBasicParent();
+        Session session = createBasicSession();
+        parent.setIsReturning(true);
+        parent.createCamper(createKBasicCampers(1)[0]);
+        session.setPrice(1000);
+        assertEquals(campManager.getPricing(session, parent), 900.0, "Parent with returning child should get 10% discount");
+    }
+
+    // Nathan
+    @Test
+    public void testGetPricing100ReturningChildren() {
+        Parent parent = createBasicParent();
+        Session session = createBasicSession();
+        parent.setIsReturning(true);
+        Camper[] campers = createKBasicCampers(100);
+        for (int i = 0; i < 100; i++)
+            parent.createCamper(campers[i]);
+        session.setPrice(1000);
+        assertEquals(campManager.getPricing(session, parent), 800.0, "Discount should max out at 20%");
+    }
+
+    private static Date getDate(String str) {
         try {
             return new SimpleDateFormat("dd-MMM-yyyy").parse(str);
         } catch (Exception e) {
@@ -220,7 +358,7 @@ public class CampManagerTest {
         } 
     }
 
-    private Director createBasicUser() {
+    private static Director createBasicUser() {
         Map<String, String> securityQuestion = new HashMap<String, String>();
         securityQuestion.put("What street did you grow up on?", "Pinetree Dr");
         securityQuestion.put("What is your mother's maiden name?", "Ebersole");
@@ -233,6 +371,69 @@ public class CampManagerTest {
         getDate("04-Sep-1970"),
         securityQuestion);
         return validDirector;
+    }
+
+    private static Director createBasicInitialUser() {
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put("What street did you grow up on?", "Pinetree Dr");
+        securityQuestion.put("What is your mother's maiden name?", "Ebersole");
+        Director validDirector = new Director( 
+        "jonathanconner0@camptallrock.com", 
+        "ilovecamps", 
+        "Jonathan0", 
+        "Conner", 
+        "(304) 474-4938",
+        getDate("04-Sep-1970"),
+        securityQuestion);
+        return validDirector;
+    }
+
+    private static Parent createBasicParent() {
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put("What high school did you attend?", "Hillcrest");
+        securityQuestion.put("What is your mother's maiden name?", "Flannigan");
+        return new Parent("sharonfrizzell@gmail.com",
+                          "ilovemykids",
+                          "Sharon",
+                          "Frizzell",
+                          "(864) 961-5191",
+                          getDate("12-Mar-1983"),
+                          securityQuestion);           
+    }
+
+    private static Camper[] createKBasicCampers(int k) {
+        Camper[] camperList = new Camper[k];
+        for (int i = 0; i < k; i++) {
+            Map<Relationship,EmergencyContact> emergencyContacts = new HashMap<Relationship,EmergencyContact>();
+            emergencyContacts.put(Relationship.DENTIST, new EmergencyContact("Dentist", 
+                                                                             Integer.toString(k), 
+                                                                             "(555) 555-5555", 
+                                                                             "123 Heh Dr"));
+            emergencyContacts.put(Relationship.DOCTOR, new EmergencyContact("Doctor", 
+                                                                             Integer.toString(k), 
+                                                                             "(555) 555-5555", 
+                                                                             "123 Heh Dr"));
+            emergencyContacts.put(Relationship.GUARDIAN, new EmergencyContact("Guardian", 
+                                                                             Integer.toString(k), 
+                                                                             "(555) 555-5555", 
+                                                                             "123 Heh Dr"));                                                                
+            camperList[i] = new Camper("Camper",
+                                      Integer.toString(k),
+                                      getDate("01-Jan-2010"),
+                                      emergencyContacts,
+                                      "S");
+        }
+        return camperList;
+            
+    }
+
+    private static Session createBasicSession() {
+        return new Session("Nature",
+                           "Nature!",
+                           getDate("07-May-2023"),
+                           getDate("21-May-2023"),
+                           getDate("18-Jun-2023"),
+                           getDate("24-Jun-2023"));
     }
 
 }

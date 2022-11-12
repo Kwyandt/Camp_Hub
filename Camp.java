@@ -285,4 +285,8 @@ public class Camp {
         UserList.clear();
         campInstance = new Camp(null, null);
     }
+
+    public static void repopulate() {
+        campInstance = DataReader.getCamp();
+    }
 }
