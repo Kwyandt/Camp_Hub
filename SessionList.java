@@ -182,4 +182,8 @@ public class SessionList {
         return sessions.toString();
     }
 
+    public static void clear() {
+        sessionList = new SessionList();
+    }
+
 }

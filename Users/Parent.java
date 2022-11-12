@@ -69,6 +69,10 @@ import java.util.*;
         return this.isReturning;
     }
 
+    public void setIsReturning(boolean isReturning) {
+        this.isReturning = isReturning;
+    }
+
     public boolean equals(Parent aParent) {
         return aParent != null &&
         this.children.equals(aParent.getChildren()) &&

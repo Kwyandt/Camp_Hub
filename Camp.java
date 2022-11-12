@@ -279,4 +279,14 @@ public class Camp {
         + "\n" + activities + "\n" + this.officePhone 
         + "\n" + this.packingList;
     }
+
+    public static void clear() {
+        SessionList.clear();
+        UserList.clear();
+        campInstance = new Camp(null, null);
+    }
+
+    public static void repopulate() {
+        campInstance = DataReader.getCamp();
+    }
 }
