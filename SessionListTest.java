@@ -3,13 +3,11 @@
  */
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -92,7 +90,7 @@ public class SessionListTest {
     }
 
     @Test
-    public void addSessionWithValidParameters() {
+    public void TestAddSessionWithValidParameters() {
         sessionList.addSession("Nature",
         "Nature!",
         getDate("07-May-2023"),
@@ -103,7 +101,7 @@ public class SessionListTest {
     }
 
     @Test
-    public void addSessionWithNullParameters() {
+    public void TestAddSessionWithNullParameters() {
         try {
             sessionList.addSession(null, null, null, null, null, null);
             assertFalse(sessionList.getSession(null) == null, "Cannot add session with null parameters");
@@ -114,7 +112,7 @@ public class SessionListTest {
     }
 
     @Test
-    public void addDuplicateSessionThroughParameters() {
+    public void TestAddDuplicateSessionThroughParameters() {
         sessionList.addSession("Nature",
         "Nature!",
         getDate("29-Jun-2023"),
@@ -132,19 +130,19 @@ public class SessionListTest {
     }
 
     @Test
-    public void addValidSessionObject() {
+    public void TestAddValidSessionObject() {
         sessionList.addSession(s);
         assertTrue(sessionList.getAllSessions().contains(s), "Session was added succesfully");
     }
 
     @Test
-    public void addNullSessionObject() {
+    public void TestAddNullSessionObject() {
         sessionList.addSession(null);
         assertFalse(sessionList.getAllSessions().contains(null), "Null sessions should not be added");
     }
 
     @Test
-    public void addDuplicateSessionObject() {
+    public void TestAddDuplicateSessionObject() {
         sessionList.addSession(s);
         sessionList.addSession(s);
         int count = 0;
@@ -157,28 +155,28 @@ public class SessionListTest {
     }
 
     @Test
-    public void getSessionByValidDate() {
+    public void TestGetSessionByValidDate() {
         assertTrue(sessionList.getSession(getDate("07-Jul-2023")) != null, "Can access session through start date");
     }
 
     @Test
-    public void invalidStartDateGetSession() {
+    public void TestInvalidStartDateGetSession() {
         assertTrue(sessionList.getSession(getDate("10-Jul-2003")) == null, "If no session has this start date it returns null");
     }
 
     @Test
-    public void nullStartDateGetSession() {
+    public void TestNullStartDateGetSession() {
         assertTrue(sessionList.getSession(getDate(null)) == null, "Null start date should not access a session");
     }
 
     @Test 
-    public void getSessionByValidIndex() {
+    public void TestGetSessionByValidIndex() {
         sessionList.addSession(s);
         assertTrue(sessionList.getSession(0) != null, "A session should be in SessionList");
     }
 
     @Test
-    public void getSessionByInvalidIndex() {
+    public void TestGetSessionByInvalidIndex() {
         try {
             assertTrue(sessionList.getSession(-1) == null, "This should not return a session");
         }
@@ -188,7 +186,7 @@ public class SessionListTest {
     }
 
     @Test
-    public void editExistingSession() {
+    public void TestEditExistingSession() {
         Session edited = sessionList.getSession(0);
         edited.setDescription("New description");
         Date start = edited.getStartDate();
@@ -197,12 +195,12 @@ public class SessionListTest {
     }
 
     @Test
-    public void editAbsentSession() {
+    public void TestEditAbsentSession() {
         assertFalse(sessionList.editSession(s), "Should return false if session is not added");
     }
 
     @Test
-    public void editNullSession() {
+    public void TestEditNullSession() {
         try {
             assertFalse(sessionList.editSession(null), "Should return false if trying to edit null session");
         }
@@ -212,57 +210,57 @@ public class SessionListTest {
     }
 
     @Test
-    public void editValidSessionAtValidIndex() {
+    public void TestEditValidSessionAtValidIndex() {
         sessionList.editSession(0, s);
         assertTrue(sessionList.getSession(0).equals(s), "Edit was successful");
     }
 
     @Test
-    public void editValidSessionAtInvalidIndex() {
+    public void TestEditValidSessionAtInvalidIndex() {
         assertFalse(sessionList.editSession(-1, s), "Should return false because index is out of bounds");
     }
 
     @Test
-    public void editNullSessionAtValidIndex() {
+    public void TestEditNullSessionAtValidIndex() {
         assertFalse(sessionList.editSession(0, null), "Should return false because session is null");
     }
 
     @Test
-    public void editNullSessionAtInvalidIndex() {
+    public void TestEditNullSessionAtInvalidIndex() {
         assertFalse(sessionList.editSession(-1, null), "Should return false because index is out of bounds and session is null");
     }
 
     @Test
-    public void removePresentSessionByDate() {
+    public void TestRemovePresentSessionByDate() {
         Date start = sessionList.getSession(0).getStartDate();
         sessionList.removeSession(start);
         assertTrue(sessionList.getSession(start) == null, "Should return null as session should be removed");
     }
 
     @Test
-    public void removeAbsentSessionByDate() {
+    public void TestRemoveAbsentSessionByDate() {
         assertFalse(sessionList.removeSession(s.getStartDate()), "Should be false as no session exists with that start date");
     }
 
     @Test
-    public void removeSessionByNullDate() {
+    public void TestRemoveSessionByNullDate() {
         assertFalse(sessionList.removeSession(null), "Should be false as no session has a null start date");
     }
 
     @Test
-    public void removeSessionAtValidIndex() {
+    public void TestRemoveSessionAtValidIndex() {
         Date start = sessionList.getSession(0).getStartDate();
         sessionList.removeSession(0);
         assertTrue(sessionList.getSession(start) == null, "Should return null as session should be removed");
     }
 
     @Test
-    public void removeSessionAtInvalidIndex() {
+    public void TestRemoveSessionAtInvalidIndex() {
         assertFalse(sessionList.removeSession(-551), "Should be false as this index is out of bounds");
     }
 
     @Test
-    public void getPresentCamperSessions() {
+    public void TestGetPresentCamperSessions() {
         Camper c = createKBasicCampers(1)[0];
         int count = 0;
         for(Session session: sessionList.getAllSessions()) {
@@ -275,18 +273,18 @@ public class SessionListTest {
     }
 
     @Test
-    public void getAbsentCamperSessions() {
+    public void TestGetAbsentCamperSessions() {
         Camper c = createKBasicCampers(1)[0];
         assertTrue(sessionList.getCamperSessions(c).size() == 0, "Camper is not in any sessions");
     }
 
     @Test
-    public void getNullCamperSessions() {
+    public void TestGetNullCamperSessions() {
         assertTrue(sessionList.getCamperSessions(null).size() == 0, "Null campers are not in any sessions");
     }
 
     @Test
-    public void getPresentCounselorSessions() {
+    public void TestGetPresentCounselorSessions() {
        Counselor c = createBasicCounselor();
        Session session = sessionList.getSession(0);
        session.addCounselor(c);
@@ -296,13 +294,13 @@ public class SessionListTest {
     }
 
     @Test
-    public void getAbsentCounselorSessions() {
+    public void TestGetAbsentCounselorSessions() {
         Counselor c = createBasicCounselor();
         assertEquals(sessionList.getCounselorSessions(c).size(), 0, "Counselor is not in any sessions");
     }
 
     @Test
-    public void getNullCounselorSessions() {
+    public void TestGetNullCounselorSessions() {
         try {
             assertEquals(sessionList.getCounselorSessions(null).size(), 0, "Null counselor is not in any session");
         }
