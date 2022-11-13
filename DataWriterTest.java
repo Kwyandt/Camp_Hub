@@ -69,7 +69,7 @@ public class DataWriterTest {
         //newUsers.add(new Director("director@email.com", "directorPass", "aCDirector", "lastName", "000-000-0000", new Date(10-12-1999), questions));
         newUsers.add(new Parent("parent@email.com", "parentPass", "aParent", "lastName", "000-000-0000", new Date(10-12-1999), questions));
         DataWriter.saveAllUsers(newUsers);
-        assertEquals("aParent", DataReader.getAllUsers().get(2).getFirstName());
+        assertEquals("aParent", DataReader.getAllUsers().get(1).getFirstName());
     }
 
     @Test
