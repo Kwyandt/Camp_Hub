@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
@@ -27,11 +26,10 @@ import Users.User;
 public class UserListTest {
 
     private UserList userList = UserList.getInstance();
-    private ArrayList<User> newUsers = new ArrayList<User>();
+    private static ArrayList<User> newUsers = new ArrayList<User>();
 
     @BeforeAll
-    public void oneTimeSetup() {
-        System.out.println("This is running");
+    public static void oneTimeSetup() {
         String date_string = "26-09-1979";
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");      
         Date dirDate = new Date();
@@ -53,7 +51,7 @@ public class UserListTest {
     }
 
     @AfterAll
-    public void oneTimeTearDown() {
+    public static void oneTimeTearDown() {
 
     }
 
@@ -69,57 +67,21 @@ public class UserListTest {
 
     @Test
     public void addValidDirector() {
-        Map<String, String> securityQuestion = new HashMap<String, String>();
-        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
-        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
-        String date_string = "26-09-1979";
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");      
-        Date birthday = new Date();
-        try {
-            birthday = formatter.parse(date_string);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Director d = new Director("dtest@gmail.com", "kj;lfdkadfsjl", "Dir", "Ector", "5555555555", birthday, securityQuestion);
+        Director d = (Director)newUsers.get(0);
         userList.addUser(d);
         assertTrue(userList.getAllUsers().contains(d), "Director has been added");
     }
 
     @Test
     public void addValidParent() {
-        Map<String, String> securityQuestion = new HashMap<String, String>();
-        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
-        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
-        String date_string = "26-09-1979";
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");      
-        Date birthday = new Date();
-        try {
-            birthday = formatter.parse(date_string);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Parent p = new Parent("ptest@gmail.com", "kj;lfdkadfsjl", "Par", "Ent", "5555555555", birthday, securityQuestion);
+        Parent p = (Parent)newUsers.get(1);
         userList.addUser(p);
         assertTrue(userList.getAllUsers().contains(p), "Parent has been added");
     }
 
     @Test
     public void addValidCounselor() {
-        Map<String, String> securityQuestion = new HashMap<String, String>();
-        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
-        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
-        String date_string = "26-09-1979";
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");      
-        Date birthday = new Date();
-        try {
-            birthday = formatter.parse(date_string);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Counselor c = new Counselor("ctest@gmail.com", "kj;lfdkadfsjl", "Coun", "Selor", "5555555555", birthday, securityQuestion);
+        Counselor c = (Counselor)newUsers.get(2);
         userList.addUser(c);
         assertTrue(userList.getAllUsers().contains(c), "Counselor has been added");
     }
@@ -132,19 +94,7 @@ public class UserListTest {
 
     @Test
     public void addDuplicateUser() {
-        Map<String, String> securityQuestion = new HashMap<String, String>();
-        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
-        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
-        String date_string = "26-09-1979";
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");      
-        Date birthday = new Date();
-        try {
-            birthday = formatter.parse(date_string);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        User d = new Director("dtest@gmail.com", "kj;lfdkadfsjl", "Dir", "Ector", "5555555555", birthday, securityQuestion);
+        User d = newUsers.get(0);
         userList.addUser(d);
         userList.addUser(d);
         int count = 0;
@@ -156,5 +106,69 @@ public class UserListTest {
         assertTrue(count == 1, "Users should only be added once");
     }
 
+    @Test
+    public void getValidEmail() {
+        User u = userList.getUser("samsamuels@camptallrock.com");
+        assertTrue(u != null, "User was successfully accessed by email");
+    }
 
+    @Test
+    public void getNonexistentEmail() {
+        User u = userList.getUser("thisemaildoesnotexist@gmail.com");
+        assertTrue(u == null, "No user exists with this email");
+    }
+
+    @Test
+    public void getWithNullEmail() {
+        User u = userList.getUser(null);
+        assertTrue(u == null, "No user should have a null email");
+    }
+
+    @Test
+    public void getValidID() {
+        User u = userList.getUserByUUID(UUID.fromString("1aa8dcbe-d374-46ea-aeca-2ac5549aeb0f"));
+        assertTrue(u != null, "User was successfully accessed by UUID");
+    }
+
+    @Test
+    public void getNonexistentID() {
+        User u = userList.getUserByUUID(UUID.fromString("b4ffe5eb-d6b3-49b3-8c71-049b37412d05"));
+        assertTrue(u == null, "No user exists with this UUID");
+    }
+
+    @Test
+    public void getWithNullID() {
+        User u = userList.getUser(null);
+        assertTrue(u == null, "No user should have a null UUID");
+    }
+
+    @Test
+    public void editUserValid() {
+        User u = userList.getAllUsers().get(0);
+        u.setPhone("7777777777");
+        userList.editUser(u);
+        UUID id = u.getUuid();
+        User edited = userList.getUserByUUID(id);
+        assertTrue(u.equals(edited), "Edited user successfully");
+    }
+
+    @Test
+    public void editAbsentUser() {
+        User u = newUsers.get(0);
+        boolean wasEdited = userList.editUser(u);
+        assertFalse(wasEdited, "No user exists so editing cannot happen");
+    }
+
+    @Test
+    public void editNullUser() {
+        try {
+            assertFalse(userList.editUser(null), "Cannot edit a null user");
+        }
+        catch(NullPointerException e) {
+            fail("Null pointer exception");
+        }
+        
+    }
+
+    
 }
