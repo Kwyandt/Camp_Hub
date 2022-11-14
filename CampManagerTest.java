@@ -351,7 +351,21 @@ public class CampManagerTest {
     // Luna
     @Test
     public void testAddValidCamper() {
-
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        Date date = new Date();
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        String[] guard = {"guardian", "second guardian"};
+        String[] doc = {"doc", "new doc"};
+        String[] dent = {"dentist", "new dentist"};
+        boolean test = campManager.addCamper("testFirst Child",
+        "testLast Child",
+        date,
+        guard,
+        doc,
+        dent,
+        "blue test tee");
+        assertTrue(test, "incorrect login");
     }
 
     private static Date getDate(String str) {
