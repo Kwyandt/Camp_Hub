@@ -146,9 +146,9 @@ public class Schedule {
         this.activities = new TreeMap<Date, Activity>();
         // Set up constants: meals are in order breakfast, lunch, dinner
         Activity[] mealActivities = {
-            camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
-            camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
-            camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
+            new Activity("Breakfast", "", "Dining Hall"),
+            new Activity("Lunch", "", "Dining Hall"),
+            new Activity("Dinner", "", "Dining Hall")
         };
         int[] mealTimes = {8,13,18};
         int[] activityTimes = {9,10,15,16};
@@ -169,6 +169,8 @@ public class Schedule {
             for (int activity = 0; activity < activityLDTs.length; activity++)
                 activityLDTs[activity] = dayLDT.withHour(activityTimes[activity]);
             Activity[] randomActivities = chooseKRandomActivities(activityLDTs.length);
+            if (randomActivities.length < activityLDTs.length)
+                return;
             // Add in activities
             this.activities.put(Date.from(mealLDTs[0].atZone(ZoneId.systemDefault()).toInstant()), mealActivities[0]);
             this.activities.put(Date.from(activityLDTs[0].atZone(ZoneId.systemDefault()).toInstant()), randomActivities[0]);
@@ -232,14 +234,6 @@ public class Schedule {
     private Activity[] chooseKRandomActivities(int k) {
         Camp camp = Camp.getInstance();
         ArrayList<Activity> campActivities = (ArrayList<Activity>)camp.getActivities().clone();
-        // Remove meal activities from list of options
-        Activity[] mealActivities = {
-            camp.getActivityByUUID(UUID.fromString("027a0b9d-e36d-43fd-b93a-71d3de4ab94a")),
-            camp.getActivityByUUID(UUID.fromString("5315e698-a541-4953-9466-8a28a5eba1c1")),
-            camp.getActivityByUUID(UUID.fromString("8673214e-de09-4116-93b7-0507f8edc7f0"))
-        };
-        for (int i = 0; i < mealActivities.length; i++)
-            campActivities.remove(mealActivities[i]);
         if (k >= campActivities.size())
             return campActivities.toArray(new Activity[activities.size()]);
         Activity[] activitiesToReturn = new Activity[k];

@@ -213,23 +213,169 @@ public class CampManagerTest {
 
     // Nathan
     @Test
+    public void testSetPricingValid() {
+        Session session = createBasicSession();
+        SessionList.getInstance().addSession(session);
+        assertTrue(campManager.setPricing(session, 900.0) && session.getPrice() == 900.0, "Price setting didn't work");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPricingInvalid() {
+        Session session = createBasicSession();
+        double originalPrice = session.getPrice();
+        SessionList.getInstance().addSession(session);
+        assertTrue(!(campManager.setPricing(session, -100)) && session.getPrice() == originalPrice, "Can't set a price to a negative number");
+    }
+
+    // Nathan
+    @Test
+    public void testRegisterCounselorValid() {
+        Counselor currentUser = createBasicCounselor();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        Session session = createBasicSession();
+        SessionList.getInstance().addSession(session);
+        boolean correctOutput = campManager.registerCounselor(session);
+        boolean counselorPresent = false;
+        for (Cabin cabin : session.getCabins()) {
+            if (!(cabin.getCounselor() == null) && cabin.getCounselor().equals(currentUser)) {
+                counselorPresent = true;
+                break;
+            }
+        }
+        assertTrue(correctOutput && counselorPresent, "Counselor was not successfully added");
+    }
+
+    // Nathan
+    @Test
+    public void testRegisterCounselorDuplicate() {
+        Counselor currentUser = createBasicCounselor();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        Session session = createBasicSession();
+        SessionList.getInstance().addSession(session);
+        // Register counselor for the first time, expect true
+        boolean correctFirstOutput = campManager.registerCounselor(session);
+        // Register counselor for same session again, expect false
+        boolean correctSecondOutput = !campManager.registerCounselor(session);
+        assertTrue(correctFirstOutput && correctSecondOutput, "Counselor cannot register for the same session twice");
+    }
+
+    // Nathan
+    @Test
+    public void testRegisterCounselorInvalidAccount() {
+        Session session = createBasicSession();
+        SessionList.getInstance().addSession(session);
+        assertFalse(campManager.registerCounselor(session), "Director cannot register a counselor");
+    }
+
+    // Nathan
+    @Test
+    public void testUnregisterCounselorValid() {
+        Counselor currentUser = createBasicCounselor();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        Session session = createBasicSession();
+        SessionList.getInstance().addSession(session);
+        session.addCounselor(currentUser);
+        boolean correctOutput = campManager.unregisterCounselor(session);
+        boolean counselorGone = true;
+        for (Cabin cabin : session.getCabins())
+            if (!(cabin.getCounselor() == null) && cabin.getCounselor().equals(currentUser))
+                counselorGone = false;
+        assertTrue(correctOutput && counselorGone, "Counselor was not successfully removed");
+    }
+
+    // Nathan
+    @Test
+    public void testUnregisterCounselorInvalid() {
+        Counselor currentUser = createBasicCounselor();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        Session session = createBasicSession();
+        SessionList.getInstance().addSession(session);
+        assertFalse(campManager.unregisterCounselor(session), "Cannot remove a counselor if they weren't there");
+    }
+
+    // Nathan
+    @Test
+    public void testUnregisterCounselorInvalidAccount() {
+        Session session = createBasicSession();
+        SessionList.getInstance().addSession(session);
+        assertFalse(campManager.unregisterCounselor(session), "Director cannot unregister a counselor");
+    }
+
+    // Nathan
+    @Test
     public void testRemoveNoteValidDirector() {
-        Director currentUser = (Director)UserList.getInstance().getAllUsers().get(0);
+        Director currentUser = createBasicUser();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
         currentUser.addNote("0");
         currentUser.addNote("1");
         assertTrue(campManager.removeNote(1)
                    && currentUser.getNotes().size() == 1
-                   && currentUser.getNotes().get(0).equals("0"), "Note not removed correctly");
+                   && currentUser.getNotes().get(0).equals("0"), "Director did not remove note correctly");
     }
 
     // Nathan
     @Test
     public void testRemoveNoteValidCounselor() {
         Counselor currentUser = createBasicCounselor();
+        UserList.getInstance().addUser(currentUser);
         campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
         currentUser.addNote("0");
         currentUser.addNote("1");
-        assertTrue(campManager.removeNote(1), "Note not removed correctly");
+        assertTrue(campManager.removeNote(1)
+                   && currentUser.getNotes().size() == 1
+                   && currentUser.getNotes().get(0).equals("0"), "Counselor did not remove note correctly");
+
+    }
+
+    // Nathan
+    @Test
+    public void testRemoveNoteInvalidParent() {
+        Parent currentUser = createBasicParent();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        campManager.addNote("0");
+        campManager.addNote("1");
+        assertFalse(campManager.removeNote(1), "Parent does not have notes");
+    }
+
+    // Nathan
+    @Test
+    public void testRemoveNoteInvalidIndex() {
+        Counselor currentUser = createBasicCounselor();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        currentUser.addNote("0");
+        currentUser.addNote("1");
+        boolean somethingWentWrong;
+        try {
+            somethingWentWrong = campManager.removeNote(400);
+        } catch (Exception e) {
+            somethingWentWrong = true; 
+        }
+        assertFalse(somethingWentWrong, "Bad index was not handled");
+    }
+
+    // Nathan
+    @Test
+    public void testRemoveNoteInvalidIndex1() {
+        Counselor currentUser = createBasicCounselor();
+        UserList.getInstance().addUser(currentUser);
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        currentUser.addNote("0");
+        currentUser.addNote("1");
+        boolean somethingWentWrong;
+        try {
+            somethingWentWrong = campManager.removeNote(-1);
+        } catch (Exception e) {
+            somethingWentWrong = true; 
+        }
+        assertFalse(somethingWentWrong, "Bad index was not handled");
     }
     
     // Nathan
@@ -415,9 +561,9 @@ public class CampManagerTest {
         UserList.getInstance().addUser(parent);
         Date date = new Date();
         campManager.loginUser(parent.getEmail(), parent.getPassword());
-        String[] guard = {"guardian", "second guardian"};
-        String[] doc = {"doc", "new doc"};
-        String[] dent = {"dentist", "new dentist"};
+        String[] guard = {"guardian first", "guardian last", "555555555", "123 Heh Ln"};
+        String[] doc = {"doc first", "doc last", "555555555", "123 Heh Ln"};
+        String[] dent = {"dent first", "dent last", "555555555", "123 Heh Ln"};
         boolean test = campManager.addCamper("testFirst Child",
         "testLast Child",
         date,
@@ -434,9 +580,9 @@ public class CampManagerTest {
         Parent parent = createBasicParent();
         UserList.getInstance().addUser(parent);
         Date date = new Date();
-        String[] guard = {"guardian", "second guardian"};
-        String[] doc = {"doc", "new doc"};
-        String[] dent = {"dentist", "new dentist"};
+        String[] guard = {"guardian first", "guardian last", "555555555", "123 Heh Ln"};
+        String[] doc = {"doc first", "doc last", "555555555", "123 Heh Ln"};
+        String[] dent = {"dent first", "dent last", "555555555", "123 Heh Ln"};
         boolean test = campManager.addCamper("testFirst Child",
         "testLast Child",
         date,
