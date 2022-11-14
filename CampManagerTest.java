@@ -418,7 +418,6 @@ public class CampManagerTest {
         UserList.getInstance().addUser(parent);
         campManager.loginUser(parent.getEmail(), parent.getPassword());
         campManager.registerCamper(camper[0], session);
-        campManager.loginUser(parent.getEmail(), parent.getPassword());
         boolean test = campManager.unregisterCamper(camper[0], session);
         assertTrue(test);
     }
@@ -433,7 +432,6 @@ public class CampManagerTest {
         UserList.getInstance().addUser(parent);
         campManager.loginUser(parent.getEmail(), parent.getPassword());
         campManager.registerCamper(camper[0], session);
-        campManager.loginUser(parent.getEmail(), parent.getPassword());
         boolean test = campManager.unregisterCamper(camper[1], session);
         assertFalse(test);
     }
