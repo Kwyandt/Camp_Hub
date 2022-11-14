@@ -169,9 +169,7 @@ public class CampManagerTest {
     }
 
     // Luna
-    // Currently not fucntioning, do we need to saveAllUsers
-    // and saveCamp for logout?
-    //@Test
+    @Test
     public void testLogout() {
         Director validDirector = this.createBasicUser();
         UserList.getInstance().addUser(validDirector);
@@ -348,6 +346,12 @@ public class CampManagerTest {
             parent.createCamper(campers[i]);
         session.setPrice(1000);
         assertEquals(campManager.getPricing(session, parent), 800.0, "Discount should max out at 20%");
+    }
+
+    // Luna
+    @Test
+    public void testAddValidCamper() {
+
     }
 
     private static Date getDate(String str) {
