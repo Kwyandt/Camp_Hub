@@ -368,6 +368,7 @@ public class CampManagerTest {
         assertTrue(test, "incorrect login");
     }
 
+    // Luna
     @Test
     public void testAddInvalidCamper() {
         Parent parent = createBasicParent();
@@ -383,9 +384,59 @@ public class CampManagerTest {
         doc,
         dent,
         "blue test tee");
-        assertTrue(test, "incorrect login");
+        assertFalse(test, "incorrect login");
     }
 
+    // Luna
+    @Test
+    public void testValidRegisterCamper() {
+        Camper[] camper = createKBasicCampers(1);
+        Session session = createBasicSession();
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        boolean test = campManager.registerCamper(camper[0], session);
+        assertTrue(test);
+    }
+
+    // Luna
+    @Test
+    public void testinValidRegisterCamper() {
+        Camper[] camper = createKBasicCampers(1);
+        Session session = createBasicSession();
+        boolean test = campManager.registerCamper(camper[0], session);
+        assertFalse(test);
+    }
+
+    // Luna
+    // Unregister camper currently returns false in all cases
+    @Test
+    public void testValidUnregister() {
+        Camper[] camper = createKBasicCampers(1);
+        Session session = createBasicSession();
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        campManager.registerCamper(camper[0], session);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        boolean test = campManager.unregisterCamper(camper[0], session);
+        assertTrue(test);
+    }
+
+    // Luna
+    // Unregister camper currently returns false in all cases
+    @Test
+    public void testinValidUnregister() {
+        Camper[] camper = createKBasicCampers(2);
+        Session session = createBasicSession();
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        campManager.registerCamper(camper[0], session);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        boolean test = campManager.unregisterCamper(camper[1], session);
+        assertFalse(test);
+    }
     private static Date getDate(String str) {
         try {
             return new SimpleDateFormat("dd-MMM-yyyy").parse(str);
