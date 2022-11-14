@@ -4,6 +4,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -68,6 +69,28 @@ public class ScheduleTest{
         }
         catch(Exception e){
             fail("Adding valid event caused an uncaught exception");
+        }
+    }
+
+    @Test
+    public void testGetActivitiesForDateNull(){
+        try{
+            ArrayList<Activity> a = sampleSchedule.getEventsOfDay(null);
+            assertEquals(null, a);
+        }
+        catch(Exception e){
+            fail("Trying to get events with null date caused uncaught exception");
+        }
+    }
+
+    @Test
+    public void testGetActivitiesForDateEmpty(){
+        try{
+            ArrayList<Activity> a = sampleSchedule.getEventsOfDay(getDate("06-Jul-2023"));
+            assertTrue(a.isEmpty(), "Getting Activities for a day with no activities returns empty list");
+        }
+        catch(Exception e){
+            fail("Trying to get activities for a day with no activities caused uncaught exception");
         }
     }
 
