@@ -26,11 +26,13 @@ public class CampManagerTest {
 		Camp.clear();
 	}
 
-    @BeforeClass
-	public static void setup() {
-		camp = Camp.getInstance();
-        UserList.getInstance().addUser(createBasicInitialUser());
-        campManager.loginUser("jonathanconner0@camptallrock.com","ilovecamps");
+    @BeforeEach
+	public void setup() {
+		Camp.clear();
+        camp = Camp.getInstance();
+        Director director = createBasicInitialUser();
+        UserList.getInstance().addUser(director);
+        campManager.loginUser(director.getEmail(), director.getPassword());
 	}
 
     // Nathan
@@ -213,6 +215,27 @@ public class CampManagerTest {
 
     // Nathan
     @Test
+    public void testRemoveNoteValidDirector() {
+        Director currentUser = (Director)UserList.getInstance().getAllUsers().get(0);
+        currentUser.addNote("0");
+        currentUser.addNote("1");
+        assertTrue(campManager.removeNote(1)
+                   && currentUser.getNotes().size() == 1
+                   && currentUser.getNotes().get(0).equals("0"), "Note not removed correctly");
+    }
+
+    // Nathan
+    @Test
+    public void testRemoveNoteValidCounselor() {
+        Counselor currentUser = createBasicCounselor();
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        currentUser.addNote("0");
+        currentUser.addNote("1");
+        assertTrue(campManager.removeNote(1), "Note not removed correctly");
+    }
+    
+    // Nathan
+    @Test
     public void testSetEmailValid0() {
         String valid = "jonathan@camptallrock.com";
         assertTrue(campManager.setEmail(valid), "This is a valid email format");
@@ -259,6 +282,43 @@ public class CampManagerTest {
         UserList.getInstance().addUser(createBasicParent());
         String duplicate = UserList.getInstance().getUsersOfType(UserType.PARENT).get(0).getEmail();
         assertFalse(campManager.setEmail(duplicate), "This email is already in the system");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordValid() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertTrue(campManager.setPass(oldPass, "ilovecampsmorethanever"), "This is a perfectly valid password");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordWrongOldPassword() {
+        Director director = createBasicUser();
+        campManager.loginUser(director.getEmail(), director.getPassword());
+        String oldPass = director.getPassword();
+        assertFalse(campManager.setPass("idontknowmyoldpasswordjusttryingtohackin", "ilovemykids"), "Old password isn't correct");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordSameOldAndNewPassword() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertFalse(campManager.setPass(oldPass, oldPass), "Shouldn't be able to change password to the same thing");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordEmptyNewPassword() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertFalse(campManager.setPass(oldPass, ""), "New password shouldn't be empty");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordNullNewPassword() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertFalse(campManager.setPass(oldPass, null), "New password shouldn't be null");
     }
 
     // Nathan
@@ -399,6 +459,19 @@ public class CampManagerTest {
                           "(864) 961-5191",
                           getDate("12-Mar-1983"),
                           securityQuestion);           
+    }
+
+    private static Counselor createBasicCounselor() {
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
+        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
+        return new Counselor("brandthonyjohnson@gmail.com",
+                             "67@pdpN%#o2y4FEx",
+                             "Brandthony",
+                             "Johnson",
+                             "(325) 324-9567",
+                             getDate("18-Jan-2003"),
+                             securityQuestion);
     }
 
     private static Camper[] createKBasicCampers(int k) {

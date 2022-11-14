@@ -23,6 +23,7 @@ public class Director extends User{
      */
     public Director(String email, String pass, String first, String last, String phone, Date birthDate, Map<String, String> question) {
         super(email, pass, first, last, phone, birthDate, question);
+        this.notes = new ArrayList<String>();
     }
 
     /**
