@@ -368,6 +368,24 @@ public class CampManagerTest {
         assertTrue(test, "incorrect login");
     }
 
+    @Test
+    public void testAddInvalidCamper() {
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        Date date = new Date();
+        String[] guard = {"guardian", "second guardian"};
+        String[] doc = {"doc", "new doc"};
+        String[] dent = {"dentist", "new dentist"};
+        boolean test = campManager.addCamper("testFirst Child",
+        "testLast Child",
+        date,
+        guard,
+        doc,
+        dent,
+        "blue test tee");
+        assertTrue(test, "incorrect login");
+    }
+
     private static Date getDate(String str) {
         try {
             return new SimpleDateFormat("dd-MMM-yyyy").parse(str);
