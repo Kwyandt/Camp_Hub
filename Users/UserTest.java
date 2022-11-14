@@ -29,12 +29,24 @@ public class UserTest {
         } 
     }
 
+    private static User createBasicUser() {
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put("What street did you grow up on?", "Pinetree Dr");
+        securityQuestion.put("What is your mother's maiden name?", "Ebersole");
+        Director validDirector = new Director( 
+        "jonathanconner@camptallrock.com", 
+        "password", 
+        "Jonathan", 
+        "Conner", 
+        "(304) 474-4938",
+        getDate("04-Sep-1970"),
+        securityQuestion);
+        return validDirector;
+    }
+
     @BeforeAll
     public static void oneTimeSetup() {
-        Map<String, String> securityQuestion = new HashMap<String, String>();
-        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
-        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
-        u = new Director("dtest@gmail.com", "password", "Dir", "Ector", "5555555555", getDate("01-Jan-1970"), securityQuestion);
+
     }
 
     @AfterAll
@@ -44,7 +56,7 @@ public class UserTest {
 
     @BeforeEach
     public void setup() {
-
+        u = createBasicUser();
     }
 
     @AfterEach
@@ -60,6 +72,7 @@ public class UserTest {
 
     @Test
     public void TestChangePasswordWithWrongCase() {
+        System.out.println(u.getPassword());
         u.changePassword("PASSWORD", "notAllowed");
         assertEquals(u.getPassword(), "password", "The password should not be changed");
     }

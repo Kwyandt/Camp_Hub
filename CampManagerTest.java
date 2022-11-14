@@ -26,11 +26,13 @@ public class CampManagerTest {
 		Camp.clear();
 	}
 
-    @BeforeClass
-	public static void setup() {
-		camp = Camp.getInstance();
-        UserList.getInstance().addUser(createBasicInitialUser());
-        campManager.loginUser("jonathanconner0@camptallrock.com","ilovecamps");
+    @BeforeEach
+	public void setup() {
+		Camp.clear();
+        camp = Camp.getInstance();
+        Director director = createBasicInitialUser();
+        UserList.getInstance().addUser(director);
+        campManager.loginUser(director.getEmail(), director.getPassword());
 	}
 
     // Nathan
@@ -169,9 +171,7 @@ public class CampManagerTest {
     }
 
     // Luna
-    // Currently not fucntioning, do we need to saveAllUsers
-    // and saveCamp for logout?
-    //@Test
+    @Test
     public void testLogout() {
         Director validDirector = this.createBasicUser();
         UserList.getInstance().addUser(validDirector);
@@ -211,6 +211,27 @@ public class CampManagerTest {
         assertFalse(test);
     }
 
+    // Nathan
+    @Test
+    public void testRemoveNoteValidDirector() {
+        Director currentUser = (Director)UserList.getInstance().getAllUsers().get(0);
+        currentUser.addNote("0");
+        currentUser.addNote("1");
+        assertTrue(campManager.removeNote(1)
+                   && currentUser.getNotes().size() == 1
+                   && currentUser.getNotes().get(0).equals("0"), "Note not removed correctly");
+    }
+
+    // Nathan
+    @Test
+    public void testRemoveNoteValidCounselor() {
+        Counselor currentUser = createBasicCounselor();
+        campManager.loginUser(currentUser.getEmail(), currentUser.getPassword());
+        currentUser.addNote("0");
+        currentUser.addNote("1");
+        assertTrue(campManager.removeNote(1), "Note not removed correctly");
+    }
+    
     // Nathan
     @Test
     public void testSetEmailValid0() {
@@ -259,6 +280,43 @@ public class CampManagerTest {
         UserList.getInstance().addUser(createBasicParent());
         String duplicate = UserList.getInstance().getUsersOfType(UserType.PARENT).get(0).getEmail();
         assertFalse(campManager.setEmail(duplicate), "This email is already in the system");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordValid() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertTrue(campManager.setPass(oldPass, "ilovecampsmorethanever"), "This is a perfectly valid password");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordWrongOldPassword() {
+        Director director = createBasicUser();
+        campManager.loginUser(director.getEmail(), director.getPassword());
+        String oldPass = director.getPassword();
+        assertFalse(campManager.setPass("idontknowmyoldpasswordjusttryingtohackin", "ilovemykids"), "Old password isn't correct");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordSameOldAndNewPassword() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertFalse(campManager.setPass(oldPass, oldPass), "Shouldn't be able to change password to the same thing");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordEmptyNewPassword() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertFalse(campManager.setPass(oldPass, ""), "New password shouldn't be empty");
+    }
+
+    // Nathan
+    @Test
+    public void testSetPasswordNullNewPassword() {
+        String oldPass = UserList.getInstance().getAllUsers().get(0).getPassword();
+        assertFalse(campManager.setPass(oldPass, null), "New password shouldn't be null");
     }
 
     // Nathan
@@ -350,6 +408,93 @@ public class CampManagerTest {
         assertEquals(campManager.getPricing(session, parent), 800.0, "Discount should max out at 20%");
     }
 
+    // Luna
+    @Test
+    public void testAddValidCamper() {
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        Date date = new Date();
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        String[] guard = {"guardian", "second guardian"};
+        String[] doc = {"doc", "new doc"};
+        String[] dent = {"dentist", "new dentist"};
+        boolean test = campManager.addCamper("testFirst Child",
+        "testLast Child",
+        date,
+        guard,
+        doc,
+        dent,
+        "blue test tee");
+        assertTrue(test, "incorrect login");
+    }
+
+    // Luna
+    @Test
+    public void testAddInvalidCamper() {
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        Date date = new Date();
+        String[] guard = {"guardian", "second guardian"};
+        String[] doc = {"doc", "new doc"};
+        String[] dent = {"dentist", "new dentist"};
+        boolean test = campManager.addCamper("testFirst Child",
+        "testLast Child",
+        date,
+        guard,
+        doc,
+        dent,
+        "blue test tee");
+        assertFalse(test, "incorrect login");
+    }
+
+    // Luna
+    @Test
+    public void testValidRegisterCamper() {
+        Camper[] camper = createKBasicCampers(1);
+        Session session = createBasicSession();
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        boolean test = campManager.registerCamper(camper[0], session);
+        assertTrue(test);
+    }
+
+    // Luna
+    @Test
+    public void testinValidRegisterCamper() {
+        Camper[] camper = createKBasicCampers(1);
+        Session session = createBasicSession();
+        boolean test = campManager.registerCamper(camper[0], session);
+        assertFalse(test);
+    }
+
+    // Luna
+    // Unregister camper currently returns false in all cases
+    @Test
+    public void testValidUnregister() {
+        Camper[] camper = createKBasicCampers(1);
+        Session session = createBasicSession();
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        campManager.registerCamper(camper[0], session);
+        boolean test = campManager.unregisterCamper(camper[0], session);
+        assertTrue(test);
+    }
+
+    // Luna
+    // Unregister camper currently returns false in all cases
+    @Test
+    public void testinValidUnregister() {
+        Camper[] camper = createKBasicCampers(2);
+        Session session = createBasicSession();
+        Parent parent = createBasicParent();
+        UserList.getInstance().addUser(parent);
+        campManager.loginUser(parent.getEmail(), parent.getPassword());
+        campManager.registerCamper(camper[0], session);
+        boolean test = campManager.unregisterCamper(camper[1], session);
+        assertFalse(test);
+    }
     private static Date getDate(String str) {
         try {
             return new SimpleDateFormat("dd-MMM-yyyy").parse(str);
@@ -399,6 +544,19 @@ public class CampManagerTest {
                           "(864) 961-5191",
                           getDate("12-Mar-1983"),
                           securityQuestion);           
+    }
+
+    private static Counselor createBasicCounselor() {
+        Map<String, String> securityQuestion = new HashMap<String, String>();
+        securityQuestion.put("What was the name of your elementary school?", "Martinez Elementary School");
+        securityQuestion.put("What was the make of your first car?", "1995 White Ford Ranger");
+        return new Counselor("brandthonyjohnson@gmail.com",
+                             "67@pdpN%#o2y4FEx",
+                             "Brandthony",
+                             "Johnson",
+                             "(325) 324-9567",
+                             getDate("18-Jan-2003"),
+                             securityQuestion);
     }
 
     private static Camper[] createKBasicCampers(int k) {
