@@ -44,7 +44,7 @@ public class UserList {
      */
     public User getUser(String email) {
         for(User user : users){
-            if(user.getEmail().equals(email)){
+            if(user.getEmail() != null && user.getEmail().equals(email)){
                 return user;
             }
         }
